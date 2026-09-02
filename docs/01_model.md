@@ -44,7 +44,9 @@ Validacion basica que puede vivir en esta clase o en un validador de util: horaF
 
 ## Notas para JAXB
 
-Cada entidad que se persista de forma independiente (Funcionario, Categoria, Recurso, Reserva) debe tener anotacion de elemento raiz para poder serializarse en su propio archivo o dentro de una lista contenedora, segun se defina en 03_persistence.md. Las referencias entre entidades, por ejemplo Reserva apuntando a Funcionario, se resuelven guardando el id como referencia y no el objeto completo embebido, para evitar duplicacion de datos en el XML y problemas de referencias circulares en la serializacion. La capa de service es la encargada de resolver esos ids a objetos completos cuando se necesite.
+Cada entidad que se persista de forma independiente (Funcionario, Categoria, Recurso, Reserva) tiene anotacion de elemento raiz para poder serializarse en su propio archivo o dentro de una lista contenedora, segun se defina en 03_persistence.md. Las referencias entre entidades, por ejemplo Reserva apuntando a Funcionario, se resuelven guardando el id como referencia (idFuncionario, idCategoria, idsCategoriasRequeridas, idsRecursosAsignados) y no el objeto completo embebido, para evitar duplicacion de datos en el XML y problemas de referencias circulares en la serializacion. Los campos de objeto completo (funcionario, categoria, categoriasRequeridas, recursosAsignados) estan marcados como XmlTransient, es decir JAXB los ignora por completo, y es la capa de service la encargada de llenarlos resolviendo esos ids contra los DAOs cuando se necesite el objeto completo.
+
+LocalDate y LocalTime no los sabe convertir JAXB de forma nativa, por eso Reserva usa dos adaptadores ya creados, LocalDateAdapter y LocalTimeAdapter, marcados con XmlJavaTypeAdapter sobre los campos fecha, horaInicio y horaFin. No hace falta tocarlos, ya estan listos en el paquete model.
 
 ## Notas para quien use IA para generar estas clases
 
