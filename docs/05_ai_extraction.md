@@ -10,7 +10,13 @@ El enunciado permite que el usuario escriba una frase en lenguaje natural descri
 
 ## Interfaz esperada
 
-Definir una interfaz ExtractorReserva con un metodo extraer(String frase, List de Categoria categoriasDisponibles) que devuelve un objeto DatosReservaExtraidos con los campos actividad, fecha, horaInicio, horaFin y una lista de categorias identificadas dentro de las categoriasDisponibles recibidas como parametro. Cualquier campo que no se logre identificar en la frase queda nulo o vacio, y el usuario lo completa manualmente en el formulario.
+Ya estan creadas en el paquete ai las clases DatosReservaExtraidos y la interfaz ExtractorReserva, con exactamente esta forma:
+
+ExtractorReserva tiene un unico metodo, extraer(String frase, List de Categoria categoriasDisponibles), que devuelve un DatosReservaExtraidos.
+
+DatosReservaExtraidos tiene los campos actividad, fecha (LocalDate), horaInicio (LocalTime), horaFin (LocalTime) e idsCategoriasIdentificadas (lista de String, los ids de las categorias identificadas dentro de categoriasDisponibles). Cualquier campo que no se logre identificar en la frase queda nulo o vacio, y el usuario lo completa manualmente en el formulario.
+
+No es necesario crear estas dos clases, ya existen. Se implementa contra ellas tal cual estan.
 
 ## Implementaciones esperadas
 

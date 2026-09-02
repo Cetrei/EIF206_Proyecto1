@@ -36,10 +36,20 @@ Mensajes de commit cortos y descriptivos, en espanol, describiendo que se hizo, 
 
 ## Pruebas
 
-El proyecto debe incluir pruebas con JUnit Jupiter, tanto de unidad, ejecutadas con el plugin Surefire, como de integracion, ejecutadas con el plugin Failsafe. Las pruebas de unidad se enfocan en clases individuales de service, por ejemplo validar que intentarReservar rechace una fecha pasada. Las pruebas de integracion validan flujos completos que involucran mas de una capa, por ejemplo crear un funcionario, guardarlo mediante el DAO real, y volver a leerlo.
+El proyecto usa Maven, con el pom.xml en la raiz del proyecto. Se eligio Maven especificamente porque Surefire y Failsafe, que el enunciado pide por nombre, son plugins de Maven.
+
+Estructura de carpetas: el codigo de la aplicacion va en src/main/java/com/una/reservas/... y las pruebas van en src/test/java/com/una/reservas/..., siguiendo el mismo arbol de paquetes que el codigo que prueban.
+
+Convencion de nombres que Surefire y Failsafe usan para decidir que ejecutar y cuando:
+
+Una clase que termina en Test, por ejemplo ReservaTest o FuncionarioServiceTest, es una prueba de unidad. Surefire la ejecuta con el comando mvn test. Las pruebas de unidad se enfocan en una sola clase, sin tocar archivos ni red, por ejemplo validar que intentarReservar rechace una fecha pasada usando un Dao falso en vez del real.
+
+Una clase que termina en IT, por ejemplo FuncionarioDaoXmlIT, es una prueba de integracion. Failsafe la ejecuta con el comando mvn verify, en una fase separada despues de las pruebas de unidad. Las pruebas de integracion validan flujos completos que involucran mas de una capa, por ejemplo crear un funcionario, guardarlo mediante el DAO real contra un archivo XML de prueba, y volver a leerlo.
+
+Ya existen dos archivos de ejemplo en el proyecto para que cada quien siga el mismo patron: src/test/java/com/una/reservas/model/ReservaTest.java (prueba de unidad ya funcional) y src/test/java/com/una/reservas/persistence/FuncionarioDaoXmlIT.java (prueba de integracion, comentada, para descomentar cuando el DAO real este listo).
 
 Cada quien es responsable de las pruebas de la capa que le corresponde, siguiendo la division de trabajo descrita en 00_arquitectura_general.md.
 
 ## Dependencias del proyecto
 
-Cualquier libreria nueva que se agregue al proyecto, por ejemplo la libreria de PDF o el cliente HTTP para llamar a Gemini, debe agregarse al archivo de gestion de dependencias del proyecto, Maven o Gradle segun se elija, y comunicarse al resto del equipo, para evitar que el proyecto no compile en la maquina de otra persona por falta de una dependencia.
+Cualquier libreria nueva que se agregue al proyecto, por ejemplo la libreria de PDF o el cliente HTTP para llamar a Gemini, debe agregarse como dependencia en el pom.xml y comunicarse al resto del equipo, para evitar que el proyecto no compile en la maquina de otra persona por falta de una dependencia. Despues de que alguien mas agregue una dependencia nueva, el resto del equipo debe correr mvn install (o el equivalente de su IDE) para que se descargue localmente antes de compilar.

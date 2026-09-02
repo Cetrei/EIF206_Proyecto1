@@ -33,6 +33,22 @@ com.una.reservas.ai
 com.una.reservas.util
 ```
 
+## Gestor de proyecto y estructura de carpetas
+
+El proyecto usa Maven, con el pom.xml en la raiz. Se eligio Maven en vez de Gradle porque Surefire y Failsafe, que el enunciado pide por nombre para las pruebas, son plugins de Maven.
+
+Estructura real en el repositorio:
+
+```
+pom.xml
+src/main/java/com/una/reservas/...    codigo de la aplicacion, organizado en los paquetes de arriba
+src/main/resources/                   archivos de configuracion si se necesitan
+src/test/java/com/una/reservas/...    pruebas, mismo arbol de paquetes que el codigo que prueban
+docs/                                 estos documentos de arquitectura
+```
+
+Ver 07_convenciones.md para la convencion de nombres de las pruebas (Test para unidad, IT para integracion) y los comandos de Maven para correrlas.
+
 ## Division de trabajo
 
 Joanfer: presentation, control, service, model. Es quien integra todo y mantiene la coherencia general del sistema.
