@@ -1,6 +1,6 @@
 # Extraccion de datos de reserva mediante IA
 
-Paquete: com.una.reservas.ai
+Paquete: cr.ac.una.reservas.ai
 
 Responsable: Companero B.
 

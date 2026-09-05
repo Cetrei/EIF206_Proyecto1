@@ -1,6 +1,6 @@
 # Capa de persistencia
 
-Paquete: com.una.reservas.persistence
+Paquete: cr.ac.una.reservas.persistence
 
 Responsable: Companero A.
 
@@ -10,7 +10,7 @@ Esta capa es la unica autorizada a leer y escribir los archivos XML del sistema.
 
 ## Tecnologia
 
-Serializacion XML con JAXB, Java Architecture for XML Binding, tal como se vio en clase. Las clases de model en com.una.reservas.model ya vienen anotadas, o se anotaran en conjunto contigo, con anotaciones como XmlRootElement, XmlElement y XmlElementWrapper para las listas.
+Serializacion XML con JAXB, Java Architecture for XML Binding, tal como se vio en clase. Las clases de model en cr.ac.una.reservas.model ya vienen anotadas, o se anotaran en conjunto contigo, con anotaciones como XmlRootElement, XmlElement y XmlElementWrapper para las listas.
 
 El paquete de las anotaciones e interfaces de JAXB es javax.xml.bind, el mismo usado en el ejemplo de clase, no jakarta.xml.bind.
 
@@ -24,7 +24,7 @@ javax.xml.bind:jaxb-api
 
 org.glassfish.jaxb:jaxb-runtime
 
-Esto no se considera una libreria externa de conveniencia, es la implementacion del estandar JAXB que se vio en clase y sin ella el ejemplo del profesor tampoco funcionaria en Java 11+. El proyecto actualmente no tiene Maven ni Gradle configurado, asi que antes de escribir codigo de esta capa hay que decidir con Joanfer cual de los dos se usara para poder declarar estas dependencias.
+Esto no se considera una libreria externa de conveniencia, es la implementacion del estandar JAXB que se vio en clase y sin ella el ejemplo del profesor tampoco funcionaria en Java 11+. El proyecto ya tiene el pom.xml de Maven con estas dependencias declaradas, no hace falta agregarlas de nuevo.
 
 ## Interfaz generica Dao
 

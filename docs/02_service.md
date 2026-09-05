@@ -1,6 +1,6 @@
 # Capa de servicio
 
-Paquete: com.una.reservas.service
+Paquete: cr.ac.una.reservas.service
 
 Responsable: Joanfer.
 

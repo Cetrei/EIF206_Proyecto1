@@ -1,6 +1,6 @@
 # Generacion de reportes PDF
 
-Paquete: com.una.reservas.report
+Paquete: cr.ac.una.reservas.report
 
 Responsable: Companero B.
 
