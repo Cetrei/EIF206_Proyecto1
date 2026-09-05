@@ -1,6 +1,6 @@
 # Modelo de dominio
 
-Paquete: com.una.reservas.model
+Paquete: cr.ac.una.reservas.model
 
 Responsable principal: Joanfer. Es la capa mas compartida del proyecto, tanto persistence como service y presentation dependen de estas clases, por lo que cualquier cambio aqui debe avisarse al resto del equipo antes de hacerlo.
 

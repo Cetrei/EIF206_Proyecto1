@@ -23,14 +23,14 @@ Regla de dependencia: presentation depende de control, control depende de servic
 ## Paquetes Java
 
 ```
-com.una.reservas.model
-com.una.reservas.persistence
-com.una.reservas.service
-com.una.reservas.control
-com.una.reservas.presentation
-com.una.reservas.report
-com.una.reservas.ai
-com.una.reservas.util
+cr.ac.una.reservas.model
+cr.ac.una.reservas.persistence
+cr.ac.una.reservas.service
+cr.ac.una.reservas.control
+cr.ac.una.reservas.presentation
+cr.ac.una.reservas.report
+cr.ac.una.reservas.ai
+cr.ac.una.reservas.util
 ```
 
 ## Gestor de proyecto y estructura de carpetas
@@ -41,9 +41,9 @@ Estructura real en el repositorio:
 
 ```
 pom.xml
-src/main/java/com/una/reservas/...    codigo de la aplicacion, organizado en los paquetes de arriba
+src/main/java/cr/ac/una/reservas/...    codigo de la aplicacion, organizado en los paquetes de arriba
 src/main/resources/                   archivos de configuracion si se necesitan
-src/test/java/com/una/reservas/...    pruebas, mismo arbol de paquetes que el codigo que prueban
+src/test/java/cr/ac/una/reservas/...    pruebas, mismo arbol de paquetes que el codigo que prueban
 docs/                                 estos documentos de arquitectura
 ```
 
