@@ -1,6 +1,6 @@
 # Control y presentacion
 
-Paquetes: com.una.reservas.control y com.una.reservas.presentation
+Paquetes: cr.ac.una.reservas.control y cr.ac.una.reservas.presentation
 
 Responsable: Joanfer.
 
