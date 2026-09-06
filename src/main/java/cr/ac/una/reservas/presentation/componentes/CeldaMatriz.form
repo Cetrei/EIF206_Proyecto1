@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="cr.ac.una.reservas.presentation.componentes.CeldaMatriz">
+  <grid id="27dc6" binding="CeldaMatriz" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="2" custom-create="true">
+    <margin top="4" left="6" bottom="4" right="6"/>
+    <constraints>
+      <xy x="20" y="20" width="140" height="48"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="c1a1" class="javax.swing.JLabel" binding="lblTextoPrincipal">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Actividad"/>
+        </properties>
+      </component>
+      <component id="c1a2" class="javax.swing.JLabel" binding="lblTextoSecundario">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="(Detalle)"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

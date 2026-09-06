@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "recurso")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Recurso {
-
     @XmlElement(name = "id")
     private String id;
 
@@ -25,7 +24,6 @@ public class Recurso {
 
     public Recurso() {
     }
-
     public Recurso(String id, String idCategoria, String descripcion) {
         this.id = id;
         this.idCategoria = idCategoria;
@@ -35,7 +33,6 @@ public class Recurso {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -43,7 +40,6 @@ public class Recurso {
     public String getIdCategoria() {
         return idCategoria;
     }
-
     public void setIdCategoria(String idCategoria) {
         this.idCategoria = idCategoria;
     }
@@ -51,7 +47,6 @@ public class Recurso {
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -59,7 +54,6 @@ public class Recurso {
     public Categoria getCategoria() {
         return categoria;
     }
-
     // Tambien actualiza idCategoria para mantenerlos consistentes.
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;

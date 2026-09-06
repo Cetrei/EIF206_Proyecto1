@@ -17,17 +17,6 @@ public class DatosReservaExtraidos {
     public DatosReservaExtraidos() {
     }
 
-    public DatosReservaExtraidos(String actividad, LocalDate fecha, LocalTime horaInicio,
-                                  LocalTime horaFin, List<String> idsCategoriasIdentificadas) {
-        this.actividad = actividad;
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.idsCategoriasIdentificadas = idsCategoriasIdentificadas != null
-                ? idsCategoriasIdentificadas
-                : new ArrayList<>();
-    }
-
     public String getActividad() {
         return actividad;
     }

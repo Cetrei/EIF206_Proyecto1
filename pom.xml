@@ -20,10 +20,7 @@
 
     <dependencies>
 
-        <!-- JAXB: paquete javax.xml.bind, removido del JDK desde Java 11.
-             Se agrega el api y el runtime para que el codigo visto en clase
-             (DemoXml, XmlRootElement, JAXBContext, etc) compile y funcione.
-             Ver docs/03_persistence.md. -->
+        <!-- JAXB -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -35,7 +32,7 @@
             <version>${jaxb.version}</version>
         </dependency>
 
-        <!-- JUnit Jupiter, requerido por el enunciado para test cases. -->
+        <!-- JUnit Jupiter, test cases. -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -57,19 +54,14 @@
                 </configuration>
             </plugin>
 
-            <!-- Surefire: ejecuta las pruebas de unidad durante "mvn test".
-                 Por convencion de Surefire, corre las clases que terminan en
-                 Test, Tests o TestCase (por ejemplo ReservaServiceTest). -->
+            <!-- Surefire, "mvn test" -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- Failsafe: ejecuta las pruebas de integracion durante
-                 "mvn verify", en la fase integration-test. Por convencion de
-                 Failsafe, corre las clases que terminan en IT, ITCase o
-                 IntegrationTest (por ejemplo ReservaDaoIT). -->
+            <!-- Failsafe, "mvn verify" -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>

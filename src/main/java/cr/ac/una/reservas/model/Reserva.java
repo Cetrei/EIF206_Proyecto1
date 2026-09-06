@@ -13,14 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Los campos funcionario, categoriasRequeridas y recursosAsignados son
- * XmlTransient: guardan solo los ids en XML, y service los resuelve a
- * objetos completos.
+ * Los campos funcionario, categoriasRequeridas y recursosAsignados
+ * guardan solo los ids en XML, y service los resuelve a objetos completos.
  */
 @XmlRootElement(name = "reserva")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Reserva {
-
     @XmlElement(name = "id")
     private String id;
 
@@ -64,23 +62,20 @@ public class Reserva {
 
     public Reserva() {
     }
-
-    public Reserva(String id, String idFuncionario, String actividad, LocalDate fecha,
-                    LocalTime horaInicio, LocalTime horaFin, List<String> idsCategoriasRequeridas) {
-        this.id = id;
-        this.idFuncionario = idFuncionario;
-        this.actividad = actividad;
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.idsCategoriasRequeridas = idsCategoriasRequeridas != null ? idsCategoriasRequeridas : new ArrayList<>();
+    public Reserva(DatosNuevaReserva datos) {
+        this.id = datos.getId();
+        this.idFuncionario = datos.getIdFuncionario();
+        this.actividad = datos.getActividad();
+        this.fecha = datos.getFecha();
+        this.horaInicio = datos.getHoraInicio();
+        this.horaFin = datos.getHoraFin();
+        this.idsCategoriasRequeridas = datos.getIdsCategoriasRequeridas();
         this.estado = EstadoReserva.ACTIVA;
     }
 
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -88,7 +83,6 @@ public class Reserva {
     public String getIdFuncionario() {
         return idFuncionario;
     }
-
     public void setIdFuncionario(String idFuncionario) {
         this.idFuncionario = idFuncionario;
     }
@@ -96,7 +90,6 @@ public class Reserva {
     public String getActividad() {
         return actividad;
     }
-
     public void setActividad(String actividad) {
         this.actividad = actividad;
     }
@@ -104,7 +97,6 @@ public class Reserva {
     public LocalDate getFecha() {
         return fecha;
     }
-
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
@@ -112,7 +104,6 @@ public class Reserva {
     public LocalTime getHoraInicio() {
         return horaInicio;
     }
-
     public void setHoraInicio(LocalTime horaInicio) {
         this.horaInicio = horaInicio;
     }
@@ -120,7 +111,6 @@ public class Reserva {
     public LocalTime getHoraFin() {
         return horaFin;
     }
-
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
     }
@@ -128,7 +118,6 @@ public class Reserva {
     public List<String> getIdsCategoriasRequeridas() {
         return idsCategoriasRequeridas;
     }
-
     public void setIdsCategoriasRequeridas(List<String> idsCategoriasRequeridas) {
         this.idsCategoriasRequeridas = idsCategoriasRequeridas;
     }
@@ -136,7 +125,6 @@ public class Reserva {
     public List<String> getIdsRecursosAsignados() {
         return idsRecursosAsignados;
     }
-
     public void setIdsRecursosAsignados(List<String> idsRecursosAsignados) {
         this.idsRecursosAsignados = idsRecursosAsignados;
     }
@@ -144,7 +132,6 @@ public class Reserva {
     public EstadoReserva getEstado() {
         return estado;
     }
-
     public void setEstado(EstadoReserva estado) {
         this.estado = estado;
     }
@@ -152,7 +139,6 @@ public class Reserva {
     public Funcionario getFuncionario() {
         return funcionario;
     }
-
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
         if (funcionario != null) {
@@ -163,7 +149,6 @@ public class Reserva {
     public List<Categoria> getCategoriasRequeridas() {
         return categoriasRequeridas;
     }
-
     public void setCategoriasRequeridas(List<Categoria> categoriasRequeridas) {
         this.categoriasRequeridas = categoriasRequeridas;
     }
@@ -178,7 +163,14 @@ public class Reserva {
 
     @Override
     public String toString() {
-        return String.format("Reserva{id=%s, actividad=%s, fecha=%s, horaInicio=%s, horaFin=%s, estado=%s}",
-                id, actividad, fecha, horaInicio, horaFin, estado);
+        return String.format(
+                "Reserva{id=%s, actividad=%s, fecha=%s, horaInicio=%s, horaFin=%s, estado=%s}",
+                id,
+                actividad,
+                fecha,
+                horaInicio,
+                horaFin,
+                estado
+        );
     }
 }

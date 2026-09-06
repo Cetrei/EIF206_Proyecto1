@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Administrador.class, Funcionario.class})
 public abstract class Usuario {
-
     @XmlElement(name = "id")
     protected String id;
 
@@ -20,7 +19,6 @@ public abstract class Usuario {
 
     public Usuario() {
     }
-
     public Usuario(String id, String clave, RolUsuario rol) {
         this.id = id;
         this.clave = clave;
@@ -30,7 +28,6 @@ public abstract class Usuario {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -38,7 +35,6 @@ public abstract class Usuario {
     public String getClave() {
         return clave;
     }
-
     public void setClave(String clave) {
         this.clave = clave;
     }
@@ -46,7 +42,6 @@ public abstract class Usuario {
     public RolUsuario getRol() {
         return rol;
     }
-
     public void setRol(RolUsuario rol) {
         this.rol = rol;
     }

@@ -13,15 +13,12 @@ class ReservaTest {
 
     @Test
     void construirReservaAsignaEstadoActivaPorDefecto() {
-        Reserva reserva = new Reserva(
+        Reserva reserva = new Reserva(datosDeEjemplo(
                 "RES-000001",
-                "111",
                 "Reunion de trabajo",
                 LocalDate.of(2026, 8, 14),
-                LocalTime.of(8, 0),
-                LocalTime.of(10, 0),
                 List.of("CAT-000001", "CAT-000002")
-        );
+        ));
 
         assertEquals(EstadoReserva.ACTIVA, reserva.getEstado());
         assertEquals("RES-000001", reserva.getId());
@@ -30,17 +27,26 @@ class ReservaTest {
 
     @Test
     void objetosCompletosTransientEmpiezanVacios() {
-        Reserva reserva = new Reserva(
+        Reserva reserva = new Reserva(datosDeEjemplo(
                 "RES-000002",
-                "111",
                 "Charla tecnica",
                 LocalDate.of(2026, 8, 20),
-                LocalTime.of(9, 0),
-                LocalTime.of(11, 0),
                 List.of("CAT-000002")
-        );
+        ));
 
         assertTrue(reserva.getCategoriasRequeridas().isEmpty());
         assertTrue(reserva.getRecursosAsignados().isEmpty());
+    }
+
+    private DatosNuevaReserva datosDeEjemplo(String id, String actividad, LocalDate fecha, List<String> idsCategorias) {
+        DatosNuevaReserva datos = new DatosNuevaReserva();
+        datos.setId(id);
+        datos.setIdFuncionario("111");
+        datos.setActividad(actividad);
+        datos.setFecha(fecha);
+        datos.setHoraInicio(LocalTime.of(8, 0));
+        datos.setHoraFin(LocalTime.of(10, 0));
+        datos.setIdsCategoriasRequeridas(idsCategorias);
+        return datos;
     }
 }
