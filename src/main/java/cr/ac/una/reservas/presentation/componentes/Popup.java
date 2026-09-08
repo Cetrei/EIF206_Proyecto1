@@ -19,13 +19,6 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Ventana de aviso reutilizable (informacion, error o confirmacion), con
- * icono, titulo, mensaje y una lista configurable de botones con su
- * propia accion. Pensado para casos como "no se pudo conectar" o
- * "seguro desea cancelar la reserva", sin acoplar cada vista a su propio
- * dialogo hecho a mano.
- */
 public class Popup implements CambioTemaListener {
 
     public enum Tipo {
@@ -80,13 +73,6 @@ public class Popup implements CambioTemaListener {
         dialogoRaiz.setContentPane(pnlContenidoPopup);
     }
 
-    /**
-     * Requerido por el GUI Designer de IntelliJ: pnlBotonesPopup esta
-     * marcado custom-create="true" en el .form porque necesita un
-     * FlowLayout alineado a la derecha (no soportado como propiedad del
-     * Designer), asi que se instancia aqui a mano en vez de dejar que
-     * el codigo generado lo cree con GridLayoutManager por defecto.
-     */
     private void createUIComponents() {
         pnlBotonesPopup = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         pnlBotonesPopup.setOpaque(false);

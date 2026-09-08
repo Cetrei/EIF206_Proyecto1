@@ -2,7 +2,7 @@ package cr.ac.una.reservas.presentation;
 
 import cr.ac.una.reservas.presentation.componentes.BarraSuperior;
 import cr.ac.una.reservas.presentation.componentes.BotonIcono;
-import cr.ac.una.reservas.presentation.iconos.Icono;
+import cr.ac.una.reservas.presentation.iconos.IconoSemantico;
 import cr.ac.una.reservas.presentation.iconos.IconoAplicador;
 import cr.ac.una.reservas.presentation.tema.CambioTemaListener;
 import cr.ac.una.reservas.presentation.tema.GestorTema;
@@ -11,20 +11,13 @@ import cr.ac.una.reservas.presentation.tema.Tema;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.Dimension;
 import java.awt.Font;
 
-/**
- * Ventana principal post-login: encabezado (logo, titulo, usuario/rol,
- * boton de cuenta) mas un JTabbedPane con una pestana por pantalla
- * principal. Cada pestana (pnlFuncionarios, pnlReservas, etc.) es un
- * JPanel vacio que su propio control llena mas adelante (ver
- * VentanaPrincipalControl); este archivo solo arma el marco visual y
- * expone lo necesario para que el control conecte el resto.
- */
 public class VentanaPrincipal implements CambioTemaListener {
-
     private JPanel VentanaPrincipal;
     private JTabbedPane tbpVentanas;
     private JPanel pnlEncabezado;
@@ -48,56 +41,30 @@ public class VentanaPrincipal implements CambioTemaListener {
 
     public VentanaPrincipal() {
         GestorTema.obtenerInstancia().agregarListener(this);
+        lblNombreUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblBadgeRol.setHorizontalAlignment(SwingConstants.RIGHT);
         aplicarTema(GestorTema.obtenerInstancia().temaActivo());
     }
 
-    /**
-     * btnCuenta esta declarado custom-create="true" en el .form (igual
-     * patron que btnIngresar en LoginPanel.form): en vez de un JButton
-     * crudo, aqui se reemplaza por un BotonIcono real del sistema de
-     * diseno, para que tenga esquinas redondeadas, hover y tema
-     * aplicado automaticamente. Lo mismo aplica para BarraSuperior,
-     * reemplazado por una instancia real del componente (ver paquete
-     * componentes.BarraSuperior) en vez del JPanel vacio que genera el
-     * binding por defecto.
-     */
     private void createUIComponents() {
         botonCuentaReal = new BotonIcono();
-        botonCuentaReal.setIcono(Icono.AJUSTES);
+        botonCuentaReal.setIcono(IconoSemantico.AJUSTES_CUENTA.icono());
+        botonCuentaReal.setTamano(28, 28);
         btnCuenta = botonCuentaReal.obtenerPanel();
 
         barraSuperiorReal = new BarraSuperior();
         BarraSuperior = barraSuperiorReal.obtenerPanel();
     }
 
-    /**
-     * Muestra el nombre y el rol del usuario logueado en el encabezado.
-     * VentanaPrincipalControl llama a esto justo despues de construir
-     * la ventana, usando los datos de SesionControl.
-     */
     public void mostrarUsuario(String nombre, String rolTexto) {
         lblNombreUsuario.setText(nombre);
         lblBadgeRol.setText(rolTexto);
     }
 
-    /**
-     * Registra la accion a ejecutar cuando se hace click en el boton de
-     * cuenta del encabezado. El controlador decide que mostrar (el
-     * popup con PanelCuenta).
-     */
     public void alAbrirCuenta(Runnable accion) {
         botonCuentaReal.alHacerClick(accion);
     }
 
-    /**
-     * Registra la accion a ejecutar al presionar la X de BarraSuperior
-     * en el borde superior de la ventana principal. A diferencia de la
-     * X de PanelCuenta (que solo cierra un JDialog secundario), esta es
-     * la ventana raiz de toda la aplicacion: VentanaPrincipalControl
-     * decide que significa cerrarla (tipicamente, pedir confirmacion y
-     * salir de la aplicacion), esta vista solo expone el punto de
-     * enganche.
-     */
     public void alCerrar(Runnable accion) {
         barraSuperiorReal.alCerrar(accion);
     }
@@ -130,12 +97,6 @@ public class VentanaPrincipal implements CambioTemaListener {
         return pnlReservas;
     }
 
-    /**
-     * Oculta las pestanas que solo puede usar un administrador
-     * (Funcionarios, Categorias, Recursos), para el caso de un usuario
-     * tipo funcionario. VentanaPrincipalControl decide cuando llamar
-     * esto segun SesionControl.esAdministrador().
-     */
     public void mostrarSoloPestanasDeFuncionario() {
         quitarPestana(pnlFuncionarios);
         quitarPestana(pnlCategorias);
@@ -164,17 +125,11 @@ public class VentanaPrincipal implements CambioTemaListener {
         pnlEncabezado.setOpaque(true);
         pnlEncabezado.setBorder(new EmptyBorder(10, 18, 10, 18));
 
-        IconoAplicador.aplicar(iconLogo, Icono.CALENDARIO, 20f, tema.colorPrimario());
+        IconoAplicador.aplicar(iconLogo, IconoSemantico.LOGO_APP.icono(), 20f, tema.colorPrimario());
+        ajustarAltoLinea(iconLogo, 31);
 
         lblTituloApp.setForeground(tema.colorTexto());
         lblTituloApp.setFont(tema.fuenteTitulo().deriveFont(15f));
-        // Sin esto, cada JLabel reserva el alto de linea completo que
-        // le da su FontMetrics (ascent+descent+leading), que puede ser
-        // bastante mayor que el texto visible; con dos labels apilados
-        // en filas separadas (titulo/subtitulo, nombre/badge) eso se
-        // traduce en un espacio vertical entre ellos que vgap="0" en el
-        // .form no alcanza a corregir, porque el vgap separa CELDAS,
-        // no compensa el alto que cada celda reclama por su contenido.
         ajustarAltoLinea(lblTituloApp, 17);
 
         lblSubtituloApp.setForeground(tema.colorTextoSecundario());
@@ -192,25 +147,18 @@ public class VentanaPrincipal implements CambioTemaListener {
         tbpVentanas.setBackground(tema.colorFondoVentana());
         tbpVentanas.setForeground(tema.colorTexto());
         tbpVentanas.setFont(tema.fuenteTexto());
-        // El borde propio del Look and Feel (Metal) alrededor del area
-        // de contenido del JTabbedPane no respeta el tema, asi que se
-        // reemplaza por uno del color de borde del tema (o se quita del
-        // todo, ver EmptyBorder mas abajo si se prefiere sin linea).
-        tbpVentanas.setBorder(new javax.swing.border.LineBorder(tema.colorBorde(), 1));
+        // El borde de Metal alrededor del contenido del JTabbedPane no respeta el tema; se reemplaza por uno del color de borde del tema.
+        tbpVentanas.setBorder(new LineBorder(tema.colorBorde(), 1));
 
         VentanaPrincipal.repaint();
     }
 
-    /**
-     * Fija el alto preferido de un JLabel al valor pedido (en vez de
-     * dejar que el propio FontMetrics de su fuente decida), sin tocar
-     * el ancho (se calcula igual, a partir del texto). Ver comentario
-     * en aplicarTema para el porque: es lo que realmente controla la
-     * separacion vertical entre titulo/subtitulo y nombre/badge, no el
-     * vgap del grid.
-     */
+    // Fija el alto preferido/min/max de un JLabel
     private static void ajustarAltoLinea(JLabel label, int alto) {
         Dimension preferido = label.getPreferredSize();
-        label.setPreferredSize(new Dimension(preferido.width, alto));
+        Dimension fijado = new Dimension(preferido.width, alto);
+        label.setPreferredSize(fijado);
+        label.setMinimumSize(fijado);
+        label.setMaximumSize(fijado);
     }
 }

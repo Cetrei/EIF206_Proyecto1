@@ -57,12 +57,6 @@ public class BotonIcono implements CambioTemaListener {
         btnIcono.setContentAreaFilled(false);
         btnIcono.setFocusPainted(false);
         btnIcono.setBorderPainted(false);
-        // Sin esto, el Look and Feel por defecto (Metal) sigue
-        // pintando un borde/relieve propio del boton (el recuadro gris
-        // alrededor del icono que se veia en el boton de ajustes y en
-        // la X), incluso con setBorderPainted(false), porque ese
-        // metodo solo evita el borde "estandar" del boton, no el que
-        // algunos LookAndFeel dibujan segun el estado de foco.
         btnIcono.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         btnIcono.setFocusable(false);
         btnIcono.setOpaque(false);
@@ -86,19 +80,6 @@ public class BotonIcono implements CambioTemaListener {
         aplicarIcono();
     }
 
-    /**
-     * Ajusta el tamano del boton (por defecto 40x40, segun
-     * BotonIcono.form). Pensado para variantes mas compactas, como el
-     * boton de cerrar de BarraSuperior, que no necesita ocupar tanto
-     * espacio como el boton de cuenta del encabezado principal.
-     * <p>
-     * Debe llamarse ANTES de obtenerPanel(), ya que crea el envoltorio
-     * con el tamano fijo pedido (ver obtenerPanel(): el mismo motivo
-     * por el que BarraSuperior necesita un envoltorio con BorderLayout
-     * en vez de fijar el tamano directamente sobre BotonIcono, cuyo
-     * GridLayoutManager propio del .form recalcularia el tamano de
-     * todas formas).
-     */
     public void setTamano(int ancho, int alto) {
         Dimension tamano = new Dimension(ancho, alto);
         if (envoltorio == null) {
@@ -121,15 +102,6 @@ public class BotonIcono implements CambioTemaListener {
         btnIcono.addActionListener(evento -> accion.run());
     }
 
-    /**
-     * Devuelve BotonIcono envuelto en un panel propio con BorderLayout
-     * cuando setTamano(...) se uso (ver setTamano para el motivo
-     * completo: el GridLayoutManager propio del .form de BotonIcono
-     * ignora setPreferredSize/setMaximumSize puestos directamente sobre
-     * ese panel). Sin llamar a setTamano, se devuelve BotonIcono tal
-     * cual (40x40 por defecto, que es el caso mas comun: botones de
-     * encabezado como btnCuenta).
-     */
     public JPanel obtenerPanel() {
         if (envoltorio != null) {
             return envoltorio;
@@ -146,7 +118,7 @@ public class BotonIcono implements CambioTemaListener {
         if (variante == Variante.PELIGRO) {
             colorFondo = tema.colorPeligro();
             colorFondoHover = tema.colorPeligroHover();
-            colorIcono = tema.colorTexto();
+            colorIcono = tema.colorTextoSobrePeligro();
         } else {
             colorFondo = tema.colorFondoCampo();
             colorFondoHover = tema.colorBorde();

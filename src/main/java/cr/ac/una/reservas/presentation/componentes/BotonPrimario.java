@@ -49,13 +49,6 @@ public class BotonPrimario implements CambioTemaListener {
         btnPrimario.setContentAreaFilled(false);
         btnPrimario.setFocusPainted(false);
         btnPrimario.setBorderPainted(false);
-        // IMPORTANTE: no usar un EmptyBorder de 0 aqui. El border de
-        // Metal (aunque no se pinte, por setBorderPainted(false)) es lo
-        // que le da al boton su padding interno normal: quitarlo del
-        // todo hace que el boton se calcule mas chico de lo esperado
-        // (se ve "aplastado" verticalmente, pegado al texto). Se
-        // reemplaza por un EmptyBorder con el mismo padding que se
-        // quiere visualmente, no por uno vacio.
         btnPrimario.setBorder(new javax.swing.border.EmptyBorder(8, 18, 8, 18));
         btnPrimario.setFocusable(false);
         btnPrimario.setOpaque(false);

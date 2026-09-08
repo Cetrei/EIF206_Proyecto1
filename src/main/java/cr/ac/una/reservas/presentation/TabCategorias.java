@@ -6,38 +6,24 @@ import cr.ac.una.reservas.presentation.componentes.BotonSecundario;
 import cr.ac.una.reservas.presentation.componentes.CampoTexto;
 import cr.ac.una.reservas.presentation.componentes.Tarjeta;
 import cr.ac.una.reservas.presentation.componentes.TablaDatos;
-import cr.ac.una.reservas.presentation.iconos.Icono;
+import cr.ac.una.reservas.presentation.iconos.IconoSemantico;
 import cr.ac.una.reservas.presentation.tema.CambioTemaListener;
 import cr.ac.una.reservas.presentation.tema.GestorTema;
 import cr.ac.una.reservas.presentation.tema.Tema;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
 import java.util.function.IntConsumer;
 
-/**
- * Vista de la pestana "Categorias de Recursos" (funcionalidad 4 del
- * enunciado, ver docs/06_control_presentation.md). Sigue el mismo
- * patron que PanelCuenta: los tres paneles que trae el .form
- * (TarjetaTitulo, TarjetaCategoria, TarjetaTabla) estan declarados
- * custom-create="true" y aqui, en createUIComponents(), se reemplazan
- * por instancias reales de los componentes del sistema de diseno
- * (Tarjeta, CampoTexto, BotonPrimario/Secundario/Icono, TablaDatos).
- * <p>
- * Esta clase no conoce CategoriaService ni ninguna otra clase de
- * service: solo expone datos (obtenerId/obtenerDescripcion,
- * obtenerFilaSeleccionada) y enganches de eventos (alGuardar,
- * alBorrar, alLimpiar, alBuscar, alSeleccionarFila, alGenerarReporte),
- * igual que LoginPanel expone alIngresar/alCambiarClave. Toda la logica
- * de negocio vive en CategoriaControl.
- */
 public class TabCategorias implements CambioTemaListener {
-
     private JPanel TabCategorias;
     private JPanel TarjetaTitulo;
     private JPanel TarjetaCategoria;
@@ -62,46 +48,27 @@ public class TabCategorias implements CambioTemaListener {
         aplicarTema(GestorTema.obtenerInstancia().temaActivo());
     }
 
-    /**
-     * TarjetaTitulo/TarjetaCategoria/TarjetaTabla se declaran
-     * custom-create="true" en el .form (paneles vacios), asi que aqui
-     * se reemplazan por instancias reales de Tarjeta y se arma su
-     * contenido a mano, igual patron que PanelCuenta.createUIComponents().
-     */
     private void createUIComponents() {
         armarTarjetaTitulo();
         armarTarjetaCategoria();
         armarTarjetaTabla();
     }
 
-    /**
-     * El "componente especial TarjetaTitulo" que cada pestana necesita
-     * (icono + titulo + descripcion + boton de generar reporte) no es
-     * una clase nueva: es la Tarjeta generica de componentes, usando el
-     * encabezado que ya soporta (setIcono/setTitulo/setSubtitulo/
-     * setAccion). Cada pestana solo decide su propio icono, titulo,
-     * subtitulo y que reporte genera el boton (ver CategoriaControl).
-     */
     private void armarTarjetaTitulo() {
         tarjetaTituloReal = new Tarjeta();
-        tarjetaTituloReal.setIcono(Icono.ETIQUETA);
+        tarjetaTituloReal.setIcono(IconoSemantico.ETIQUETA.icono());
         tarjetaTituloReal.setTitulo("Categorías de Recursos");
         tarjetaTituloReal.setSubtitulo("Gestión de clasificaciones de insumos y espacios");
 
         botonReporteReal = new BotonSecundario();
         botonReporteReal.setVariante(BotonSecundario.Variante.PELIGRO);
         botonReporteReal.setTexto("Generar Reporte PDF");
-        botonReporteReal.setIcono(Icono.PDF);
+        botonReporteReal.setIcono(IconoSemantico.REPORTE_PDF.icono());
         tarjetaTituloReal.setAccion(botonReporteReal.obtenerPanel());
 
         TarjetaTitulo = tarjetaTituloReal.obtenerPanel();
     }
 
-    /**
-     * Formulario de "Datos de la Categoria": ID (autogenerado, solo
-     * lectura) + Descripcion + Guardar/Borrar/Limpiar, igual
-     * distribucion que la captura de referencia adjunta.
-     */
     private void armarTarjetaCategoria() {
         tarjetaCategoriaReal = new Tarjeta();
         tarjetaCategoriaReal.setTitulo("Datos de la Categoría");
@@ -117,14 +84,14 @@ public class TabCategorias implements CambioTemaListener {
 
         botonGuardarReal = new BotonPrimario();
         botonGuardarReal.setTexto("Guardar");
-        botonGuardarReal.setIcono(Icono.GUARDAR);
+        botonGuardarReal.setIcono(IconoSemantico.GUARDAR.icono());
 
         botonBorrarReal = new BotonIcono();
         botonBorrarReal.setVariante(BotonIcono.Variante.PELIGRO);
-        botonBorrarReal.setIcono(Icono.BASURA);
+        botonBorrarReal.setIcono(IconoSemantico.BORRAR.icono());
 
         botonLimpiarReal = new BotonIcono();
-        botonLimpiarReal.setIcono(Icono.BORRADOR);
+        botonLimpiarReal.setIcono(IconoSemantico.LIMPIAR.icono());
 
         JPanel contenido = tarjetaCategoriaReal.obtenerPanelContenido();
         contenido.setLayout(new GridBagLayout());
@@ -142,14 +109,11 @@ public class TabCategorias implements CambioTemaListener {
         restricciones.insets = new Insets(0, 0, 16, 0);
         contenido.add(campoDescripcionReal.obtenerPanel(), restricciones);
 
-        // Fila de botones: Guardar ocupa el espacio disponible, Borrar
-        // y Limpiar quedan como iconos compactos a la derecha (igual que
-        // en la captura de referencia).
         JPanel filaBotones = new JPanel(new BorderLayout(8, 0));
         filaBotones.setOpaque(false);
         filaBotones.add(botonGuardarReal.obtenerPanel(), BorderLayout.CENTER);
 
-        JPanel botonesSecundarios = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 8, 0));
+        JPanel botonesSecundarios = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         botonesSecundarios.setOpaque(false);
         botonesSecundarios.add(botonBorrarReal.obtenerPanel());
         botonesSecundarios.add(botonLimpiarReal.obtenerPanel());
@@ -163,17 +127,12 @@ public class TabCategorias implements CambioTemaListener {
         TarjetaCategoria = tarjetaCategoriaReal.obtenerPanel();
     }
 
-    /**
-     * Buscador + listado de categorias existentes, con columnas Id,
-     * Descripcion y Acciones (icono de editar), igual que la captura de
-     * referencia.
-     */
     private void armarTarjetaTabla() {
         tarjetaTablaReal = new Tarjeta();
 
         campoBuscarReal = new CampoTexto();
         campoBuscarReal.setPlaceholder("Buscar categorías por descripción...");
-        campoBuscarReal.setIcono(Icono.BUSCAR);
+        campoBuscarReal.setIcono(IconoSemantico.BUSCAR.icono());
 
         tablaReal = new TablaDatos();
         tablaReal.setColumnas(List.of("ID", "DESCRIPCIÓN", "ACCIONES"));
@@ -206,12 +165,6 @@ public class TabCategorias implements CambioTemaListener {
         campoDescripcionReal.mostrarValor(descripcion);
     }
 
-    /**
-     * Limpia el formulario para el estado "nueva categoria": ID vacio
-     * (se autogenera en CategoriaService al guardar) y descripcion
-     * vacia. CategoriaControl llama a esto al presionar Limpiar o justo
-     * despues de guardar con exito.
-     */
     public void limpiarFormulario() {
         mostrarId("");
         mostrarDescripcion("");
@@ -221,14 +174,7 @@ public class TabCategorias implements CambioTemaListener {
     // Tabla de categorias
     // ------------------------------------------------------------------
 
-    /**
-     * Reemplaza las filas de la tabla con el listado recibido.
-     * CategoriaControl arma cada fila como [id, descripcion, ""] (la
-     * tercera columna, ACCIONES, se muestra vacia porque TablaDatos no
-     * soporta botones embebidos por celda; la fila completa es
-     * clickeable via alSeleccionarFila, igual de funcional que el
-     * icono de editar de la captura de referencia).
-     */
+    // La columna ACCIONES va vacia: TablaDatos no soporta botones embebidos, la fila completa es clickeable via alSeleccionarFila.
     public void mostrarCategorias(List<List<Object>> filas) {
         tablaReal.setFilas(filas);
     }
@@ -238,12 +184,12 @@ public class TabCategorias implements CambioTemaListener {
     }
 
     // ------------------------------------------------------------------
-    // Enganches de eventos: el control decide que hacer, esta vista solo
-    // expone el punto de enganche (mismo patron que LoginPanel/PanelCuenta).
+    // Enganches de eventos
     // ------------------------------------------------------------------
 
     public void alGuardar(Runnable accion) {
         botonGuardarReal.alHacerClick(accion);
+        campoDescripcionReal.alConfirmar(accion);
     }
 
     public void alBorrar(Runnable accion) {
@@ -258,39 +204,27 @@ public class TabCategorias implements CambioTemaListener {
         botonReporteReal.alHacerClick(accion);
     }
 
-    /**
-     * CategoriaControl decide si busca en cada tecla o con un pequeno
-     * debounce; esta vista solo notifica cambios en el texto del campo
-     * de busqueda via un DocumentListener simple.
-     */
     public void alBuscar(Runnable accion) {
         campoBuscarReal.obtenerCampoTexto().getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+                new DocumentListener() {
                     @Override
-                    public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                    public void insertUpdate(DocumentEvent e) {
                         accion.run();
                     }
 
                     @Override
-                    public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                    public void removeUpdate(DocumentEvent e) {
                         accion.run();
                     }
 
                     @Override
-                    public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                    public void changedUpdate(DocumentEvent e) {
                         accion.run();
                     }
                 }
         );
     }
 
-    /**
-     * Notifica que fila del listado se selecciono (por indice del
-     * modelo, ya resuelto contra el orden/filtro de TablaDatos), para
-     * que CategoriaControl cargue esa categoria en el formulario de
-     * arriba, igual que hace click en el icono de editar en la captura
-     * de referencia.
-     */
     public void alSeleccionarFila(IntConsumer accion) {
         tablaReal.alHacerClickFila(accion);
     }
@@ -305,9 +239,8 @@ public class TabCategorias implements CambioTemaListener {
     }
 
     private void aplicarTema(Tema tema) {
-        if (TabCategorias == null) {
-            return;
-        }
+        if (TabCategorias == null) return;
+
         TabCategorias.setOpaque(true);
         TabCategorias.setBackground(tema.colorFondoVentana());
         TabCategorias.setBorder(new EmptyBorder(0, 0, 0, 0));

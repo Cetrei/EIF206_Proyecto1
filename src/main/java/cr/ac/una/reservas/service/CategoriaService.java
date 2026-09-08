@@ -8,11 +8,7 @@ import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Ver docs/02_service.md.
- */
 public class CategoriaService {
-
     private static final String PREFIJO_ID = "CAT-";
     private static final int LONGITUD_CONSECUTIVO = 6;
 
@@ -37,11 +33,6 @@ public class CategoriaService {
         return categoriaDao.listarTodos();
     }
 
-    /**
-     * El id se autogenera con formato CAT-000001 (ver docs/01_model.md,
-     * siguiendo el ejemplo del enunciado), como el siguiente consecutivo
-     * disponible segun la cantidad de categorias existentes.
-     */
     public Categoria crear(String descripcion) {
         if (descripcion == null || descripcion.isBlank()) {
             throw new ReglaDeNegocioException("La descripción de la categoría no puede estar vacía.");
@@ -59,10 +50,6 @@ public class CategoriaService {
         categoriaDao.guardar(categoria);
     }
 
-    /**
-     * @throws ReglaDeNegocioException si existen recursos asociados a
-     * esta categoria, para no dejar recursos huerfanos.
-     */
     public void eliminar(String id) {
         if (!recursoDao.listarPorCategoria(id).isEmpty()) {
             throw new ReglaDeNegocioException(
@@ -77,9 +64,7 @@ public class CategoriaService {
         String consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);
         String idPropuesto = PREFIJO_ID + consecutivoFormateado;
 
-        // Por si el consecutivo por cantidad ya esta en uso (por ejemplo,
-        // se elimino una categoria intermedia), se busca el siguiente
-        // libre en vez de arriesgarse a un id duplicado.
+        // Por si el consecutivo por cantidad ya esta en uso
         while (categoriaDao.buscarPorId(idPropuesto).isPresent()) {
             siguienteConsecutivo++;
             consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);

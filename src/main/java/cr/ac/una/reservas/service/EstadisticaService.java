@@ -17,11 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Ver docs/02_service.md.
- */
 public class EstadisticaService {
-
     private final ReservaDao reservaDao;
     private final RecursoDao recursoDao;
     private final CategoriaDao categoriaDao;
@@ -37,14 +33,6 @@ public class EstadisticaService {
         this.categoriaDao = categoriaDao;
     }
 
-    /**
-     * Por cada categoria, cuantas veces se reservo un recurso de esa
-     * categoria en el rango [desde, hasta] (ambos inclusive). Solo
-     * cuenta reservas activas o canceladas por igual, ya que el
-     * enunciado pide "recursos reservados", no "recursos actualmente
-     * activos"; una reserva cancelada igual ocupo el recurso en algun
-     * momento del periodo consultado.
-     */
     public List<EstadisticaCategoria> recursosReservadosEnPeriodo(LocalDate desde, LocalDate hasta) {
         validarRango(desde, hasta);
 
@@ -77,11 +65,6 @@ public class EstadisticaService {
         return resultado;
     }
 
-    /**
-     * Por cada semana (identificada por su lunes) dentro del rango
-     * [desde, hasta], cuantas actividades (reservas) hay programadas
-     * en esa semana.
-     */
     public List<EstadisticaSemana> actividadesPorSemanaEnPeriodo(LocalDate desde, LocalDate hasta) {
         validarRango(desde, hasta);
 

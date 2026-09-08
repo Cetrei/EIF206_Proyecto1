@@ -1,0 +1,14 @@
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/model/ReservaTest.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/persistence/FuncionarioDaoXmlIT.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/AdministradorDaoFalso.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/AutenticacionServiceTest.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/CategoriaDaoFalso.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/CategoriaServiceTest.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/DaoFalso.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/EstadisticaServiceTest.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/FuncionarioDaoFalso.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/FuncionarioServiceTest.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/RecursoDaoFalso.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/RecursoServiceTest.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/ReservaDaoFalso.java
+/home/cetrei/University/PrograIII/EIF206_Proyecto1/src/test/java/cr/ac/una/reservas/service/ReservaServiceTest.java

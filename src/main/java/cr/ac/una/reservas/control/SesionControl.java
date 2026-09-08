@@ -3,12 +3,6 @@ package cr.ac.una.reservas.control;
 import cr.ac.una.reservas.model.RolUsuario;
 import cr.ac.una.reservas.model.Usuario;
 
-/**
- * Guarda el Usuario actualmente logueado y su rol (ver docs/06_control_presentation.md).
- * Los demas controladores consultan aqui para saber si el usuario actual
- * tiene permiso de ejecutar cierta accion, por ejemplo que solo un
- * administrador pueda entrar a Funcionarios, Categorias o Recursos.
- */
 public final class SesionControl {
 
     private static final SesionControl INSTANCIA = new SesionControl();

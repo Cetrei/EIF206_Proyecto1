@@ -3,7 +3,7 @@ package cr.ac.una.reservas.presentation;
 import cr.ac.una.reservas.presentation.componentes.BotonPrimario;
 import cr.ac.una.reservas.presentation.componentes.BotonSecundario;
 import cr.ac.una.reservas.presentation.componentes.CampoTexto;
-import cr.ac.una.reservas.presentation.iconos.Icono;
+import cr.ac.una.reservas.presentation.iconos.IconoSemantico;
 import cr.ac.una.reservas.presentation.iconos.IconoAplicador;
 import cr.ac.una.reservas.presentation.tema.CambioTemaListener;
 import cr.ac.una.reservas.presentation.tema.GestorTema;
@@ -17,8 +17,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 public class LoginPanel implements CambioTemaListener {
-
     private static final int RADIO_BORDE_TARJETA = 16;
+    private boolean accionesConfiguradas = false;
 
     private JPanel VentanaPrincipal;
     private JPanel pnlTarjeta;
@@ -78,28 +78,23 @@ public class LoginPanel implements CambioTemaListener {
 
         campoIdReal = new CampoTexto();
         campoIdReal.setEtiqueta("IDENTIFICACIÓN (ID)");
-        campoIdReal.setIcono(Icono.USUARIO);
+        campoIdReal.setIcono(IconoSemantico.USUARIO.icono());
         txtID = campoIdReal.obtenerPanel();
 
         campoContrasenaReal = new CampoTexto(true);
         campoContrasenaReal.setEtiqueta("CONTRASEÑA");
-        campoContrasenaReal.setIcono(Icono.CANDADO);
+        campoContrasenaReal.setIcono(IconoSemantico.CONTRASENA.icono());
         txtContrasena = campoContrasenaReal.obtenerPanel();
     }
 
-    /**
-     * Registra la accion a ejecutar cuando se hace click en Ingresar.
-     * El controlador (LoginControl) es quien decide que pasa al hacer click,
-     * este panel solo expone el enganche.
-     */
+    // Enter en el campo de contrasena dispara la misma accion que el boton Ingresar.
     public void alIngresar(Runnable accion) {
+        if (accionesConfiguradas) return;
         botonIngresarReal.alHacerClick(accion);
+        campoContrasenaReal.alConfirmar(accion);
+        accionesConfiguradas = true;
     }
 
-    /**
-     * Registra la accion a ejecutar cuando se hace click en "Cambiar contraseña".
-     * El controlador decide que hacer (p. ej. abrir el popup de cambio de clave).
-     */
     public void alCambiarClave(Runnable accion) {
         botonCambiarClaveReal.alHacerClick(accion);
     }
@@ -127,7 +122,7 @@ public class LoginPanel implements CambioTemaListener {
         pnlTarjeta.setBackground(tema.colorFondoTarjeta());
         pnlTarjeta.repaint();
 
-        IconoAplicador.aplicar(iconTitulo, Icono.CALENDARIO, 32f, tema.colorPrimario());
+        IconoAplicador.aplicar(iconTitulo, IconoSemantico.LOGO_APP.icono(), 32f, tema.colorPrimario());
 
         lblTitulo.setForeground(tema.colorTexto());
         lblTitulo.setFont(tema.fuenteTitulo());

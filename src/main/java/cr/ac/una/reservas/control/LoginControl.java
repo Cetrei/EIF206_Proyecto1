@@ -20,15 +20,6 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 
-/**
- * Controlador de la pantalla de Login (ver docs/06_control_presentation.md).
- * Deliberadamente delgado: toma el evento del boton Ingresar, valida que
- * los campos minimos esten presentes, delega la autenticacion real a
- * AutenticacionService y actualiza SesionControl o muestra el error.
- *
- * No debe existir logica de negocio (verificar la clave, etc.) aqui,
- * eso vive en service.
- */
 public class LoginControl {
 
     private final LoginPanel vista;
@@ -39,8 +30,7 @@ public class LoginControl {
         this(vista, ventanaPropietaria, new AutenticacionService());
     }
 
-    // Constructor para pruebas: permite inyectar un AutenticacionService
-    // construido con Dao falsos en vez del real de DaoFactory.
+    // Constructor para pruebas
     public LoginControl(LoginPanel vista, Frame ventanaPropietaria, AutenticacionService autenticacionService) {
         this.vista = vista;
         this.ventanaPropietaria = ventanaPropietaria;
@@ -53,9 +43,6 @@ public class LoginControl {
         String id = vista.obtenerId();
         String clave = vista.obtenerContrasena();
 
-        // Validacion de formato basico (control), segun docs/07_convenciones.md:
-        // que los campos obligatorios no esten vacios. La validacion de la
-        // regla de negocio (credenciales correctas) vive en service.
         if (id == null || id.isBlank() || clave == null || clave.isBlank()) {
             mostrarError("Debe ingresar el ID y la contraseña.");
             return;
@@ -70,34 +57,13 @@ public class LoginControl {
         }
     }
 
-    /**
-     * Reemplaza el contenido de la ventana actual por VentanaPrincipal
-     * (encabezado + pestanas), ya con la sesion iniciada en
-     * SesionControl. Requiere que ventanaPropietaria sea el JFrame raiz
-     * de la aplicacion (como lo arma Main), no un dialogo secundario.
-     */
     private void navegarAVentanaPrincipal() {
         if (ventanaPropietaria instanceof JFrame) {
             VentanaPrincipalControl.mostrarEn((JFrame) ventanaPropietaria);
         }
     }
 
-    /**
-     * Dialogo de "Cambiar contraseña" desde la pantalla de Login (antes
-     * de iniciar sesion), por lo que a diferencia de
-     * VentanaPrincipalControl.abrirCambiarContrasenaPropia (que ya
-     * conoce al usuario logueado via SesionControl) aqui hace falta
-     * pedir tambien el ID. Delega la regla de negocio real en
-     * AutenticacionService.cambiarClave, que ya existe (ver
-     * docs/02_service.md); este metodo solo arma el formulario con los
-     * mismos componentes de diseno que el resto de la app (Tarjeta,
-     * CampoTexto, BotonPrimario), igual que el dialogo equivalente ya
-     * construido en VentanaPrincipalControl.
-     */
     private void abrirCambioClave() {
-        Tarjeta tarjeta = new Tarjeta();
-        tarjeta.setTitulo("Cambiar contraseña");
-
         CampoTexto campoId = new CampoTexto(false);
         campoId.setEtiqueta("ID");
         campoId.setIcono(Icono.USUARIO);
@@ -114,66 +80,74 @@ public class LoginControl {
         botonConfirmar.setTexto("Confirmar");
         botonConfirmar.setIcono(Icono.CHECK);
 
+        Tarjeta tarjeta = armarTarjetaCambioClave(campoId, campoClaveActual, campoClaveNueva, botonConfirmar);
+        JDialog dialogo = armarDialogoCambioClave(tarjeta);
+
+        botonConfirmar.alHacerClick(() ->
+                confirmarCambioClave(dialogo, campoId, campoClaveActual, campoClaveNueva));
+
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(ventanaPropietaria);
+        dialogo.setVisible(true);
+    }
+
+    private Tarjeta armarTarjetaCambioClave(
+            CampoTexto campoId, CampoTexto campoClaveActual, CampoTexto campoClaveNueva, BotonPrimario botonConfirmar
+    ) {
+        Tarjeta tarjeta = new Tarjeta();
+        tarjeta.setTitulo("Cambiar contraseña");
+
         JPanel contenido = tarjeta.obtenerPanelContenido();
         contenido.setLayout(new GridLayout(4, 1, 0, 10));
         contenido.add(campoId.obtenerPanel());
         contenido.add(campoClaveActual.obtenerPanel());
         contenido.add(campoClaveNueva.obtenerPanel());
         contenido.add(botonConfirmar.obtenerPanel());
+        return tarjeta;
+    }
 
+    // Sin setUndecorated se ve la barra de titulo nativa del SO, ajena al tema oscuro/claro de la app.
+    private JDialog armarDialogoCambioClave(Tarjeta tarjeta) {
         JDialog dialogo = new JDialog(ventanaPropietaria, "Cambiar contraseña", true);
-        // Igual que el dialogo de "Mi Perfil" (ver
-        // VentanaPrincipalControl.abrirMiCuenta): sin setUndecorated,
-        // el dialogo conserva la barra de titulo nativa del sistema
-        // operativo, que se ve como un marco blanco grueso sin
-        // relacion con el tema oscuro/claro de la app, y sin boton de
-        // cerrar propio del sistema de diseno.
         dialogo.setUndecorated(true);
         dialogo.setResizable(false);
-        dialogo.getContentPane().setBackground(GestorTema.obtenerInstancia().temaActivo().colorFondoVentana());
 
         BarraSuperior barraSuperior = new BarraSuperior();
         barraSuperior.alCerrar(dialogo::dispose);
 
         JPanel envoltorio = new JPanel(new BorderLayout());
-        envoltorio.setOpaque(false);
+        envoltorio.setOpaque(true);
+        envoltorio.setBackground(GestorTema.obtenerInstancia().temaActivo().colorFondoVentana());
         envoltorio.setBorder(new EmptyBorder(0, 16, 16, 16));
         envoltorio.add(barraSuperior.obtenerPanel(), BorderLayout.NORTH);
         envoltorio.add(tarjeta.obtenerPanel(), BorderLayout.CENTER);
         dialogo.setContentPane(envoltorio);
+        return dialogo;
+    }
 
-        botonConfirmar.alHacerClick(() -> {
-            String id = campoId.obtenerTexto();
-            if (id == null || id.isBlank()) {
-                Popup.mostrarAviso(
-                        ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo cambiar la contraseña",
-                        "Debe ingresar el ID del usuario."
-                );
-                return;
-            }
-            try {
-                autenticacionService.cambiarClave(
-                        id,
-                        campoClaveActual.obtenerTexto(),
-                        campoClaveNueva.obtenerTexto()
-                );
-                dialogo.dispose();
-                Popup.mostrarAviso(
-                        ventanaPropietaria,
-                        Popup.Tipo.CONFIRMACION,
-                        "Cambiar contraseña",
-                        "La contraseña se actualizó correctamente."
-                );
-            } catch (ReservaAppException excepcion) {
-                Popup.mostrarAviso(
-                        ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo cambiar la contraseña", excepcion.getMessage()
-                );
-            }
-        });
-
-        dialogo.pack();
-        dialogo.setLocationRelativeTo(ventanaPropietaria);
-        dialogo.setVisible(true);
+    private void confirmarCambioClave(
+            JDialog dialogo, CampoTexto campoId, CampoTexto campoClaveActual, CampoTexto campoClaveNueva
+    ) {
+        String id = campoId.obtenerTexto();
+        if (id == null || id.isBlank()) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo cambiar la contraseña",
+                    "Debe ingresar el ID del usuario."
+            );
+            return;
+        }
+        try {
+            autenticacionService.cambiarClave(id, campoClaveActual.obtenerTexto(), campoClaveNueva.obtenerTexto());
+            dialogo.dispose();
+            Popup.mostrarAviso(
+                    ventanaPropietaria, Popup.Tipo.CONFIRMACION, "Cambiar contraseña",
+                    "La contraseña se actualizó correctamente."
+            );
+        } catch (ReservaAppException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo cambiar la contraseña", excepcion.getMessage()
+            );
+        }
     }
 
     private void mostrarError(String mensaje) {

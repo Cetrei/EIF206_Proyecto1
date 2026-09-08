@@ -1,16 +1,8 @@
 package cr.ac.una.reservas.presentation.componentes;
 
 import java.awt.Color;
+import java.util.List;
 
-/**
- * Datos que una MatrizFillStrategy entrega para una celda especifica de
- * MatrizPanel: el texto principal y secundario a mostrar (por ejemplo
- * nombre de la actividad y funcionario a cargo) y el color de fondo de
- * la celda, usado por CeldaMatriz para pintarse.
- *
- * Es un objeto de datos simple (sin logica de negocio), pensado para
- * que cada estrategia lo arme a partir de lo que le devuelva service.
- */
 public class DatosCelda {
 
     private final String textoPrincipal;
@@ -21,6 +13,32 @@ public class DatosCelda {
         this.textoPrincipal = textoPrincipal;
         this.textoSecundario = textoSecundario;
         this.color = color;
+    }
+
+    /**
+     * Construye una celda con varias entradas apiladas
+     * Como varias actividades programadas en la misma franja horaria del mismo dia
+     */
+    public static DatosCelda apilada(List<String[]> lineas, Color color) {
+        StringBuilder principal = new StringBuilder("<html>");
+        StringBuilder secundario = new StringBuilder("<html>");
+        for (int i = 0; i < lineas.size(); i++) {
+            if (i > 0) {
+                principal.append("<br>");
+                secundario.append("<br>");
+            }
+            String[] linea = lineas.get(i);
+            principal.append(escaparHtml(linea[0]));
+            secundario.append(linea.length > 1 && linea[1] != null ? escaparHtml(linea[1]) : "");
+        }
+        principal.append("</html>");
+        secundario.append("</html>");
+        return new DatosCelda(principal.toString(), secundario.toString(), color);
+    }
+
+    private static String escaparHtml(String texto) {
+        if (texto == null) return "";
+        return texto.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
     }
 
     public String getTextoPrincipal() {

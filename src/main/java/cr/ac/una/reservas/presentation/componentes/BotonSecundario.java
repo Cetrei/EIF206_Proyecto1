@@ -18,7 +18,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class BotonSecundario implements CambioTemaListener {
-
     public enum Variante {
         NEUTRO,
         PELIGRO
@@ -62,11 +61,6 @@ public class BotonSecundario implements CambioTemaListener {
         btnPrimario.setContentAreaFilled(false);
         btnPrimario.setFocusPainted(false);
         btnPrimario.setBorderPainted(false);
-        // IMPORTANTE: no usar un EmptyBorder de 0 (ver BotonPrimario
-        // para la explicacion completa). Se deja un padding igual de
-        // generoso, con un poco mas de aire en los costados para que
-        // el texto no quede pegado al trazo dibujado a mano
-        // (drawRoundRect) del borde de este boton.
         btnPrimario.setBorder(new javax.swing.border.EmptyBorder(8, 18, 8, 18));
         btnPrimario.setFocusable(false);
         btnPrimario.setOpaque(false);

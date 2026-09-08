@@ -39,18 +39,6 @@ public final class GestorTema {
 
     /**
      * Sobreescribe las claves de UIManager que Swing usa para pintar
-     * el "cromo" que ningun componente propio del sistema de diseno
-     * cubre todavia: el borde del JTabbedPane y el fondo/borde de cada
-     * pestana (activa e inactivas). Los botones (BotonPrimario,
-     * BotonSecundario, BotonIcono) ya se pintan a mano y no dependen
-     * de esto; el JTabbedPane si usa el Look and Feel por defecto
-     * (Metal), que no respeta setBackground/setForeground para el area
-     * de las pestanas, de ahi que se viera con bordes grises sin
-     * relacion con el tema oscuro/claro.
-     * <p>
-     * Debe llamarse una vez al inicio (ver Main.iniciar) y de nuevo
-     * cada vez que cambia el tema, ANTES de reconstruir/repintar la UI
-     * que use JTabbedPane, para que tome los valores nuevos.
      */
     public static void aplicarUIManager(Tema tema) {
         UIManager.put("TabbedPane.contentAreaColor", tema.colorFondoVentana());
@@ -67,19 +55,11 @@ public final class GestorTema {
         UIManager.put("TabbedPane.focus", tema.colorPrimario());
         UIManager.put("TabbedPane.tabAreaBackground", tema.colorFondoVentana());
         UIManager.put("TabbedPane.tabsOverlapBorder", false);
-        // Insets mas bajos que el default de Metal, para que las
-        // pestanas se vean delgadas como en el prototipo (ver captura
-        // de referencia "Funcionarios (Administrador)" del enunciado)
-        // en vez de infladas verticalmente.
+        // Insets mas bajos que el default de Metal, para que las pestanas se vean delgadas
         UIManager.put("TabbedPane.tabInsets", new java.awt.Insets(5, 12, 5, 12));
         UIManager.put("TabbedPane.contentBorderInsets", new java.awt.Insets(2, 0, 0, 0));
         UIManager.put("TabbedPane.font", tema.fuenteTexto());
 
-        // JScrollBar y JTable/JViewport tampoco tienen un componente
-        // propio en el sistema de diseno que los pinte a mano (a
-        // diferencia de los botones): sin esto, el thumb/track del
-        // scroll y el borde de encabezado de tabla quedan con el gris
-        // claro/blanco por defecto de Metal, sin relacion con el tema.
         UIManager.put("ScrollBar.thumb", tema.colorSuperficie());
         UIManager.put("ScrollBar.thumbDarkShadow", tema.colorSuperficie());
         UIManager.put("ScrollBar.thumbHighlight", tema.colorSuperficie());
@@ -100,12 +80,7 @@ public final class GestorTema {
 
         UIManager.put("Viewport.background", tema.colorFondoVentana());
 
-        // Metal (el Look and Feel por defecto cuando no se llama a
-        // UIManager.setLookAndFeel) tambien deja un borde propio, de 1
-        // pixel gris, en JPanel/JButton via "Panel.border"/"Button.border"
-        // en ciertas combinaciones; se limpia aqui para que el unico
-        // borde visible sea el que cada componente del sistema de
-        // diseno pinta a mano.
+        // Evitaa que los looks and feel defaults dejen bordes que arruinen la interfaaz
         UIManager.put("Panel.border", new EmptyBorder(0, 0, 0, 0));
     }
 }

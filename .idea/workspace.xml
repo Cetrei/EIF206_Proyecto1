@@ -4,49 +4,102 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="258fb875-f6e8-4177-9403-1e318edf6f73" name="Changes" comment="docs: otra referencia al dominio antiguo removida">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/LoginPanel.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/LoginPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabCategorias.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabCategorias.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/VentanaPrincipal.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/VentanaPrincipal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BarraSuperior.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BarraSuperior.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonPrimario.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonPrimario.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonSecundario.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonSecundario.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/CampoTexto.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/CampoTexto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/CeldaMatriz.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/CeldaMatriz.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/MatrizPanel.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/MatrizPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/PanelCuenta.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/PanelCuenta.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Tarjeta.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Tarjeta.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fonts/fa-solid-900.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EIF206_Proyecto1.iml" beforeDir="false" />
+    <list default="true" id="258fb875-f6e8-4177-9403-1e318edf6f73" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabActividades.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabActividades.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabCalendarizacion.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabCalendarizacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabEstadisticas.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabEstadisticas.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabRecursos.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabRecursos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabReservas.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabReservas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/06_control_presentation.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/06_control_presentation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/ai/DatosReservaExtraidos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/ai/DatosReservaExtraidos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Administrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/ai/ExtractorReserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/ai/ExtractorReserva.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/CategoriaControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/CategoriaControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/LoginControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/LoginControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/SesionControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/SesionControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/VentanaPrincipalControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/control/VentanaPrincipalControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Funcionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Funcionario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/DatosNuevaReserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/DatosNuevaReserva.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/EstadisticaCategoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/EstadisticaCategoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/EstadisticaSemana.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/EstadisticaSemana.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/LocalDateAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/LocalDateAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/LocalTimeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/LocalTimeAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Recurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Recurso.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Reserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Reserva.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/cr/ac/una/reservas/model/ReservaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/cr/ac/una/reservas/model/ReservaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/cr/ac/una/reservas/persistence/FuncionarioDaoXmlIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/cr/ac/una/reservas/persistence/FuncionarioDaoXmlIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/ResultadoReserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/model/ResultadoReserva.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/AdministradorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/AdministradorDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/CategoriaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/CategoriaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/Dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/Dao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/FuncionarioDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/FuncionarioDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/RecursoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/RecursoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/ReservaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/persistence/ReservaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/LoginPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabCategorias.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/TabCategorias.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/VentanaPrincipal.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/VentanaPrincipal.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/VentanaPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/VentanaPrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BarraSuperior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BarraSuperior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonIcono.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonIcono.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonPrimario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonPrimario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonSecundario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/BotonSecundario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/CampoTexto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/CampoTexto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/DatosCelda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/DatosCelda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/GraficoBarras.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/GraficoBarras.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/MatrizFillStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/MatrizFillStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/MatrizPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/MatrizPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/PanelCuenta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/PanelCuenta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Popup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Popup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/TablaDatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/TablaDatos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Tarjeta.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Tarjeta.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Tarjeta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/componentes/Tarjeta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/GestorTema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/GestorTema.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/Tema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/Tema.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/TemaClaro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/TemaClaro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/TemaOscuro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/presentation/tema/TemaOscuro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/AdministradorDaoEnMemoriaTemporal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/AdministradorDaoEnMemoriaTemporal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/AutenticacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/AutenticacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/CategoriaDaoEnMemoriaTemporal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/CategoriaDaoEnMemoriaTemporal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/CategoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/CategoriaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/DaoEnMemoriaTemporal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/DaoEnMemoriaTemporal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/DaoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/DaoFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/EstadisticaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/EstadisticaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/FuncionarioDaoEnMemoriaTemporal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/FuncionarioDaoEnMemoriaTemporal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/FuncionarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/FuncionarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/RecursoDaoEnMemoriaTemporal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/RecursoDaoEnMemoriaTemporal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/RecursoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/RecursoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/ReservaDaoEnMemoriaTemporal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/ReservaDaoEnMemoriaTemporal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/ReservaObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/ReservaObserver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/ReservaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/service/ReservaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/util/PersistenciaException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/util/PersistenciaException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/util/ReglaDeNegocioException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/util/ReglaDeNegocioException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/util/ReservaAppException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/util/ReservaAppException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/control/CategoriaControl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/control/CategoriaControl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/control/LoginControl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/control/LoginControl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/control/VentanaPrincipalControl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/control/VentanaPrincipalControl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/model/Categoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/model/Categoria.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/LoginPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/LoginPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/TabCategorias$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/TabCategorias$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/TabCategorias.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/TabCategorias.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/VentanaPrincipal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/VentanaPrincipal.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/BarraSuperior.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/BarraSuperior.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/BotonIcono.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/BotonIcono.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/CampoTexto$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/CampoTexto$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/CampoTexto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/CampoTexto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/DatosCelda.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/DatosCelda.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/MatrizPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/MatrizPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/MatrizPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/MatrizPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/PanelCuenta.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/PanelCuenta.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos$EncabezadoOrdenableRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos$EncabezadoOrdenableRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/TablaDatos.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/Tarjeta.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/presentation/componentes/Tarjeta.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/service/RecursoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/service/RecursoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/service/ReservaService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cr/ac/una/reservas/service/ReservaService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/cr/ac/una/reservas/persistence/FuncionarioDaoXmlIT.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/cr/ac/una/reservas/persistence/FuncionarioDaoXmlIT.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +146,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH&quot;: &quot;285&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
@@ -155,6 +209,8 @@
     <MESSAGE value="fix: importaciones corregidas para el nuevo dominio" />
     <MESSAGE value="chore: referencias al viejo dominio removidas" />
     <MESSAGE value="docs: otra referencia al dominio antiguo removida" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: otra referencia al dominio antiguo removida" />
+    <MESSAGE value="feat: vista base creada con multiples temas" />
+    <MESSAGE value="feat: servicios y DAOs, controladores y vistas depreciadas" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: servicios y DAOs, controladores y vistas depreciadas" />
   </component>
 </project>

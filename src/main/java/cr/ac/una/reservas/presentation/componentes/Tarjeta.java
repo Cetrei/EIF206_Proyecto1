@@ -30,18 +30,8 @@ public class Tarjeta implements CambioTemaListener {
     public Tarjeta() {
         GestorTema.obtenerInstancia().agregarListener(this);
         pnlEncabezado.setOpaque(false);
-        // Se fuerza aqui, no solo dentro de setTitulo/setSubtitulo: si
-        // una tarjeta llama setTitulo pero nunca setSubtitulo (ver
-        // TabCategorias.armarTarjetaCategoria, que no tiene subtitulo),
-        // lblSubtituloEncabezado se queda con el texto y la alineacion
-        // de diseno del .form sin pasar nunca por ese metodo.
         lblTituloEncabezado.setHorizontalAlignment(SwingConstants.LEFT);
         lblSubtituloEncabezado.setHorizontalAlignment(SwingConstants.LEFT);
-        // El .form trae "Subtitulo" como texto de diseno (para verse
-        // en el editor visual de IntelliJ); si una tarjeta llama
-        // setTitulo() pero nunca setSubtitulo() (ver TabCategorias,
-        // tarjeta "Datos de la Categoria", sin subtitulo), ese texto de
-        // diseno quedaria visible tal cual en la app.
         lblSubtituloEncabezado.setText("");
         aplicarTema(GestorTema.obtenerInstancia().temaActivo());
         pnlEncabezado.setVisible(false);
@@ -68,19 +58,10 @@ public class Tarjeta implements CambioTemaListener {
         pnlContenido.setOpaque(false);
     }
 
-    /**
-     * Activa el encabezado de la tarjeta (icono + titulo + subtitulo
-     * opcional). Si nunca se llama, la tarjeta se comporta como un
-     * contenedor simple, igual que antes de que existiera el encabezado.
-     */
+
     public void setTitulo(String titulo) {
         pnlEncabezado.setVisible(true);
         lblTituloEncabezado.setText(titulo);
-        // Con el encabezado en un grid de 3 columnas (icono, titulo,
-        // accion), cuando no hay accion la columna del titulo queda
-        // con espacio de sobra y JLabel lo centra por defecto en vez
-        // de dejarlo pegado a la izquierda como el resto del sistema
-        // de diseno; se fuerza explicitamente para no depender de eso.
         lblTituloEncabezado.setHorizontalAlignment(SwingConstants.LEFT);
     }
 
@@ -95,10 +76,6 @@ public class Tarjeta implements CambioTemaListener {
         IconoAplicador.aplicar(lblIconoEncabezado, icono, 17f, GestorTema.obtenerInstancia().temaActivo().colorPrimario());
     }
 
-    /**
-     * Coloca un componente de accion (por ejemplo un BotonSecundario de
-     * "Generar Reporte PDF") en la esquina superior derecha del encabezado.
-     */
     public void setAccion(JPanel panelAccion) {
         pnlEncabezado.setVisible(true);
         pnlAccionEncabezado.removeAll();
@@ -106,12 +83,6 @@ public class Tarjeta implements CambioTemaListener {
         pnlAccionEncabezado.revalidate();
     }
 
-    /**
-     * Panel donde cada vista agrega su propio contenido (una tabla, una
-     * matriz, un grafico, un formulario). Preferir este metodo sobre
-     * obtenerPanel() cuando la tarjeta usa encabezado, para no dibujar
-     * contenido encima del header.
-     */
     public JPanel obtenerPanelContenido() {
         return pnlContenido;
     }

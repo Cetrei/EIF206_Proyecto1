@@ -1,0 +1,15 @@
+cr/ac/una/reservas/service/CategoriaDaoFalso.class
+cr/ac/una/reservas/service/EstadisticaServiceTest.class
+cr/ac/una/reservas/service/ReservaServiceTest$ContadorEventosReserva.class
+cr/ac/una/reservas/service/ReservaDaoFalso.class
+cr/ac/una/reservas/service/FuncionarioDaoFalso.class
+cr/ac/una/reservas/service/RecursoDaoFalso.class
+cr/ac/una/reservas/service/DaoFalso.class
+cr/ac/una/reservas/service/FuncionarioServiceTest.class
+cr/ac/una/reservas/persistence/FuncionarioDaoXmlIT.class
+cr/ac/una/reservas/service/AdministradorDaoFalso.class
+cr/ac/una/reservas/service/AutenticacionServiceTest.class
+cr/ac/una/reservas/service/RecursoServiceTest.class
+cr/ac/una/reservas/service/ReservaServiceTest.class
+cr/ac/una/reservas/service/CategoriaServiceTest.class
+cr/ac/una/reservas/model/ReservaTest.class

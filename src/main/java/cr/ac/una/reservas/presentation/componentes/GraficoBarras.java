@@ -103,13 +103,9 @@ public class GraficoBarras implements CambioTemaListener {
     }
 
     private int indiceBarraEn(int x, int y) {
-        if (entradas.isEmpty()) {
-            return -1;
-        }
+        if (entradas.isEmpty()) return -1;
         Rectangle areaGrafico = areaGrafico();
-        if (!areaGrafico.contains(x, y)) {
-            return -1;
-        }
+        if (!areaGrafico.contains(x, y)) return -1;
         double anchoBarra = areaGrafico.width / (double) entradas.size();
         int indice = (int) ((x - areaGrafico.x) / anchoBarra);
         return indice >= 0 && indice < entradas.size() ? indice : -1;
@@ -160,9 +156,7 @@ public class GraficoBarras implements CambioTemaListener {
     }
 
     private void dibujarBarras(Graphics2D graficos2D, Rectangle areaGrafico, double valorMaximo) {
-        if (entradas.isEmpty()) {
-            return;
-        }
+        if (entradas.isEmpty()) return;
         double anchoBarra = areaGrafico.width / (double) entradas.size();
         double factorRelleno = 0.6;
 
@@ -197,9 +191,7 @@ public class GraficoBarras implements CambioTemaListener {
     }
 
     private void dibujarEtiquetasEje(Graphics2D graficos2D, Rectangle areaGrafico) {
-        if (entradas.isEmpty()) {
-            return;
-        }
+        if (entradas.isEmpty()) return;
         graficos2D.setFont(temaActual.fuenteTexto().deriveFont(11f));
         graficos2D.setColor(temaActual.colorTextoSecundario());
         FontMetrics metricas = graficos2D.getFontMetrics();

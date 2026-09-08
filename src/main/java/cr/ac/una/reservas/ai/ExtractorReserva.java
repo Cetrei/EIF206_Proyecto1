@@ -4,8 +4,6 @@ import cr.ac.una.reservas.model.Categoria;
 
 import java.util.List;
 
-// Implementaciones: GeminiExtractorReserva (API) y ReglasExtractorReserva
-// (respaldo sin red). El servicio que decide cual usar vive en este paquete.
 public interface ExtractorReserva {
 
     /**

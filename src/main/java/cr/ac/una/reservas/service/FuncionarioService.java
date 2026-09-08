@@ -9,11 +9,7 @@ import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Ver docs/02_service.md.
- */
 public class FuncionarioService {
-
     private final FuncionarioDao funcionarioDao;
     private final ReservaDao reservaDao;
 
@@ -39,11 +35,6 @@ public class FuncionarioService {
         return funcionarioDao.listarTodos();
     }
 
-    /**
-     * La clave inicial del funcionario queda igual a su id (ver
-     * docs/01_model.md y docs/02_service.md); el propio funcionario
-     * puede cambiarla despues con AutenticacionService.cambiarClave.
-     */
     public void crear(Funcionario funcionario) {
         if (funcionario.getId() == null || funcionario.getId().isBlank()) {
             throw new ReglaDeNegocioException("El funcionario debe tener un ID.");
@@ -62,11 +53,6 @@ public class FuncionarioService {
         funcionarioDao.guardar(funcionario);
     }
 
-    /**
-     * @throws ReglaDeNegocioException si el funcionario tiene reservas
-     * activas, para no dejar reservas huerfanas (ver docs/07_convenciones.md,
-     * "Manejo de errores").
-     */
     public void eliminar(String id) {
         boolean tieneReservaActiva = reservaDao.listarPorFuncionario(id).stream()
                 .anyMatch(reserva -> reserva.getEstado() == EstadoReserva.ACTIVA);

@@ -8,13 +8,7 @@ import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Ver docs/02_service.md. El id del recurso se ingresa manualmente
- * (por ejemplo un numero de activo, ver docs/01_model.md), no se
- * autogenera como el de Categoria.
- */
 public class RecursoService {
-
     private final RecursoDao recursoDao;
     private final CategoriaDao categoriaDao;
 
@@ -29,15 +23,31 @@ public class RecursoService {
     }
 
     public List<Recurso> listarPorCategoria(String idCategoria) {
-        return recursoDao.listarPorCategoria(idCategoria);
+        return resolverCategorias(recursoDao.listarPorCategoria(idCategoria));
     }
 
     public List<Recurso> buscarPorDescripcion(String texto) {
         String textoNormalizado = texto == null ? "" : texto.toLowerCase();
-        return recursoDao.listarTodos().stream()
+        List<Recurso> recursos = recursoDao.listarTodos().stream()
                 .filter(recurso -> recurso.getDescripcion() != null
                         && recurso.getDescripcion().toLowerCase().contains(textoNormalizado))
                 .collect(Collectors.toList());
+        return resolverCategorias(recursos);
+    }
+
+    public List<Recurso> listarTodos() {
+        return resolverCategorias(recursoDao.listarTodos());
+    }
+
+    public List<Recurso> filtrar(String idCategoria, String textoDescripcion) {
+        String textoNormalizado = textoDescripcion == null ? "" : textoDescripcion.toLowerCase();
+        boolean filtrarPorCategoria = idCategoria != null && !idCategoria.isBlank();
+        List<Recurso> recursos = recursoDao.listarTodos().stream()
+                .filter(recurso -> !filtrarPorCategoria || idCategoria.equals(recurso.getIdCategoria()))
+                .filter(recurso -> recurso.getDescripcion() != null
+                        && recurso.getDescripcion().toLowerCase().contains(textoNormalizado))
+                .collect(Collectors.toList());
+        return resolverCategorias(recursos);
     }
 
     public void crear(Recurso recurso) {
@@ -67,5 +77,12 @@ public class RecursoService {
         if (idCategoria == null || categoriaDao.buscarPorId(idCategoria).isEmpty()) {
             throw new ReglaDeNegocioException("Debe seleccionar una categoría válida para el recurso.");
         }
+    }
+
+    private List<Recurso> resolverCategorias(List<Recurso> recursos) {
+        for (Recurso recurso : recursos) {
+            categoriaDao.buscarPorId(recurso.getIdCategoria()).ifPresent(recurso::setCategoria);
+        }
+        return recursos;
     }
 }

@@ -9,13 +9,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Implementacion en memoria de Dao, usada unicamente en pruebas de
- * unidad de service (ver docs/07_convenciones.md, seccion Pruebas),
- * para no depender de la implementacion real de persistence
- * (Companero A, todavia no entregada) ni de archivos en disco. No es
- * parte del sistema, vive en src/test.
- */
 public class DaoFalso<T, ID> implements Dao<T, ID> {
 
     private final Map<ID, T> almacen = new LinkedHashMap<>();

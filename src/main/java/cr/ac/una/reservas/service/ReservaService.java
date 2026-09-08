@@ -14,18 +14,12 @@ import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-/**
- * Servicio central del proyecto (ver docs/02_service.md). Contiene la
- * regla de asignacion de recursos a una reserva: se verifica primero
- * disponibilidad de todas las categorias requeridas sin comprometer
- * ningun recurso, y solo si todas tienen disponibilidad se asignan los
- * recursos y se crea la reserva. Esto evita reservas parciales.
- */
 public class ReservaService {
-
     private static final String PREFIJO_ID = "RES-";
     private static final int LONGITUD_CONSECUTIVO = 6;
 
@@ -38,7 +32,6 @@ public class ReservaService {
         this(DaoFactory.obtenerReservaDao(), DaoFactory.obtenerRecursoDao(), DaoFactory.obtenerCategoriaDao());
     }
 
-    // Constructor para pruebas: permite inyectar Dao falsos.
     public ReservaService(ReservaDao reservaDao, RecursoDao recursoDao, CategoriaDao categoriaDao) {
         this.reservaDao = reservaDao;
         this.recursoDao = recursoDao;
@@ -49,20 +42,21 @@ public class ReservaService {
         return reservaDao.listarPorFuncionario(idFuncionario);
     }
 
-    /**
-     * Intenta crear una reserva a partir de los datos recibidos.
-     * Primero valida las reglas basicas de la propia reserva (fecha no
-     * en el pasado, hora fin posterior a hora inicio, al menos una
-     * categoria requerida), despues verifica disponibilidad de al
-     * menos un recurso libre de cada categoria requerida en ese rango
-     * de fecha/hora sin comprometer nada todavia. Si todas las
-     * categorias tienen disponibilidad, se asigna el primer recurso
-     * disponible de cada una y se crea la reserva con estado ACTIVA,
-     * notificando a los observadores. Si alguna categoria no tiene
-     * disponibilidad, devuelve un ResultadoReserva de fracaso con la
-     * lista de categorias que fallaron, sin crear ninguna reserva ni
-     * comprometer ningun recurso.
-     */
+    public List<Reserva> listarTodasOrdenadas() {
+        return reservaDao.listarTodos().stream()
+                .sorted(Comparator
+                        .comparing(Reserva::getFecha, Comparator.nullsLast(Comparator.naturalOrder()))
+                        .thenComparing(Reserva::getHoraInicio, Comparator.nullsLast(Comparator.naturalOrder())))
+                .collect(Collectors.toList());
+    }
+
+    public List<Reserva> listarReservasActivasEnFecha(LocalDate fecha) {
+        return reservaDao.listarTodos().stream()
+                .filter(reserva -> reserva.getEstado() == EstadoReserva.ACTIVA)
+                .filter(reserva -> fecha.equals(reserva.getFecha()))
+                .collect(Collectors.toList());
+    }
+
     public ResultadoReserva intentarReservar(DatosNuevaReserva datos) {
         validarDatosBasicos(datos);
 
@@ -86,7 +80,7 @@ public class ReservaService {
 
         Reserva reserva = new Reserva(datosConId(datos));
         reserva.setIdsRecursosAsignados(
-                recursosAAsignar.stream().map(Recurso::getId).collect(java.util.stream.Collectors.toList())
+                recursosAAsignar.stream().map(Recurso::getId).collect(Collectors.toList())
         );
         reservaDao.guardar(reserva);
 
@@ -94,11 +88,6 @@ public class ReservaService {
         return ResultadoReserva.exito(reserva);
     }
 
-    /**
-     * Libera todos los recursos asignados y cambia el estado a
-     * CANCELADA. Solo aplica a reservas futuras (ver enunciado); una
-     * reserva ya pasada o ya cancelada no puede cancelarse de nuevo.
-     */
     public void cancelarReserva(String idReserva) {
         Reserva reserva = reservaDao.buscarPorId(idReserva)
                 .orElseThrow(() -> new ReglaDeNegocioException("No existe una reserva con ese ID."));
@@ -157,10 +146,6 @@ public class ReservaService {
         }
     }
 
-    /**
-     * Primer recurso de la categoria dada que no tenga ninguna reserva
-     * activa cuyo rango de fecha/hora se solape con el solicitado.
-     */
     private Optional<Recurso> buscarPrimerRecursoDisponible(
             String idCategoria, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin
     ) {
@@ -169,7 +154,7 @@ public class ReservaService {
                 .filter(reserva -> reserva.getEstado() == EstadoReserva.ACTIVA)
                 .filter(reserva -> fecha.equals(reserva.getFecha()))
                 .filter(reserva -> seSolapan(horaInicio, horaFin, reserva.getHoraInicio(), reserva.getHoraFin()))
-                .collect(java.util.stream.Collectors.toList());
+                .collect(Collectors.toList());
 
         for (Recurso recurso : recursosDeLaCategoria) {
             boolean ocupado = reservasActivasEseDia.stream()

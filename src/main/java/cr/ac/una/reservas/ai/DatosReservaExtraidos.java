@@ -5,9 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-// Campos no identificados en la frase quedan en null o vacios, no lanzan error.
 public class DatosReservaExtraidos {
-
     private String actividad;
     private LocalDate fecha;
     private LocalTime horaInicio;

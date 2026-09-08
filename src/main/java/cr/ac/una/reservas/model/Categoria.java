@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 // El id se autogenera en CategoriaService
 @XmlRootElement(name = "categoria")
@@ -38,5 +39,21 @@ public class Categoria {
     @Override
     public String toString() {
         return String.format("Categoria{id=%s, descripcion=%s}", id, descripcion);
+    }
+
+    @Override
+    public boolean equals(Object otro) {
+        if (this == otro) {
+            return true;
+        }
+        if (!(otro instanceof Categoria)) {
+            return false;
+        }
+        return Objects.equals(id, ((Categoria) otro).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

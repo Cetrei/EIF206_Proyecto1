@@ -6,55 +6,69 @@ import java.awt.Font;
 public class TemaClaro implements Tema {
     @Override
     public Color colorFondoVentana() {
-        return new Color(0xF1, 0xF3, 0xF7);
+        return new Color(241, 243, 247);
     }
     @Override
     public Color colorFondoTarjeta() {
-        return Color.WHITE;
+        return new Color(255, 255, 255);
     }
     @Override
     public Color colorFondoCampo() {
-        return new Color(0xF7, 0xF8, 0xFA);
+        return new Color(247, 248, 250);
     }
 
     @Override
     public Color colorBorde() {
-        return new Color(0xD8, 0xDC, 0xE3);
+        return new Color(216, 220, 227);
     }
     @Override
     public Color colorBordeEnfocado() {
-        return new Color(0x2F, 0x6F, 0xED);
+        return new Color(47, 111, 237);
     }
 
     @Override
     public Color colorTexto() {
-        return new Color(0x1A, 0x1F, 0x2B);
+        return new Color(26, 31, 43);
     }
     @Override
     public Color colorTextoSecundario() {
-        return new Color(0x64, 0x6E, 0x82);
+        return new Color(100, 110, 130);
     }
 
     @Override
     public Color colorPrimario() {
-        return new Color(0x2F, 0x6F, 0xED);
+        return new Color(47, 111, 237);
     }
     @Override
     public Color colorPrimarioHover() {
-        return new Color(0x1E, 0x5B, 0xD6);
+        return new Color(30, 91, 214);
     }
     @Override
     public Color colorPeligro() {
-        return new Color(0xC0, 0x2B, 0x38);
+        return new Color(192, 43, 56);
     }
     @Override
     public Color colorPeligroHover() {
-        return new Color(0xA5, 0x22, 0x2E);
+        return new Color(165, 34, 46);
+    }
+
+    @Override
+    public Color colorTextoSobrePrimario() {
+        return new Color(255, 255, 255);
+    }
+    @Override
+    public Color colorTextoSobrePeligro() {
+        return new Color(252, 228, 230);
+    }
+
+    @Override
+    public Color colorAcentoSecundario() {
+        return new Color(224, 27, 132);
     }
 
     @Override
     public Color colorSuperficie() {
-        return new Color(0xDD, 0xE1, 0xE8);
+        return new Color(221, 225, 232);
     }
 
     @Override

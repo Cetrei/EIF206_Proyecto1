@@ -6,10 +6,6 @@ import cr.ac.una.reservas.persistence.CategoriaDao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Ver DaoEnMemoriaTemporal: parche temporal de arranque mientras
- * persistence (Companero A) no entrega CategoriaDaoXml.
- */
 class CategoriaDaoEnMemoriaTemporal extends DaoEnMemoriaTemporal<Categoria, String> implements CategoriaDao {
     CategoriaDaoEnMemoriaTemporal() {
         super(Categoria::getId);

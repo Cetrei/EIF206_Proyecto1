@@ -12,10 +12,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Los campos funcionario, categoriasRequeridas y recursosAsignados
- * guardan solo los ids en XML, y service los resuelve a objetos completos.
- */
 @XmlRootElement(name = "reserva")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Reserva {

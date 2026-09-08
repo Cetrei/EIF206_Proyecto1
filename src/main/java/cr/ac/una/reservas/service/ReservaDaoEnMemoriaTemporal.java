@@ -6,10 +6,6 @@ import cr.ac.una.reservas.persistence.ReservaDao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Ver DaoEnMemoriaTemporal: parche temporal de arranque mientras
- * persistence (Companero A) no entrega ReservaDaoXml.
- */
 class ReservaDaoEnMemoriaTemporal extends DaoEnMemoriaTemporal<Reserva, String> implements ReservaDao {
     ReservaDaoEnMemoriaTemporal() {
         super(Reserva::getId);

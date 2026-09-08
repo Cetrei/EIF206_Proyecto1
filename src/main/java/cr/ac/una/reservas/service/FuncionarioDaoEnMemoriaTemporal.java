@@ -6,10 +6,6 @@ import cr.ac.una.reservas.persistence.FuncionarioDao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Ver DaoEnMemoriaTemporal: parche temporal de arranque mientras
- * persistence (Companero A) no entrega FuncionarioDaoXml.
- */
 class FuncionarioDaoEnMemoriaTemporal extends DaoEnMemoriaTemporal<Funcionario, String> implements FuncionarioDao {
     FuncionarioDaoEnMemoriaTemporal() {
         super(Funcionario::getId);

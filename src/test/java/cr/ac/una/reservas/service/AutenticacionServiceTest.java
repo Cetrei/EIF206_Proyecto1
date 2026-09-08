@@ -11,26 +11,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Prueba de unidad de AutenticacionService (ver docs/07_convenciones.md,
- * seccion Pruebas), usando Dao falsos en memoria en vez de la
- * implementacion real de persistence (Companero A, todavia no
- * entregada).
- * <p>
- * Ademas de cubrir la logica de autenticar/cambiarClave, esta clase
- * siembra los dos usuarios de prueba pedidos para probar la aplicacion
- * de forma manual mientras persistence no esta lista:
- * <ul>
- *     <li>Funcionario, id "funcionario", clave "123".</li>
- *     <li>Administrador, id "admin", clave "123".</li>
- * </ul>
- * Estos usuarios solo existen en memoria durante esta prueba (no se
- * guardan en ningun XML real); en cuanto el Companero A entregue
- * FuncionarioDaoXml/AdministradorDaoXml, la forma de tener estos mismos
- * usuarios disponibles para probar la app de verdad es agregarlos una
- * vez a los archivos data/funcionarios.xml y data/administradores.xml
- * (a mano o con un pequeno script), con los mismos id/clave usados aqui.
- */
 class AutenticacionServiceTest {
 
     static final String ID_FUNCIONARIO_PRUEBA = "funcionario";
@@ -47,10 +27,8 @@ class AutenticacionServiceTest {
         administradorDao = new AdministradorDaoFalso();
         autenticacionService = new AutenticacionService(administradorDao, funcionarioDao);
 
-        // Usuario de prueba: funcionario / 123
         funcionarioDao.guardar(new Funcionario(ID_FUNCIONARIO_PRUEBA, CLAVE_PRUEBA, "Funcionario de Prueba", "0000-0000"));
 
-        // Usuario de prueba: admin / 123
         administradorDao.guardar(new Administrador(ID_ADMIN_PRUEBA, CLAVE_PRUEBA));
     }
 

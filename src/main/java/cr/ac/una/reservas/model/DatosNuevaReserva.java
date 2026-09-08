@@ -5,17 +5,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Datos de entrada para crear una Reserva nueva (ver docs/01_model.md).
- * Es un objeto simple de transporte, sin logica de negocio: junta lo
- * que control recibe de la vista (actividad, fecha, horas, funcionario
- * y categorias requeridas) para pasarlo de una sola vez a
- * ReservaService.intentarReservar(datosReserva) (ver docs/02_service.md)
- * y al constructor de Reserva.
- *
- * No incluye recursosAsignados ni estado: esos los decide el propio
- * proceso de reserva en service, no quien la solicita.
- */
 public class DatosNuevaReserva {
 
     private String id;
