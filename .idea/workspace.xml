@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="258fb875-f6e8-4177-9403-1e318edf6f73" name="Changes" comment="chore: test ejcutados" />
+    <list default="true" id="258fb875-f6e8-4177-9403-1e318edf6f73" name="Changes" comment="chore: indexacion de archivos de tests">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cr/ac/una/reservas/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,6 +35,9 @@
     &quot;accountId&quot;: &quot;3a2e885b-00b2-4aa8-8d77-71580bc599f5&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Security Analysis" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2,
   &quot;fromUser&quot;: false
@@ -118,6 +124,7 @@
     <MESSAGE value="feat: mvc final sin persistencia y reporte a medias" />
     <MESSAGE value="feat: CeldaMatriz dejado atras en commit anterior" />
     <MESSAGE value="chore: test ejcutados" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: test ejcutados" />
+    <MESSAGE value="chore: indexacion de archivos de tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: indexacion de archivos de tests" />
   </component>
 </project>

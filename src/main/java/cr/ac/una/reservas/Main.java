@@ -17,11 +17,6 @@ public final class Main {
     }
 
     private static void iniciar() {
-        // Debe llamarse antes de construir cualquier componente Swing:
-        // sin esto, el JTabbedPane (y otros detalles de "cromo" que
-        // ningun componente propio del sistema de diseno pinta a mano
-        // todavia) usan el Look and Feel Metal por defecto, con bordes
-        // grises sin relacion con el tema oscuro/claro de la app.
         GestorTema.aplicarUIManager(GestorTema.obtenerInstancia().temaActivo());
 
         JFrame ventana = new JFrame("Sistema de Reservas - EIF206 Proyecto 1");
