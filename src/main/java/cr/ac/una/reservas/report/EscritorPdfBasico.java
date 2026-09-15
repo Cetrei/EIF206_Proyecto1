@@ -243,11 +243,21 @@ public final class EscritorPdfBasico {
     }
 
     private static byte[] objetoFuente(int numero) {
-        return objetoTexto(numero, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+        return objetoTexto(
+                numero,
+                "<< /Type /Font /Subtype /Type1 "
+                        + "/BaseFont /Helvetica "
+                        + "/Encoding /WinAnsiEncoding >>"
+        );
     }
 
     private static byte[] objetoFuenteNegrita(int numero) {
-        return objetoTexto(numero, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
+        return objetoTexto(
+                numero,
+                "<< /Type /Font /Subtype /Type1 "
+                        + "/BaseFont /Helvetica-Bold "
+                        + "/Encoding /WinAnsiEncoding >>"
+        );
     }
 
     private static byte[] objetoContenido(int numero, String streamContenido) {
