@@ -12,16 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Termina en IT, no en Test: Failsafe la corre en "mvn verify", Surefire la ignora.
-// Queda comentado hasta que FuncionarioDaoXml exista (companero A, docs/03_persistence.md).
-//
-// Nota para quien entregue FuncionarioDaoXml/AdministradorDaoXml: los
-// usuarios de prueba manuales de la aplicacion (login real, no solo en
-// memoria) son Funcionario id="funcionario" clave="123" y Administrador
-// id="admin" clave="123" (ver AutenticacionServiceTest en
-// src/test/java/cr/ac/una/reservas/service, que ya los prueba en
-// memoria con DaoFalso). Sembrarlos una vez en data/funcionarios.xml y
-// data/administradores.xml con esos mismos valores para poder probar
-// el login de punta a punta.
 class FuncionarioDaoXmlIT {
 
     private static final String ARCHIVO_PRUEBA = "data/test-funcionarios.xml";
@@ -38,13 +28,13 @@ class FuncionarioDaoXmlIT {
 
     @Test
     void guardarYLeerFuncionarioDeVueltaDesdeXml() {
-        // FuncionarioDao dao = new FuncionarioDaoXml(ARCHIVO_PRUEBA);
-        // Funcionario original = new Funcionario("111", "111", "Juan Perez", "3323");
-        //
-        // dao.guardar(original);
-        // Optional<Funcionario> leido = dao.buscarPorId("111");
-        //
-        // assertTrue(leido.isPresent());
-        // assertEquals("Juan Perez", leido.get().getNombre());
+        FuncionarioDao dao = new FuncionarioDaoXml(ARCHIVO_PRUEBA);
+        Funcionario original = new Funcionario("111", "111", "Juan Perez", "3323");
+
+        dao.guardar(original);
+        Optional<Funcionario> leido = dao.buscarPorId("111");
+
+        assertTrue(leido.isPresent());
+        assertEquals("Juan Perez", leido.get().getNombre());
     }
 }

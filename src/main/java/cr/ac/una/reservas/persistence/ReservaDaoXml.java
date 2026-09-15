@@ -1,10 +1,15 @@
 package cr.ac.una.reservas.persistence;
 
 import cr.ac.una.reservas.model.Reserva;
+import cr.ac.una.reservas.util.PersistenciaException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -17,31 +22,52 @@ public class ReservaDaoXml implements ReservaDao {
 
     public ReservaDaoXml(String path) {
         this.pathReserva = path;
+        cargarDesdeXml();
     }
 
-    public void guardarFuncionarios() throws Exception{
-        JAXBContext jaxbContext = JAXBContext.newInstance(Reserva.class);
-        FileOutputStream fileOut = new FileOutputStream(pathReserva);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-        jaxbMarshaller.marshal(reservas, fileOut);
-        fileOut.flush();
-        fileOut.close();
-    }
-
-    public List<Reserva> obtenerFuncionarios() throws Exception{
+    private void cargarDesdeXml() {
         File file = new File(pathReserva);
-        JAXBContext jaxbContext = JAXBContext.newInstance(Reserva.class);
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        if (!file.exists()) {
+            return;
+        }
+        try {
+            reservas.clear();
+            reservas.addAll(obtenerReservas());
+        } catch (Exception e) {
+            throw new PersistenciaException("No se pudo cargar reservas desde " + pathReserva, e);
+        }
+    }
 
-        return (List<Reserva>) jaxbUnmarshaller.unmarshal(file);
+    public void guardarReservas() {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(ReservasWrapper.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            File archivo = new File(pathReserva);
+            if (archivo.getParentFile() != null) {
+                archivo.getParentFile().mkdirs();
+            }
+            try (FileOutputStream fileOut = new FileOutputStream(archivo)) {
+                jaxbMarshaller.marshal(new ReservasWrapper(reservas), fileOut);
+            }
+        } catch (Exception e) {
+            throw new PersistenciaException("No se pudo guardar reservas en " + pathReserva, e);
+        }
+    }
+
+    public List<Reserva> obtenerReservas() throws Exception {
+        File file = new File(pathReserva);
+        JAXBContext jaxbContext = JAXBContext.newInstance(ReservasWrapper.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        ReservasWrapper wrapper = (ReservasWrapper) jaxbUnmarshaller.unmarshal(file);
+        return wrapper.getReservas();
     }
 
     @Override
     public List<Reserva> listarPorFuncionario(String idFuncionario) {
         List<Reserva> res = new ArrayList<>();
         for (Reserva reserva : reservas) {
-            if (reserva.getFuncionario().getId().equals(idFuncionario)) {
+            if (reserva.getIdFuncionario() != null && reserva.getIdFuncionario().equals(idFuncionario)) {
                 res.add(reserva);
             }
         }
@@ -67,22 +93,41 @@ public class ReservaDaoXml implements ReservaDao {
     public void guardar(Reserva entidad) {
         if (buscarPorId(entidad.getId()).isEmpty()) {
             reservas.add(entidad);
-        }else{
-            for  (int i = 0; i< reservas.size(); i++) {
-                if(reservas.get(i).getId().equals(entidad.getId())) {
+        } else {
+            for (int i = 0; i < reservas.size(); i++) {
+                if (reservas.get(i).getId().equals(entidad.getId())) {
                     reservas.set(i, entidad);
                 }
             }
         }
+        guardarReservas();
     }
 
     @Override
     public void eliminar(String s) {
-        for  (int i = 0; i< reservas.size(); i++) {
-            if(reservas.get(i).getId().equals(s)) {
+        for (int i = 0; i < reservas.size(); i++) {
+            if (reservas.get(i).getId().equals(s)) {
                 reservas.remove(i);
                 break;
             }
+        }
+        guardarReservas();
+    }
+
+    @XmlRootElement(name = "reservas")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    private static class ReservasWrapper {
+        @XmlElement(name = "reserva")
+        private List<Reserva> reservas = new ArrayList<>();
+
+        public ReservasWrapper() {
+        }
+        public ReservasWrapper(List<Reserva> reservas) {
+            this.reservas = reservas;
+        }
+
+        public List<Reserva> getReservas() {
+            return reservas;
         }
     }
 }
