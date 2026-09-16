@@ -1,34 +1,26 @@
 package cr.ac.una.reservas.persistence;
 
 import cr.ac.una.reservas.model.Funcionario;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Termina en IT, no en Test: Failsafe la corre en "mvn verify", Surefire la ignora.
 class FuncionarioDaoXmlIT {
 
-    private static final String ARCHIVO_PRUEBA = "data/test-funcionarios.xml";
-
-    @BeforeEach
-    void limpiarArchivoPrueba() {
-        new File(ARCHIVO_PRUEBA).delete();
-    }
-
-    @AfterEach
-    void borrarArchivoPrueba() {
-        new File(ARCHIVO_PRUEBA).delete();
-    }
+    @TempDir
+    Path carpetaTemporal;
 
     @Test
     void guardarYLeerFuncionarioDeVueltaDesdeXml() {
-        FuncionarioDao dao = new FuncionarioDaoXml(ARCHIVO_PRUEBA);
+        Path archivo = carpetaTemporal.resolve("funcionarios.xml");
+
+        FuncionarioDao dao = new FuncionarioDaoXml(archivo.toString());
         Funcionario original = new Funcionario("111", "111", "Juan Perez", "3323");
 
         dao.guardar(original);
@@ -36,5 +28,6 @@ class FuncionarioDaoXmlIT {
 
         assertTrue(leido.isPresent());
         assertEquals("Juan Perez", leido.get().getNombre());
+        assertTrue(Files.exists(archivo));
     }
 }

@@ -16,7 +16,7 @@ import cr.ac.una.reservas.persistence.ReservaDaoXml;
 import java.io.File;
 
 public final class DaoFactory {
-    private static final String DIRECTORIO_DATOS = "data";
+    private static final String DIRECTORIO_DATOS = System.getProperty("reservas.data.dir", "data");
 
     private static final FuncionarioDao FUNCIONARIO_DAO =
             new FuncionarioDaoXml(DIRECTORIO_DATOS + "/funcionarios.xml");

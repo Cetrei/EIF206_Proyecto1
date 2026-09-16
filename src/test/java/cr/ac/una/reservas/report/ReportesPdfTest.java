@@ -2,12 +2,12 @@ package cr.ac.una.reservas.report;
 
 import cr.ac.una.reservas.model.Categoria;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReportesPdfTest {
 
-    private final Path carpeta =
-            Paths.get("target", "reportes-prueba");
+    @TempDir
+    Path carpeta;
 
     @Test
     public void generaTodosLosTiposDeReporte() throws IOException {
-
-        Files.createDirectories(carpeta);
 
         Path funcionarios = carpeta.resolve("funcionarios.pdf");
         Path categorias = carpeta.resolve("categorias.pdf");
@@ -85,8 +83,6 @@ public class ReportesPdfTest {
 
     @Test
     public void generaReporteDeCategoriasConDatos() throws IOException {
-
-        Files.createDirectories(carpeta);
 
         Path archivo =
                 carpeta.resolve("categorias_con_datos.pdf");

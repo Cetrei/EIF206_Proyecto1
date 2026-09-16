@@ -27,6 +27,53 @@ un usuario tipo administrador". Antes, esa restricción era únicamente visual. 
 Confirmado con `mvn test && mvn verify` real en esta máquina: 141 tests, 0 fallos, BUILD SUCCESS
 para ambos, incluyendo la prueba de integración `FuncionarioDaoXmlIT`.
 
+## COMPLETADO — Barra superior en la ventana de Login
+
+El Login era la única pantalla sin `BarraSuperior`: el `JFrame` de `Main` era decorado, así que
+mostraba la barra nativa del SO antes de iniciar sesión y la barra propia del tema oscuro después,
+con dos botones de cierre distintos según la pantalla. Quedó unificado:
+
+- `Main.java`: `ventana.setUndecorated(true)`, la app nunca muestra la barra nativa del SO.
+- `LoginPanel`: campo `barraSuperiorReal`, método `alCerrar(Runnable)` y `obtenerPanel()` que
+  envuelve el grid diseñado en un `BorderLayout` con la `BarraSuperior` al norte. No se tocó el
+  `$$$setupUI$$$()` generado; es el mismo patrón que usa `LoginControl.armarDialogoCambioClave`.
+- `LoginControl`: engancha `vista.alCerrar(this::confirmarSalidaDeAplicacion)`, con el mismo Popup
+  de confirmación que `VentanaPrincipalControl`.
+- `VentanaPrincipalControl.cerrarSesionYVolverALogin()` reconstruye `LoginPanel` + `LoginControl`,
+  así que al cerrar sesión la barra del Login queda conectada igual.
+- `BarraSuperior`: como ya ninguna ventana tiene barra nativa, se agregó arrastre de ventana
+  (`habilitarArrastreDeVentana`) sobre la barra y su envoltorio. Aplica también a los diálogos
+  undecorated (cambio de contraseña, Mi Perfil), que antes tampoco se podían mover.
+
+## COMPLETADO — Los tests ya no dejan suciedad en `data/`
+
+Origen real de las categorías "Sala de prueba 8142…": `ServiceFactoryTest` llamaba a
+`ServiceFactory.obtenerCategoriaService().crear(...)`, que pasa por `DaoFactory` y escribe en los
+XML reales de `data/`. Además, el bloque `static` de `DaoFactory` siembra usuarios de prueba en
+`data/funcionarios.xml` y `data/administradores.xml` en cualquier corrida que lo cargue. Tres
+capas de arreglo, para que ni una corrida de tests toque los datos de entrega:
+
+1. `DaoFactory.DIRECTORIO_DATOS` ahora es `System.getProperty("reservas.data.dir", "data")`. La
+   app real sigue usando `data/`; los tests no.
+2. `pom.xml`: Surefire y Failsafe definen `reservas.data.dir` =
+   `${project.build.directory}/test-data`. Todo lo que escriba un test vive en `target/` y muere
+   con `mvn clean`.
+3. `ServiceFactoryTest` limpia lo suyo igual: elimina en `finally` la categoría que crea, quita el
+   observador que registró del singleton, y asegura que el conteo de categorías vuelve al valor
+   previo y que no queda ninguna "Sala de prueba …".
+
+También se eliminaron las dos escrituras a rutas fijas del repo/build:
+
+- `FuncionarioDaoXmlIT` usa `@TempDir` en vez de `data/test-funcionarios.xml`. Ya no depende de
+  borrar el archivo en `@BeforeEach`/`@AfterEach`: si el test truena a mitad, no queda nada.
+- `ReportesPdfTest` usa `@TempDir` en vez de `target/reportes-prueba`.
+
+Los XML de `data/` ya quedaron limpios: `categorias.xml` tiene solo CAT-000001..003 y ningún
+recurso ni reserva referenciaba las categorías de prueba eliminadas.
+
+Falta correr `mvn clean test && mvn verify` en la máquina para confirmar en verde y verificar que
+`git status` quede sin cambios en `data/` después de correrlos.
+
 ## PENDIENTE — Exportar los `.form` de IntelliJ a código Java plano antes de entregar
 
 Esto **no es solo un paso de empaquetado**: es una dependencia real y ya detectada del código
@@ -50,6 +97,10 @@ lógica de rol, sino porque `TabCategorias`/`TabRecursos`/`TabFuncionarios` nunc
 `createUIComponents()` fuera de IntelliJ. Los tests se ajustaron para no construir esas Vistas
 reales y así no depender de esta limitación mientras siga sin resolverse, pero la limitación en
 sí solo desaparece exportando los `.form`.
+
+`LoginPanel` y `BarraSuperior` ya están exportados (su `$$$setupUI$$$()` es código Java visible),
+pero sus `.form` siguen en `src/`: quedan 18 archivos `.form` en
+`presentation/mvc` y `presentation/mvc/componentes`.
 
 **Pasos:** para cada `.form`, click derecho en el árbol de proyecto de IntelliJ → generar el
 código Java del formulario (reemplaza el método `$$$setupUI$$$()` autogenerado, invisible en el

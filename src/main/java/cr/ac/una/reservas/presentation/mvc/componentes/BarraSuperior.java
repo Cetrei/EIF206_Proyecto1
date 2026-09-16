@@ -7,6 +7,8 @@ import cr.ac.una.reservas.presentation.mvc.tema.Tema;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class BarraSuperior implements CambioTemaListener {
     private static final int ALTO_BARRA = 28;
@@ -16,6 +18,7 @@ public class BarraSuperior implements CambioTemaListener {
 
     private BotonIcono botonSalirReal;
     private JPanel envoltorio;
+    private Point puntoArrastre;
 
     public BarraSuperior() {
         $$$setupUI$$$();
@@ -43,8 +46,44 @@ public class BarraSuperior implements CambioTemaListener {
             envoltorio.setMinimumSize(new Dimension(10, ALTO_BARRA));
             envoltorio.setMaximumSize(new Dimension(Integer.MAX_VALUE, ALTO_BARRA));
             envoltorio.add(BarraSuperior, BorderLayout.CENTER);
+            habilitarArrastreDeVentana(envoltorio);
+            habilitarArrastreDeVentana(BarraSuperior);
         }
         return envoltorio;
+    }
+
+    private void habilitarArrastreDeVentana(JComponent componente) {
+        MouseAdapter arrastre = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evento) {
+                Window ventana = SwingUtilities.getWindowAncestor(componente);
+                if (ventana == null) {
+                    puntoArrastre = null;
+                    return;
+                }
+                puntoArrastre = SwingUtilities.convertPoint(componente, evento.getPoint(), ventana);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent evento) {
+                puntoArrastre = null;
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent evento) {
+                if (puntoArrastre == null) {
+                    return;
+                }
+                Window ventana = SwingUtilities.getWindowAncestor(componente);
+                if (ventana == null) {
+                    return;
+                }
+                Point enPantalla = evento.getLocationOnScreen();
+                ventana.setLocation(enPantalla.x - puntoArrastre.x, enPantalla.y - puntoArrastre.y);
+            }
+        };
+        componente.addMouseListener(arrastre);
+        componente.addMouseMotionListener(arrastre);
     }
 
     @Override
