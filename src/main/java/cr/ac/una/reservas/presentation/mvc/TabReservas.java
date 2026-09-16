@@ -1,5 +1,8 @@
 package cr.ac.una.reservas.presentation.mvc;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Reserva;
@@ -47,13 +50,11 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
 
     private BotonSecundario botonReporteReal;
 
-    // Bloque de IA.
     private JTextArea txtFraseIaReal;
     private BotonPrimario botonExtraerIaReal;
     private JLabel lblEstadoIaReal;
     private boolean estadoIaUsandoGemini = true;
 
-    // Detalles de la reserva.
     private CampoTexto campoActividadReal;
     private JSpinner spinnerFechaReal;
     private JSpinner spinnerHoraInicioReal;
@@ -63,7 +64,6 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     private BotonPrimario botonSolicitarReal;
     private BotonIcono botonLimpiarReal;
 
-    // Tabla de reservas propias.
     private TablaDatos tablaReal;
     private BotonSecundario botonCancelarReal;
 
@@ -303,10 +303,6 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
         return envoltorio;
     }
 
-    // ------------------------------------------------------------------
-    // Bloque de IA
-    // ------------------------------------------------------------------
-
     public String obtenerFraseIa() {
         return txtFraseIaReal.getText();
     }
@@ -331,9 +327,6 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
         );
     }
 
-    // ------------------------------------------------------------------
-    // Datos del formulario (Detalles de la reserva)
-    // ------------------------------------------------------------------
 
     public String obtenerActividad() {
         return campoActividadReal.obtenerTexto();
@@ -416,9 +409,6 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
         listaCategoriasReal.clearSelection();
     }
 
-    // ------------------------------------------------------------------
-    // Tabla de reservas propias
-    // ------------------------------------------------------------------
 
     private void mostrarReservas(List<Reserva> reservas) {
         reservasMostradas = reservas;
@@ -451,10 +441,6 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     public void alSeleccionarFila(IntConsumer accion) {
         tablaReal.alHacerClickFila(accion);
     }
-
-    // ------------------------------------------------------------------
-    // Enganches de eventos
-    // ------------------------------------------------------------------
 
     public void alSolicitarReserva(Runnable accion) {
         botonSolicitarReal.alHacerClick(accion);
@@ -558,12 +544,12 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     private void $$$setupUI$$$() {
         createUIComponents();
         TabReservas = new JPanel();
-        TabReservas.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 1, new Insets(20, 20, 20, 20), -1, 16));
-        TabReservas.add(TarjetaTitulo, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        TabReservas.add(TarjetaFormulario, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        TabReservas.add(TarjetaTabla, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        TabReservas.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        TabReservas.setLayout(new GridLayoutManager(4, 1, new Insets(20, 20, 20, 20), -1, 16));
+        TabReservas.add(TarjetaTitulo, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        TabReservas.add(TarjetaFormulario, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        TabReservas.add(TarjetaTabla, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        TabReservas.add(spacer1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     }
 
     /**
@@ -572,4 +558,5 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     public JComponent $$$getRootComponent$$$() {
         return TabReservas;
     }
+
 }

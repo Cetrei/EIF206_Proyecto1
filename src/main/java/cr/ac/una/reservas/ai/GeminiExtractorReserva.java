@@ -1,6 +1,9 @@
 package cr.ac.una.reservas.ai;
 
 import cr.ac.una.reservas.model.Categoria;
+import cr.ac.una.reservas.model.ConfiguracionIa;
+import cr.ac.una.reservas.service.ConfiguracionIaService;
+import cr.ac.una.reservas.service.ServiceFactory;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -14,6 +17,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +39,7 @@ public class GeminiExtractorReserva implements ExtractorReserva {
     private final boolean modeloFijadoExplicitamente;
 
     public GeminiExtractorReserva() {
-        this(System.getenv("GEMINI_API_KEY"), obtenerModeloConfigurado());
+        this(obtenerApiKeyConfigurada(), obtenerModeloConfigurado());
     }
 
     public GeminiExtractorReserva(String apiKey, String modelo) {
@@ -333,8 +337,24 @@ public class GeminiExtractorReserva implements ExtractorReserva {
         }
     }
 
+    private static String obtenerApiKeyConfigurada() {
+        Optional<ConfiguracionIa> configuracion = obtenerConfiguracionIaService().obtenerConfiguracion();
+        if (configuracion.isPresent() && configuracion.get().getApiKey() != null && !configuracion.get().getApiKey().isBlank()) {
+            return configuracion.get().getApiKey();
+        }
+        return System.getenv("GEMINI_API_KEY");
+    }
+
     private static String obtenerModeloConfigurado() {
+        Optional<ConfiguracionIa> configuracion = obtenerConfiguracionIaService().obtenerConfiguracion();
+        if (configuracion.isPresent() && configuracion.get().getModelo() != null && !configuracion.get().getModelo().isBlank()) {
+            return configuracion.get().getModelo();
+        }
         return System.getenv("GEMINI_MODEL");
+    }
+
+    private static ConfiguracionIaService obtenerConfiguracionIaService() {
+        return ServiceFactory.obtenerConfiguracionIaService();
     }
 
     private String escaparJson(String texto) {

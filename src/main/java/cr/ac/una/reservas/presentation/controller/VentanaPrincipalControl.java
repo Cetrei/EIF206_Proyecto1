@@ -7,6 +7,7 @@ import cr.ac.una.reservas.presentation.mvc.TabActividades;
 import cr.ac.una.reservas.presentation.mvc.TabCalendarizacion;
 import cr.ac.una.reservas.presentation.mvc.TabCategorias;
 import cr.ac.una.reservas.presentation.mvc.TabEstadisticas;
+import cr.ac.una.reservas.presentation.mvc.TabConfiguracionIa;
 import cr.ac.una.reservas.presentation.mvc.TabFuncionarios;
 import cr.ac.una.reservas.presentation.mvc.TabRecursos;
 import cr.ac.una.reservas.presentation.mvc.TabReservas;
@@ -101,6 +102,10 @@ public class VentanaPrincipalControl {
             TabRecursos tabRecursos = new TabRecursos(recursoModelo);
             new RecursoControl(recursoModelo, tabRecursos, ventanaPropietaria);
             colocarEnPestana(vista.obtenerPanelRecursos(), tabRecursos.obtenerPanel());
+
+            TabConfiguracionIa tabConfiguracionIa = new TabConfiguracionIa();
+            new ConfiguracionIaControl(tabConfiguracionIa, ventanaPropietaria);
+            colocarEnPestana(vista.obtenerPanelConfiguracionIa(), tabConfiguracionIa.obtenerPanel());
         }
 
         CalendarizacionModel calendarizacionModelo = new CalendarizacionModel();

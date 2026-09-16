@@ -12,6 +12,10 @@ target/
 
 ### Variables de entorno / secretos ###
 .env
+data/configuracion-ia.xml
+
+### Archivos deprecados (no se suben al repo) ###
+_deprecated/
 
 ### Eclipse ###
 .apt_generated

@@ -1,5 +1,8 @@
 package cr.ac.una.reservas.presentation.mvc.componentes;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoSemantico;
 import cr.ac.una.reservas.presentation.mvc.tema.CambioTemaListener;
 import cr.ac.una.reservas.presentation.mvc.tema.GestorTema;
@@ -106,10 +109,10 @@ public class BarraSuperior implements CambioTemaListener {
     private void $$$setupUI$$$() {
         createUIComponents();
         BarraSuperior = new JPanel();
-        BarraSuperior.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(4, 4, 4, 4), 4, -1));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        BarraSuperior.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        BarraSuperior.add(btnSalir, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        BarraSuperior.setLayout(new GridLayoutManager(1, 2, new Insets(4, 4, 4, 4), 4, -1));
+        final Spacer spacer1 = new Spacer();
+        BarraSuperior.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        BarraSuperior.add(btnSalir, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -118,4 +121,5 @@ public class BarraSuperior implements CambioTemaListener {
     public JComponent $$$getRootComponent$$$() {
         return BarraSuperior;
     }
+
 }

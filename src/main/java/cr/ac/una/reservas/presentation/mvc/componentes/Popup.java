@@ -1,5 +1,7 @@
 package cr.ac.una.reservas.presentation.mvc.componentes;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import cr.ac.una.reservas.presentation.mvc.iconos.Icono;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoAplicador;
 import cr.ac.una.reservas.presentation.mvc.tema.CambioTemaListener;
@@ -23,17 +25,17 @@ public class Popup implements CambioTemaListener {
     private void $$$setupUI$$$() {
         createUIComponents();
         pnlContenidoPopup = new JPanel();
-        pnlContenidoPopup.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 2, new Insets(20, 20, 16, 20), 10, 12));
+        pnlContenidoPopup.setLayout(new GridLayoutManager(3, 2, new Insets(20, 20, 16, 20), 10, 12));
         lblIconoPopup = new JLabel();
         lblIconoPopup.setText("");
-        pnlContenidoPopup.add(lblIconoPopup, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlContenidoPopup.add(lblIconoPopup, new GridConstraints(0, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblTituloPopup = new JLabel();
         lblTituloPopup.setText("Titulo");
-        pnlContenidoPopup.add(lblTituloPopup, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlContenidoPopup.add(lblTituloPopup, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblMensajePopup = new JLabel();
         lblMensajePopup.setText("Mensaje");
-        pnlContenidoPopup.add(lblMensajePopup, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        pnlContenidoPopup.add(pnlBotonesPopup, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlContenidoPopup.add(lblMensajePopup, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlContenidoPopup.add(pnlBotonesPopup, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_SOUTHEAST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

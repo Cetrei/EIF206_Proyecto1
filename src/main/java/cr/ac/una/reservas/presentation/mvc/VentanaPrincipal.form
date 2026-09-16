@@ -80,6 +80,15 @@
             <border type="none"/>
             <children/>
           </grid>
+          <grid id="a4f2e" binding="pnlConfiguracionIa" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Configuracion IA"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
         </children>
       </tabbedpane>
       <grid id="b787b" binding="pnlEncabezado" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="0">

@@ -103,10 +103,6 @@ class GeminiExtractorReservaTest {
         assertEquals(1, candidatos.length);
     }
 
-    // ------------------------------------------------------------------
-    // extraerTextoRespuesta: separa el campo "text" del sobre JSON que envuelve Gemini.
-    // ------------------------------------------------------------------
-
     @Test
     void extraeElTextoDeUnaRespuestaEnvueltaComoLaDeGemini() {
         String respuestaCompleta =
@@ -164,11 +160,6 @@ class GeminiExtractorReservaTest {
         assertEquals("{\"actividad\":\"Sesion\",\"categorias\":[]}", texto);
     }
 
-    // ------------------------------------------------------------------
-    // resumirCuerpoError: extrae el motivo real del cuerpo de error que devuelve Gemini
-    // cuando el status HTTP no es 2xx, para que el motivo llegue completo hasta la UI.
-    // ------------------------------------------------------------------
-
     @Test
     void resumeElMensajeDeErrorEstandarDeLaApiDeGemini() {
         String cuerpoError =
@@ -201,10 +192,6 @@ class GeminiExtractorReservaTest {
 
         assertTrue(resumen.toLowerCase().contains("sin detalle"));
     }
-
-    // ------------------------------------------------------------------
-    // convertirRespuesta: JSON ya desenvuelto -> DatosReservaExtraidos
-    // ------------------------------------------------------------------
 
     @Test
     void convierteUnaRespuestaCompletaConTodosLosCampos() {
@@ -316,10 +303,6 @@ class GeminiExtractorReservaTest {
         assertTrue(resultado.getIdsCategoriasIdentificadas().contains("CAT-SALA"));
     }
 
-    // ------------------------------------------------------------------
-    // Escape / desescape de JSON usado al construir el prompt y al leer la respuesta.
-    // ------------------------------------------------------------------
-
     @Test
     void escapaComillasYSaltosDeLineaAlConstruirElCuerpoDeLaSolicitud() {
         String escapado = invocarPrivado(
@@ -346,12 +329,6 @@ class GeminiExtractorReservaTest {
 
         assertEquals("Ruta \\ con \"comillas\"", desescapado);
     }
-
-    // ------------------------------------------------------------------
-    // Helpers de reflexion: necesarios porque toda esta logica es privada a proposito
-    // (no forma parte del contrato publico ExtractorReserva) pero sigue siendo codigo del
-    // proyecto que debe probarse sin pasar por la red.
-    // ------------------------------------------------------------------
 
     private DatosReservaExtraidos invocarConvertirRespuesta(String json, List<Categoria> categorias) {
         return invocarPrivado(

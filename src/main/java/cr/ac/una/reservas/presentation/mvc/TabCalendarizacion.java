@@ -1,5 +1,8 @@
 package cr.ac.una.reservas.presentation.mvc;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonPrimario;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonSecundario;
@@ -128,7 +131,6 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
         TarjetaMatriz = tarjetaMatrizReal.obtenerPanel();
     }
 
-    // Hoy como valor inicial: CalendarizacionControl carga la matriz de hoy apenas se abre la pestana.
     private JSpinner crearSpinnerFecha() {
         SpinnerDateModel modelo = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         JSpinner spinner = new JSpinner(modelo);
@@ -136,7 +138,6 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
         return spinner;
     }
 
-    // El renderer muestra la descripcion, no Categoria.toString(). Sin "Todas": la matriz necesita una categoria concreta.
     private JComboBox<Categoria> crearComboCategorias() {
         JComboBox<Categoria> combo = new JComboBox<>();
         combo.setRenderer(new DefaultListCellRenderer() {
@@ -154,7 +155,6 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
         return combo;
     }
 
-    // esFecha guarda el label en lblEtiquetaFecha en vez de la client property que usa el combo, para tematizar sin recorrer subcomponentes.
     private JComponent envolverConEtiqueta(String etiqueta, JComponent control, boolean esFecha) {
         JLabel lblEtiqueta = new JLabel(etiqueta);
         lblEtiqueta.setBorder(new EmptyBorder(0, 2, 4, 0));
@@ -171,11 +171,6 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
         return envoltorio;
     }
 
-    // ------------------------------------------------------------------
-    // Datos de los filtros
-    // ------------------------------------------------------------------
-
-    // Convierte de java.util.Date (lo que maneja JSpinner) a LocalDate (lo que usa el resto del sistema).
     public LocalDate obtenerFecha() {
         Date valor = (Date) spinnerFechaReal.getValue();
         return valor.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -194,17 +189,11 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
         }
     }
 
-    // ------------------------------------------------------------------
-    // Matriz
-    // ------------------------------------------------------------------
 
     private void mostrarMatriz(MatrizFillStrategy estrategia) {
         matrizPanelReal.setEstrategia(estrategia);
     }
 
-    // ------------------------------------------------------------------
-    // Enganches de eventos
-    // ------------------------------------------------------------------
 
     public void alCargarMatriz(Runnable accion) {
         botonCargarMatrizReal.alHacerClick(accion);
@@ -267,12 +256,12 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
     private void $$$setupUI$$$() {
         createUIComponents();
         TabCalendarizacion = new JPanel();
-        TabCalendarizacion.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 1, new Insets(20, 20, 20, 20), -1, 16));
-        TabCalendarizacion.add(TarjetaTitulo, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        TabCalendarizacion.add(TarjetaFiltros, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        TabCalendarizacion.add(TarjetaMatriz, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        TabCalendarizacion.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        TabCalendarizacion.setLayout(new GridLayoutManager(4, 1, new Insets(20, 20, 20, 20), -1, 16));
+        TabCalendarizacion.add(TarjetaTitulo, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        TabCalendarizacion.add(TarjetaFiltros, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        TabCalendarizacion.add(TarjetaMatriz, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        TabCalendarizacion.add(spacer1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     }
 
     /**
@@ -281,4 +270,5 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
     public JComponent $$$getRootComponent$$$() {
         return TabCalendarizacion;
     }
+
 }

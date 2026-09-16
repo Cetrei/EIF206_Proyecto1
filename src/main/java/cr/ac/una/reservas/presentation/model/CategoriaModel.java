@@ -20,7 +20,7 @@ public class CategoriaModel extends AbstractModel {
     public void setCategorias(List<Categoria> nuevaLista) {
         List<Categoria> anterior = this.categorias;
         this.categorias = nuevaLista;
-        notificarCambio(PROP_CATEGORIAS, anterior, nuevaLista);
+        notificarCambioForzado(PROP_CATEGORIAS, anterior, nuevaLista);
     }
 
     public Categoria getCategoriaSeleccionada() {

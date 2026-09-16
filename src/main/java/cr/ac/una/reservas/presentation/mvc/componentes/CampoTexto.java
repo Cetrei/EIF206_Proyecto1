@@ -1,5 +1,7 @@
 package cr.ac.una.reservas.presentation.mvc.componentes;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import cr.ac.una.reservas.presentation.mvc.iconos.Icono;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoAplicador;
 import cr.ac.una.reservas.presentation.mvc.tema.CambioTemaListener;
@@ -46,7 +48,6 @@ public class CampoTexto implements CambioTemaListener, RespondeAEnter {
         txtCampo = esContrasena ? new JPasswordField() : new JTextField();
         txtCampo.setBorder(null);
         txtCampo.setOpaque(false);
-        // JTextField no tiene placeholder nativo: se simula con texto gris que se borra al enfocar.
         txtCampo.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent evento) {
@@ -143,7 +144,6 @@ public class CampoTexto implements CambioTemaListener, RespondeAEnter {
         return txtCampo.getText();
     }
 
-    // No usa setEnabled(false): el color lo debe seguir controlando el tema activo, no Swing.
     public void setSoloLectura(boolean soloLectura) {
         this.soloLectura = soloLectura;
         txtCampo.setEditable(!soloLectura);
@@ -163,7 +163,6 @@ public class CampoTexto implements CambioTemaListener, RespondeAEnter {
         return txtCampo;
     }
 
-    // Usa getPassword() en campos de contrasena, no el getText()
     public String obtenerTexto() {
         if (mostrandoPlaceholder) {
             return "";
@@ -222,11 +221,11 @@ public class CampoTexto implements CambioTemaListener, RespondeAEnter {
     private void $$$setupUI$$$() {
         createUIComponents();
         CampoTexto = new JPanel();
-        CampoTexto.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, 4));
+        CampoTexto.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, 4));
         lblCampo = new JLabel();
         lblCampo.setText("Nombre del campo");
-        CampoTexto.add(lblCampo, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        CampoTexto.add(pnlCaja, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        CampoTexto.add(lblCampo, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CampoTexto.add(pnlCaja, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
     }
 
     /**
@@ -235,4 +234,5 @@ public class CampoTexto implements CambioTemaListener, RespondeAEnter {
     public JComponent $$$getRootComponent$$$() {
         return CampoTexto;
     }
+
 }

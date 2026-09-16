@@ -1,5 +1,7 @@
 package cr.ac.una.reservas.presentation.mvc.componentes;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import cr.ac.una.reservas.presentation.mvc.iconos.Icono;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoAplicador;
 import cr.ac.una.reservas.presentation.mvc.tema.CambioTemaListener;
@@ -22,8 +24,8 @@ public class BotonIcono implements CambioTemaListener {
     private void $$$setupUI$$$() {
         createUIComponents();
         BotonIcono = new JPanel();
-        BotonIcono.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        BotonIcono.add(btnIcono, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        BotonIcono.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        BotonIcono.add(btnIcono, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

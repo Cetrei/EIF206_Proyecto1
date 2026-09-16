@@ -1,5 +1,8 @@
 package cr.ac.una.reservas.presentation.mvc;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import cr.ac.una.reservas.presentation.mvc.componentes.BarraSuperior;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonIcono;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoSemantico;
@@ -33,6 +36,7 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
     private JPanel pnlActividades;
     private JPanel pnlEstadisticas;
     private JPanel pnlReservas;
+    private JPanel pnlConfiguracionIa;
     private JPanel BarraSuperior;
 
     private BotonIcono botonCuentaReal;
@@ -106,10 +110,15 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
         return pnlReservas;
     }
 
+    public JPanel obtenerPanelConfiguracionIa() {
+        return pnlConfiguracionIa;
+    }
+
     public void mostrarSoloPestanasDeFuncionario() {
         quitarPestana(pnlFuncionarios);
         quitarPestana(pnlCategorias);
         quitarPestana(pnlRecursos);
+        quitarPestana(pnlConfiguracionIa);
     }
 
     public void mostrarSoloPestanasDeAdministrador() {
@@ -160,13 +169,11 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
         tbpVentanas.setBackground(tema.colorFondoVentana());
         tbpVentanas.setForeground(tema.colorTexto());
         tbpVentanas.setFont(tema.fuenteTexto());
-        // El borde de Metal alrededor del contenido del JTabbedPane no respeta el tema; se reemplaza por uno del color de borde del tema.
         tbpVentanas.setBorder(new LineBorder(tema.colorBorde(), 1));
 
         VentanaPrincipal.repaint();
     }
 
-    // Fija el alto preferido/min/max de un JLabel
     private static void ajustarAltoLinea(JLabel label, int alto) {
         Dimension preferido = label.getPreferredSize();
         Dimension fijado = new Dimension(preferido.width, alto);
@@ -185,52 +192,55 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
     private void $$$setupUI$$$() {
         createUIComponents();
         VentanaPrincipal = new JPanel();
-        VentanaPrincipal.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        VentanaPrincipal.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas = new JTabbedPane();
-        VentanaPrincipal.add(tbpVentanas, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        VentanaPrincipal.add(tbpVentanas, new GridConstraints(2, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         pnlCalendarizacion = new JPanel();
-        pnlCalendarizacion.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlCalendarizacion.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Calendarizacion", pnlCalendarizacion);
         pnlFuncionarios = new JPanel();
-        pnlFuncionarios.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlFuncionarios.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Funcionarios", pnlFuncionarios);
         pnlCategorias = new JPanel();
-        pnlCategorias.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlCategorias.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Categorias", pnlCategorias);
         pnlRecursos = new JPanel();
-        pnlRecursos.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlRecursos.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Recursos", pnlRecursos);
         pnlActividades = new JPanel();
-        pnlActividades.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlActividades.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Actividades", pnlActividades);
         pnlEstadisticas = new JPanel();
-        pnlEstadisticas.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlEstadisticas.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Estadisticas", pnlEstadisticas);
         pnlReservas = new JPanel();
-        pnlReservas.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlReservas.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Reservas", pnlReservas);
+        pnlConfiguracionIa = new JPanel();
+        pnlConfiguracionIa.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tbpVentanas.addTab("Configuracion IA", pnlConfiguracionIa);
         pnlEncabezado = new JPanel();
-        pnlEncabezado.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 5, new Insets(0, 0, 0, 0), -1, 0));
-        VentanaPrincipal.add(pnlEncabezado, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        pnlEncabezado.setLayout(new GridLayoutManager(2, 5, new Insets(0, 0, 0, 0), -1, 0));
+        VentanaPrincipal.add(pnlEncabezado, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         iconLogo = new JLabel();
         iconLogo.setText("Icono");
-        pnlEncabezado.add(iconLogo, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        pnlEncabezado.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        pnlEncabezado.add(iconLogo, new GridConstraints(0, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        pnlEncabezado.add(spacer1, new GridConstraints(0, 2, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         lblTituloApp = new JLabel();
         lblTituloApp.setText("SISTEMA DE RESERVA DE RECURSOS");
-        pnlEncabezado.add(lblTituloApp, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlEncabezado.add(lblTituloApp, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_SOUTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblSubtituloApp = new JLabel();
         lblSubtituloApp.setText("Escuela de Informática - UNA");
-        pnlEncabezado.add(lblSubtituloApp, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlEncabezado.add(lblSubtituloApp, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblNombreUsuario = new JLabel();
         lblNombreUsuario.setText("Nombre De Usuario");
-        pnlEncabezado.add(lblNombreUsuario, new com.intellij.uiDesigner.core.GridConstraints(0, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlEncabezado.add(lblNombreUsuario, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_SOUTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblBadgeRol = new JLabel();
         lblBadgeRol.setText("ADMINISTRADOR");
-        pnlEncabezado.add(lblBadgeRol, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        pnlEncabezado.add(btnCuenta, new com.intellij.uiDesigner.core.GridConstraints(0, 4, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        VentanaPrincipal.add(BarraSuperior, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlEncabezado.add(lblBadgeRol, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_NORTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlEncabezado.add(btnCuenta, new GridConstraints(0, 4, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        VentanaPrincipal.add(BarraSuperior, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -239,4 +249,5 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
     public JComponent $$$getRootComponent$$$() {
         return VentanaPrincipal;
     }
+
 }

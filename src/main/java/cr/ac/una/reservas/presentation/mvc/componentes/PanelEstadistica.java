@@ -173,14 +173,9 @@ public class PanelEstadistica<T> implements CambioTemaListener {
         return envoltorio;
     }
 
-    // ------------------------------------------------------------------
-    // Datos de los filtros
-    // ------------------------------------------------------------------
-
     public LocalDate obtenerFechaDesde() {
         return convertir((Date) spinnerDesdeReal.getValue());
     }
-
     public LocalDate obtenerFechaHasta() {
         return convertir((Date) spinnerHastaReal.getValue());
     }
@@ -189,12 +184,8 @@ public class PanelEstadistica<T> implements CambioTemaListener {
         return valor.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    // ------------------------------------------------------------------
-    // Datos mostrados
-    // ------------------------------------------------------------------
 
     private List<T> ultimasFilas = List.of();
-
     public void mostrarDatos(List<T> filas) {
         this.ultimasFilas = filas;
         redibujarGrafico();
@@ -216,18 +207,12 @@ public class PanelEstadistica<T> implements CambioTemaListener {
         graficoBarrasReal.setDatos(entradasGrafico);
     }
 
-    // ------------------------------------------------------------------
-    // Enganches de eventos
-    // ------------------------------------------------------------------
-
     public void alCargar(Runnable accion) {
         botonCargarReal.alHacerClick(accion);
     }
-
     public void alCargar(BiConsumer<LocalDate, LocalDate> accion) {
         alCargar(() -> accion.accept(obtenerFechaDesde(), obtenerFechaHasta()));
     }
-
     public JPanel obtenerPanel() {
         return panelRaiz;
     }
@@ -236,7 +221,6 @@ public class PanelEstadistica<T> implements CambioTemaListener {
     public void onCambioTema(Tema tema) {
         aplicarTema(tema);
     }
-
     private void aplicarTema(Tema tema) {
         if (lblEtiquetaDesde != null) {
             lblEtiquetaDesde.setForeground(tema.colorTextoSecundario());

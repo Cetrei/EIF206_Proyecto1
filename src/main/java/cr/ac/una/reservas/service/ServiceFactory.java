@@ -7,6 +7,7 @@ public final class ServiceFactory {
     private static final FuncionarioService FUNCIONARIO_SERVICE = new FuncionarioService();
     private static final AutenticacionService AUTENTICACION_SERVICE = new AutenticacionService();
     private static final EstadisticaService ESTADISTICA_SERVICE = new EstadisticaService();
+    private static final ConfiguracionIaService CONFIGURACION_IA_SERVICE = new ConfiguracionIaService();
 
     private ServiceFactory() {
     }
@@ -33,5 +34,9 @@ public final class ServiceFactory {
 
     public static EstadisticaService obtenerEstadisticaService() {
         return ESTADISTICA_SERVICE;
+    }
+
+    public static ConfiguracionIaService obtenerConfiguracionIaService() {
+        return CONFIGURACION_IA_SERVICE;
     }
 }

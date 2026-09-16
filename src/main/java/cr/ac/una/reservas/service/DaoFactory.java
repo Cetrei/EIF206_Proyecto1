@@ -6,6 +6,8 @@ import cr.ac.una.reservas.persistence.AdministradorDao;
 import cr.ac.una.reservas.persistence.AdministradorDaoXml;
 import cr.ac.una.reservas.persistence.CategoriaDao;
 import cr.ac.una.reservas.persistence.CategoriaDaoXml;
+import cr.ac.una.reservas.persistence.ConfiguracionIaDao;
+import cr.ac.una.reservas.persistence.ConfiguracionIaDaoXml;
 import cr.ac.una.reservas.persistence.FuncionarioDao;
 import cr.ac.una.reservas.persistence.FuncionarioDaoXml;
 import cr.ac.una.reservas.persistence.RecursoDao;
@@ -28,6 +30,8 @@ public final class DaoFactory {
             new RecursoDaoXml(DIRECTORIO_DATOS + "/recursos.xml");
     private static final ReservaDao RESERVA_DAO =
             new ReservaDaoXml(DIRECTORIO_DATOS + "/reservas.xml");
+    private static final ConfiguracionIaDao CONFIGURACION_IA_DAO =
+            new ConfiguracionIaDaoXml(DIRECTORIO_DATOS + "/configuracion-ia.xml");
 
     static {
         new File(DIRECTORIO_DATOS).mkdirs();
@@ -55,6 +59,10 @@ public final class DaoFactory {
 
     public static ReservaDao obtenerReservaDao() {
         return RESERVA_DAO;
+    }
+
+    public static ConfiguracionIaDao obtenerConfiguracionIaDao() {
+        return CONFIGURACION_IA_DAO;
     }
 
     private static void sembrarUsuariosDePrueba() {

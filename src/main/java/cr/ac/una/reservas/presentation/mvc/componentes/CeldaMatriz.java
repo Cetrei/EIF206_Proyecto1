@@ -1,5 +1,7 @@
 package cr.ac.una.reservas.presentation.mvc.componentes;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import cr.ac.una.reservas.presentation.mvc.tema.CambioTemaListener;
 import cr.ac.una.reservas.presentation.mvc.tema.GestorTema;
 import cr.ac.una.reservas.presentation.mvc.tema.Tema;
@@ -74,13 +76,13 @@ public class CeldaMatriz implements CambioTemaListener {
      */
     private void $$$setupUI$$$() {
         createUIComponents();
-        CeldaMatriz.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(4, 6, 4, 6), -1, 2));
+        CeldaMatriz.setLayout(new GridLayoutManager(2, 1, new Insets(4, 6, 4, 6), -1, 2));
         lblTextoPrincipal = new JLabel();
         lblTextoPrincipal.setText("Actividad");
-        CeldaMatriz.add(lblTextoPrincipal, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CeldaMatriz.add(lblTextoPrincipal, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblTextoSecundario = new JLabel();
         lblTextoSecundario.setText("(Detalle)");
-        CeldaMatriz.add(lblTextoSecundario, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CeldaMatriz.add(lblTextoSecundario, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -89,4 +91,5 @@ public class CeldaMatriz implements CambioTemaListener {
     public JComponent $$$getRootComponent$$$() {
         return CeldaMatriz;
     }
+
 }

@@ -79,4 +79,19 @@
         </idsRecursosAsignados>
         <estado>ACTIVA</estado>
     </reserva>
+    <reserva>
+        <id>RES-000006</id>
+        <idFuncionario>123</idFuncionario>
+        <actividad>trabajo</actividad>
+        <fecha>2026-09-16</fecha>
+        <horaInicio>07:00</horaInicio>
+        <horaFin>23:59</horaFin>
+        <idsCategoriasRequeridas>
+            <idCategoria>CAT-000002</idCategoria>
+        </idsCategoriasRequeridas>
+        <idsRecursosAsignados>
+            <idRecurso>238715</idRecurso>
+        </idsRecursosAsignados>
+        <estado>CANCELADA</estado>
+    </reserva>
 </reservas>

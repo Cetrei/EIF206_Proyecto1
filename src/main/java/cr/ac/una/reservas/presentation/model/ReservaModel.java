@@ -25,7 +25,7 @@ public class ReservaModel extends AbstractModel {
     public void setCategoriasDisponibles(List<Categoria> nuevaLista) {
         List<Categoria> anterior = this.categoriasDisponibles;
         this.categoriasDisponibles = nuevaLista;
-        notificarCambio(PROP_CATEGORIAS_DISPONIBLES, anterior, nuevaLista);
+        notificarCambioForzado(PROP_CATEGORIAS_DISPONIBLES, anterior, nuevaLista);
     }
 
     public List<Reserva> getReservas() {
@@ -35,7 +35,7 @@ public class ReservaModel extends AbstractModel {
     public void setReservas(List<Reserva> nuevaLista) {
         List<Reserva> anterior = this.reservas;
         this.reservas = nuevaLista;
-        notificarCambio(PROP_RESERVAS, anterior, nuevaLista);
+        notificarCambioForzado(PROP_RESERVAS, anterior, nuevaLista);
     }
 
     public Reserva getReservaSeleccionada() {

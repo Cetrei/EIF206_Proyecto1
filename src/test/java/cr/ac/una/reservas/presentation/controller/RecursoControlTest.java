@@ -34,12 +34,6 @@ class RecursoControlTest {
         );
     }
 
-    // No se construye la Vista real (TabRecursos) porque hoy depende de $$$setupUI$$$(),
-    // generado por el GUI Designer de IntelliJ solo mientras el .form exista: fuera de ese
-    // runtime, createUIComponents() nunca se llama y sus campos quedan null. Esto se resuelve
-    // exportando los .form a codigo plano (ver TODO.md); mientras tanto, la excepcion de la
-    // Vista al llegar a null no puede confundirse con un rechazo de ReglaDeNegocioException,
-    // que es lo unico que esta prueba necesita verificar.
     @Test
     void noRechazaPorRolSiElUsuarioEsAdministrador() {
         SesionControl.obtenerInstancia().iniciarSesion(new Administrador("admin", "admin"));
@@ -53,7 +47,6 @@ class RecursoControlTest {
         } catch (ReglaDeNegocioException excepcionDeRol) {
             throw new AssertionError("No deberia rechazar por rol a un administrador.", excepcionDeRol);
         } catch (RuntimeException otraExcepcion) {
-            // Se espera NullPointerException por la Vista null; no es lo que esta prueba verifica.
         }
     }
 }
