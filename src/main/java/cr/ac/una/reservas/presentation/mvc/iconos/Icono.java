@@ -22,7 +22,9 @@ public enum Icono {
     BORRADOR('\uf12d'),
     CERRAR('\uf00d'),
     NUBE('\uf0c2'),
-    CHIP('\uf2db');
+    CHIP('\uf2db'),
+    SOL('\uf185'),
+    LUNA('\uf186');
 
     private final char codigo;
 

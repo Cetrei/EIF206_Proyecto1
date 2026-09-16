@@ -29,7 +29,10 @@ public enum IconoSemantico {
     RAYO(Icono.RAYO),
 
     IA_GEMINI(Icono.NUBE),
-    IA_LOCAL(Icono.CHIP);
+    IA_LOCAL(Icono.CHIP),
+
+    TEMA_CLARO(Icono.SOL),
+    TEMA_OSCURO(Icono.LUNA);
 
     private final Icono icono;
 

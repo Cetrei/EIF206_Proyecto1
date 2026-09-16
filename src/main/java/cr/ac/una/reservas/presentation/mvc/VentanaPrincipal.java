@@ -5,12 +5,15 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import cr.ac.una.reservas.presentation.mvc.componentes.BarraSuperior;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonIcono;
+import cr.ac.una.reservas.presentation.mvc.iconos.Icono;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoSemantico;
 import cr.ac.una.reservas.presentation.mvc.iconos.IconoAplicador;
 import cr.ac.una.reservas.presentation.model.VentanaPrincipalModel;
 import cr.ac.una.reservas.presentation.mvc.tema.CambioTemaListener;
 import cr.ac.una.reservas.presentation.mvc.tema.GestorTema;
 import cr.ac.una.reservas.presentation.mvc.tema.Tema;
+import cr.ac.una.reservas.presentation.mvc.tema.TemaClaro;
+import cr.ac.una.reservas.presentation.mvc.tema.TemaOscuro;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,6 +30,7 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
     private JLabel lblTituloApp;
     private JLabel lblSubtituloApp;
     private JPanel btnCuenta;
+    private JPanel btnTema;
     private JLabel lblNombreUsuario;
     private JLabel lblBadgeRol;
     private JPanel pnlFuncionarios;
@@ -40,6 +44,7 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
     private JPanel BarraSuperior;
 
     private BotonIcono botonCuentaReal;
+    private BotonIcono botonTemaReal;
     private BarraSuperior barraSuperiorReal;
 
     public VentanaPrincipal(VentanaPrincipalModel modelo) {
@@ -57,8 +62,26 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
         botonCuentaReal.setTamano(28, 28);
         btnCuenta = botonCuentaReal.obtenerPanel();
 
+        botonTemaReal = new BotonIcono();
+        botonTemaReal.setIcono(iconoParaCambiarA(GestorTema.obtenerInstancia().temaActivo()));
+        botonTemaReal.setTamano(28, 28);
+        botonTemaReal.alHacerClick(this::alternarTema);
+        btnTema = botonTemaReal.obtenerPanel();
+
         barraSuperiorReal = new BarraSuperior();
         BarraSuperior = barraSuperiorReal.obtenerPanel();
+    }
+
+    private void alternarTema() {
+        Tema temaActivo = GestorTema.obtenerInstancia().temaActivo();
+        Tema nuevoTema = temaActivo instanceof TemaOscuro ? new TemaClaro() : new TemaOscuro();
+        GestorTema.obtenerInstancia().establecerTema(nuevoTema);
+    }
+
+    private Icono iconoParaCambiarA(Tema temaActivo) {
+        return temaActivo instanceof TemaOscuro
+                ? IconoSemantico.TEMA_CLARO.icono()
+                : IconoSemantico.TEMA_OSCURO.icono();
     }
 
     private void mostrarUsuario(String nombre, String rolTexto) {
@@ -171,6 +194,8 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
         tbpVentanas.setFont(tema.fuenteTexto());
         tbpVentanas.setBorder(new LineBorder(tema.colorBorde(), 1));
 
+        botonTemaReal.setIcono(iconoParaCambiarA(tema));
+
         VentanaPrincipal.repaint();
     }
 
@@ -220,7 +245,7 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
         pnlConfiguracionIa.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tbpVentanas.addTab("Configuracion IA", pnlConfiguracionIa);
         pnlEncabezado = new JPanel();
-        pnlEncabezado.setLayout(new GridLayoutManager(2, 5, new Insets(0, 0, 0, 0), -1, 0));
+        pnlEncabezado.setLayout(new GridLayoutManager(2, 6, new Insets(0, 0, 0, 0), -1, 0));
         VentanaPrincipal.add(pnlEncabezado, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         iconLogo = new JLabel();
         iconLogo.setText("Icono");
@@ -240,6 +265,7 @@ public class VentanaPrincipal implements CambioTemaListener, PropertyChangeListe
         lblBadgeRol.setText("ADMINISTRADOR");
         pnlEncabezado.add(lblBadgeRol, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_NORTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pnlEncabezado.add(btnCuenta, new GridConstraints(0, 4, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pnlEncabezado.add(btnTema, new GridConstraints(0, 5, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         VentanaPrincipal.add(BarraSuperior, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
