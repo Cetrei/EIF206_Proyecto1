@@ -122,7 +122,8 @@ public class LoginPanel implements CambioTemaListener, PropertyChangeListener {
     public JPanel obtenerPanel() {
         if (envoltorio == null) {
             envoltorio = new JPanel(new BorderLayout());
-            envoltorio.setOpaque(false);
+            envoltorio.setOpaque(true);
+            envoltorio.setBackground(GestorTema.obtenerInstancia().temaActivo().colorFondoVentana());
             envoltorio.add(barraSuperiorReal.obtenerPanel(), BorderLayout.NORTH);
             envoltorio.add(VentanaPrincipal, BorderLayout.CENTER);
         }
@@ -146,6 +147,10 @@ public class LoginPanel implements CambioTemaListener, PropertyChangeListener {
     }
 
     private void aplicarTema(Tema tema) {
+        if (envoltorio != null) {
+            envoltorio.setBackground(tema.colorFondoVentana());
+        }
+
         VentanaPrincipal.setBackground(tema.colorFondoVentana());
 
         pnlTarjeta.setBackground(tema.colorFondoTarjeta());
