@@ -17,7 +17,6 @@ public final class GeneracionReporteControl {
     private GeneracionReporteControl() {
     }
 
-    // Si el usuario cancela el JFileChooser, no hace nada (cancelar no es una falla).
     @SuppressWarnings("unchecked")
     public static <T> void generarYGuardar(
             Frame ventanaPropietaria,
@@ -45,7 +44,6 @@ public final class GeneracionReporteControl {
                     ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo generar el reporte", excepcion.getMessage()
             );
         } catch (IllegalStateException excepcion) {
-            // ReporteFactory.obtenerGenerador lanza esto cuando ese TipoReporte aun no tiene un ReporteXxx implementado.
             Popup.mostrarAviso(
                     ventanaPropietaria,
                     Popup.Tipo.INFORMACION,

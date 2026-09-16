@@ -26,7 +26,6 @@ public class EstadisticaService {
         this(DaoFactory.obtenerReservaDao(), DaoFactory.obtenerRecursoDao(), DaoFactory.obtenerCategoriaDao());
     }
 
-    // Constructor para pruebas: permite inyectar Dao falsos.
     public EstadisticaService(ReservaDao reservaDao, RecursoDao recursoDao, CategoriaDao categoriaDao) {
         this.reservaDao = reservaDao;
         this.recursoDao = recursoDao;

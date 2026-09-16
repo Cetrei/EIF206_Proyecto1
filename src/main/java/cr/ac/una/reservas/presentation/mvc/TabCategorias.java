@@ -154,10 +154,6 @@ public class TabCategorias implements CambioTemaListener, PropertyChangeListener
         TarjetaTabla = tarjetaTablaReal.obtenerPanel();
     }
 
-    // ------------------------------------------------------------------
-    // Datos del formulario (Datos de la Categoria)
-    // ------------------------------------------------------------------
-
     public String obtenerId() {
         return campoIdReal.obtenerTexto();
     }
@@ -179,11 +175,6 @@ public class TabCategorias implements CambioTemaListener, PropertyChangeListener
         mostrarDescripcion("");
     }
 
-    // ------------------------------------------------------------------
-    // Tabla de categorias
-    // ------------------------------------------------------------------
-
-    // La columna ACCIONES va vacia: TablaDatos no soporta botones embebidos, la fila completa es clickeable via alSeleccionarFila.
     private void mostrarCategorias(List<Categoria> categorias) {
         categoriasMostradas = categorias;
         List<List<Object>> filas = new ArrayList<>();
@@ -196,10 +187,6 @@ public class TabCategorias implements CambioTemaListener, PropertyChangeListener
     public String obtenerTextoBusqueda() {
         return campoBuscarReal.obtenerTexto();
     }
-
-    // ------------------------------------------------------------------
-    // Enganches de eventos
-    // ------------------------------------------------------------------
 
     public void alGuardar(Runnable accion) {
         botonGuardarReal.alHacerClick(accion);

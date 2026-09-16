@@ -114,12 +114,6 @@ public class Popup implements CambioTemaListener {
         lblMensajePopup.setText("<html><body style='width: 220px'>" + mensaje + "</body></html>");
     }
 
-    /**
-     * Reemplaza los botones del popup. El primero marcado esPrincipal usa
-     * BotonPrimario, el resto BotonSecundario. Si no se llama, el popup
-     * queda sin botones (uso poco comun, normalmente se agrega al menos
-     * un boton de cierre).
-     */
     public void setAcciones(List<AccionPopup> acciones) {
         pnlBotonesPopup.removeAll();
         for (AccionPopup accionPopup : acciones) {
@@ -148,9 +142,6 @@ public class Popup implements CambioTemaListener {
         return boton.obtenerPanel();
     }
 
-    /**
-     * Atajo para el caso mas comun: un aviso con un unico boton "Aceptar".
-     */
     public static void mostrarAviso(Frame propietario, Tipo tipo, String titulo, String mensaje) {
         Popup popup = new Popup(propietario);
         popup.setTipo(tipo);

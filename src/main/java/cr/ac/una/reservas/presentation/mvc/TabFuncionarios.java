@@ -163,10 +163,6 @@ public class TabFuncionarios implements CambioTemaListener, PropertyChangeListen
         TarjetaTabla = tarjetaTablaReal.obtenerPanel();
     }
 
-    // ------------------------------------------------------------------
-    // Datos del formulario (Datos del Funcionario)
-    // ------------------------------------------------------------------
-
     public String obtenerId() {
         return campoIdReal.obtenerTexto();
     }
@@ -197,10 +193,6 @@ public class TabFuncionarios implements CambioTemaListener, PropertyChangeListen
         mostrarTelefono("");
     }
 
-    // ------------------------------------------------------------------
-    // Tabla de funcionarios
-    // ------------------------------------------------------------------
-
     private void mostrarFuncionarios(List<Funcionario> funcionarios) {
         funcionariosMostrados = funcionarios;
         List<List<Object>> filas = new ArrayList<>();
@@ -218,10 +210,6 @@ public class TabFuncionarios implements CambioTemaListener, PropertyChangeListen
     public String obtenerTextoBusqueda() {
         return campoBuscarReal.obtenerTexto();
     }
-
-    // ------------------------------------------------------------------
-    // Enganches de eventos
-    // ------------------------------------------------------------------
 
     public void alGuardar(Runnable accion) {
         botonGuardarReal.alHacerClick(accion);

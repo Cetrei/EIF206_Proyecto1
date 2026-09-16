@@ -17,9 +17,6 @@ public class AutenticacionService {
         this(DaoFactory.obtenerAdministradorDao(), DaoFactory.obtenerFuncionarioDao());
     }
 
-    // Constructor para pruebas de unidad: permite inyectar Dao falsos
-    // en vez de los reales de DaoFactory (ver docs/07_convenciones.md,
-    // seccion Pruebas).
     public AutenticacionService(AdministradorDao administradorDao, FuncionarioDao funcionarioDao) {
         this.administradorDao = administradorDao;
         this.funcionarioDao = funcionarioDao;

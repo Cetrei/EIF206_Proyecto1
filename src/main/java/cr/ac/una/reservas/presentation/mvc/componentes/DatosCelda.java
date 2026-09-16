@@ -15,10 +15,6 @@ public class DatosCelda {
         this.color = color;
     }
 
-    /**
-     * Construye una celda con varias entradas apiladas
-     * Como varias actividades programadas en la misma franja horaria del mismo dia
-     */
     public static DatosCelda apilada(List<String[]> lineas, Color color) {
         StringBuilder principal = new StringBuilder("<html>");
         StringBuilder secundario = new StringBuilder("<html>");

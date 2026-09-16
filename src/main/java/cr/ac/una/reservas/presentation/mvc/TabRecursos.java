@@ -61,7 +61,6 @@ public class TabRecursos implements CambioTemaListener, PropertyChangeListener {
     private BotonIcono botonLimpiarReal;
     private BotonSecundario botonReporteReal;
 
-    // Representa "-- Todas las Categorías --" en comboFiltroCategoriaReal
     private static final Categoria TODAS_LAS_CATEGORIAS = new Categoria(null, "-- Todas las Categorías --");
 
     public TabRecursos(RecursoModel modelo) {
@@ -180,7 +179,6 @@ public class TabRecursos implements CambioTemaListener, PropertyChangeListener {
         TarjetaTabla = tarjetaTablaReal.obtenerPanel();
     }
 
-    // El renderer muestra la descripcion, no Categoria.toString() (pensado para debug/logs).
     private JComboBox<Categoria> crearComboCategorias() {
         JComboBox<Categoria> combo = new JComboBox<>();
         combo.setRenderer(new DefaultListCellRenderer() {
@@ -213,10 +211,6 @@ public class TabRecursos implements CambioTemaListener, PropertyChangeListener {
         return envoltorio;
     }
 
-    // ------------------------------------------------------------------
-    // Datos del formulario (Detalles del Recurso)
-    // ------------------------------------------------------------------
-
     public String obtenerId() {
         return campoIdReal.obtenerTexto();
     }
@@ -242,7 +236,6 @@ public class TabRecursos implements CambioTemaListener, PropertyChangeListener {
         campoDescripcionReal.mostrarValor(descripcion);
     }
 
-    // Actualiza ambos combos (formulario y filtro); el de filtro agrega ademas "-- Todas las Categorias --".
     private void cargarCategorias(List<Categoria> categorias) {
         Categoria seleccionActualDetalle = obtenerCategoriaSeleccionada();
         comboCategoriaReal.setModel(new DefaultComboBoxModel<>(categorias.toArray(new Categoria[0])));
@@ -264,10 +257,6 @@ public class TabRecursos implements CambioTemaListener, PropertyChangeListener {
         comboCategoriaReal.setSelectedItem(null);
         mostrarDescripcion("");
     }
-
-    // ------------------------------------------------------------------
-    // Tabla de recursos
-    // ------------------------------------------------------------------
 
     private void mostrarRecursos(List<Recurso> recursos) {
         recursosMostrados = recursos;
@@ -292,10 +281,6 @@ public class TabRecursos implements CambioTemaListener, PropertyChangeListener {
     public String obtenerTextoBusqueda() {
         return campoBuscarReal.obtenerTexto();
     }
-
-    // ------------------------------------------------------------------
-    // Enganches de eventos
-    // ------------------------------------------------------------------
 
     public void alGuardar(Runnable accion) {
         botonGuardarReal.alHacerClick(accion);

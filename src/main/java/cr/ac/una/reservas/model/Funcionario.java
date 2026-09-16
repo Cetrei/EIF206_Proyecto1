@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-// La clave inicial se fija igual al id en FuncionarioService.crear
 @XmlRootElement(name = "funcionario")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Funcionario extends Usuario {

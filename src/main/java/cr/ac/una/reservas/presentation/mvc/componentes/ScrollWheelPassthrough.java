@@ -16,7 +16,6 @@ public final class ScrollWheelPassthrough {
             boolean puedeBajar = evento.getWheelRotation() > 0
                     && barra.getValue() < barra.getMaximum() - barra.getVisibleAmount();
             if (puedeSubir || puedeBajar) {
-                // Todavia hay recorrido en la direccion que se esta girando
                 return;
             }
             Container padre = scrollAnidado.getParent();

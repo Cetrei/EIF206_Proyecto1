@@ -9,33 +9,25 @@ public enum IconoSemantico {
     EDITAR(Icono.EDITAR),
     AGREGAR(Icono.MAS),
 
-    // Cuenta / sesion.
     USUARIO(Icono.USUARIO),
     CONTRASENA(Icono.CANDADO),
     CERRAR_SESION(Icono.SALIR),
     AJUSTES_CUENTA(Icono.AJUSTES),
 
-    // Chrome de ventana (BarraSuperior, popups).
     CERRAR_VENTANA(Icono.CERRAR),
 
-    // Identidad de marca (LoginPanel, encabezado de VentanaPrincipal).
     LOGO_APP(Icono.CALENDARIO),
 
-    // Reportes / estadisticas.
     REPORTE_PDF(Icono.PDF),
     GRAFICO(Icono.GRAFICO),
 
-    // Estados / feedback (Popup, validaciones).
     INFO(Icono.INFO),
     ALERTA(Icono.ALERTA),
 
-    // Categorizacion generica (encabezados de Tarjeta por tema).
     ETIQUETA(Icono.ETIQUETA),
     CAJA(Icono.CAJA),
     RAYO(Icono.RAYO),
 
-    // Estado del asistente de IA (TabReservas): indica si la ultima extraccion
-    // uso el modelo de Gemini o el modo basico de respaldo por reglas.
     IA_GEMINI(Icono.NUBE),
     IA_LOCAL(Icono.CHIP);
 

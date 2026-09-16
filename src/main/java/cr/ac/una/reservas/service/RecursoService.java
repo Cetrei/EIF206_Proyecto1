@@ -16,7 +16,6 @@ public class RecursoService {
         this(DaoFactory.obtenerRecursoDao(), DaoFactory.obtenerCategoriaDao());
     }
 
-    // Constructor para pruebas: permite inyectar Dao falsos.
     public RecursoService(RecursoDao recursoDao, CategoriaDao categoriaDao) {
         this.recursoDao = recursoDao;
         this.categoriaDao = categoriaDao;

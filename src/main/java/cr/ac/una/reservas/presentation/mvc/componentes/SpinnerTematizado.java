@@ -76,7 +76,7 @@ public final class SpinnerTematizado {
             setContentAreaFilled(false);
             setBorderPainted(false);
             setFocusPainted(false);
-            setRolloverEnabled(true); // anim al pasar/click del mouse
+            setRolloverEnabled(true);
             getModel().addChangeListener(evento -> repaint());
         }
 

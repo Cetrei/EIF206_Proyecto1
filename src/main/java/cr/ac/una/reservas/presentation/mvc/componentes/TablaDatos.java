@@ -59,7 +59,6 @@ public class TablaDatos implements CambioTemaListener {
 
         panelTabla = new JScrollPane(tabla);
         panelTabla.setBorder(BorderFactory.createEmptyBorder());
-        // Sin esto, esta tabla atrapaba el scroll de la rueda del mouse en cualquier pestana que la use (ver ScrollWheelPassthrough).
         ScrollWheelPassthrough.instalar(panelTabla);
     }
 
@@ -133,7 +132,6 @@ public class TablaDatos implements CambioTemaListener {
         encabezado.setForeground(tema.colorTextoSecundario());
         encabezado.setFont(tema.fuenteTexto());
         encabezado.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, tema.colorBorde()));
-        // Renderer propio: el nativo de Metal ignora el borde por celda y recalcula el suyo, dejando lineas blancas.
         encabezado.setDefaultRenderer(new EncabezadoOrdenableRenderer(tema));
 
         panelTabla.getViewport().setBackground(fondo);

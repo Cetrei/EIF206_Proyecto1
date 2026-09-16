@@ -17,7 +17,6 @@ public class FuncionarioService {
         this(DaoFactory.obtenerFuncionarioDao(), DaoFactory.obtenerReservaDao());
     }
 
-    // Constructor para pruebas: permite inyectar Dao falsos.
     public FuncionarioService(FuncionarioDao funcionarioDao, ReservaDao reservaDao) {
         this.funcionarioDao = funcionarioDao;
         this.reservaDao = reservaDao;

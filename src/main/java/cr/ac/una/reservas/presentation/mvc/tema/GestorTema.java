@@ -37,9 +37,6 @@ public final class GestorTema {
         listeners.remove(listener);
     }
 
-    /**
-     * Sobreescribe las claves de UIManager que Swing usa para pintar
-     */
     public static void aplicarUIManager(Tema tema) {
         UIManager.put("TabbedPane.contentAreaColor", tema.colorFondoVentana());
         UIManager.put("TabbedPane.background", tema.colorFondoVentana());
@@ -55,7 +52,6 @@ public final class GestorTema {
         UIManager.put("TabbedPane.focus", tema.colorPrimario());
         UIManager.put("TabbedPane.tabAreaBackground", tema.colorFondoVentana());
         UIManager.put("TabbedPane.tabsOverlapBorder", false);
-        // Insets mas bajos que el default de Metal, para que las pestanas se vean delgadas
         UIManager.put("TabbedPane.tabInsets", new java.awt.Insets(5, 12, 5, 12));
         UIManager.put("TabbedPane.contentBorderInsets", new java.awt.Insets(2, 0, 0, 0));
         UIManager.put("TabbedPane.font", tema.fuenteTexto());
@@ -80,7 +76,6 @@ public final class GestorTema {
 
         UIManager.put("Viewport.background", tema.colorFondoVentana());
 
-        // Evitaa que los looks and feel defaults dejen bordes que arruinen la interfaaz
         UIManager.put("Panel.border", new EmptyBorder(0, 0, 0, 0));
     }
 }

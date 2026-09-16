@@ -18,7 +18,6 @@ public class Recurso {
     @XmlElement(name = "descripcion")
     private String descripcion;
 
-    // No se serializa: la resuelve service a partir de idCategoria.
     @XmlTransient
     private Categoria categoria;
 
@@ -54,7 +53,6 @@ public class Recurso {
     public Categoria getCategoria() {
         return categoria;
     }
-    // Tambien actualiza idCategoria para mantenerlos consistentes.
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
         if (categoria != null) {

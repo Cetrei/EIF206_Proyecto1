@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
-// El id se autogenera en CategoriaService
 @XmlRootElement(name = "categoria")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Categoria {

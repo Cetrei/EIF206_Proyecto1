@@ -26,10 +26,6 @@ public class ProgramacionActividadStrategy implements MatrizFillStrategy {
     private final List<List<Reserva>> reservasPorDia;
     private final Consumer<Reserva> alHacerClickActividad;
 
-    /**
-     * @param reservaService usado para listar las reservas activas de cada dia de la semana que contiene fechaReferencia.
-     * @param fechaReferencia cualquier fecha dentro de la semana a mostrar; se normaliza al lunes de esa semana.
-     */
     public ProgramacionActividadStrategy(
             ReservaService reservaService,
             LocalDate fechaReferencia,

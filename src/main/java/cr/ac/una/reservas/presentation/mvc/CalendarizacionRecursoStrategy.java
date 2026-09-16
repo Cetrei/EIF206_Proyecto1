@@ -22,13 +22,6 @@ public class CalendarizacionRecursoStrategy implements MatrizFillStrategy {
     private final List<Reserva> reservasDelDia;
     private final BiConsumer<Recurso, Reserva> alHacerClickCeldaOcupada;
 
-    /**
-     * @param recursoService usado solo para listar los recursos de la categoria elegida (las columnas de la matriz).
-     * @param reservaService usado para listar las reservas activas ya existentes en la fecha elegida y resolver que
-     * celdas estan ocupadas.
-     * @param categoria categoria cuyos recursos se muestran como columnas; si es  null, la matriz queda sin columnas.
-     * @param fecha fecha consultada; si es null, no se considera ninguna reserva ocupando celdas.
-     */
     public CalendarizacionRecursoStrategy(
             RecursoService recursoService,
             ReservaService reservaService,

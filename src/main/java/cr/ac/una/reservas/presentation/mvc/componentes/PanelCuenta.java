@@ -34,8 +34,6 @@ public class PanelCuenta implements CambioTemaListener {
     private BotonSecundario botonCambiarContrasenaReal;
     private BotonSecundario botonCerrarSesionReal;
 
-    // Segunda vista ("Cambiar contraseña"), armada enteramente por
-    // codigo dentro de pnlVistas (ver arriba).
     private JPanel pnlVistas;
     private CardLayout layoutVistas;
     private Tarjeta tarjetaClaveReal;
@@ -87,7 +85,6 @@ public class PanelCuenta implements CambioTemaListener {
         armarTarjetaAcciones();
         armarTarjetaClave();
 
-        // pnlVistas sustituye a PanelCuenta como raiz visual
         layoutVistas = new CardLayout();
         pnlVistas = new JPanel(layoutVistas);
         pnlVistas.setOpaque(false);
@@ -252,7 +249,6 @@ public class PanelCuenta implements CambioTemaListener {
 
     private void aplicarTema(Tema tema) {
         if (lblTitulo == null || txtNombre == null) {
-            // Puede dispararse antes de tiempo por el listener de tema que Tarjeta/BotonPrimario/BotonSecundario registran en sus propios constructores, ejecutados dentro de createUIComponents() de este panel.
             return;
         }
 

@@ -163,7 +163,6 @@ public final class EscritorPdfBasico {
                 paginas.add(paginaActual);
                 paginaActual = new ArrayList<>();
                 altoUsado = 0f;
-                // Repite el encabezado de tabla al inicio de la pagina
                 if (lineaEncabezadoTabla != null) {
                     paginaActual.add(lineaEncabezadoTabla);
                     altoUsado += Float.parseFloat(lineaEncabezadoTabla[2]);
@@ -189,11 +188,10 @@ public final class EscritorPdfBasico {
 
     private static byte[] construirDocumento(List<List<String[]>> paginas) {
         List<byte[]> objetos = new ArrayList<>();
-        // El objeto 1 (Catalog) y el 2 (Pages) se agregan al final,
-        objetos.add(null); // 1: Catalog (se completa mas abajo)
-        objetos.add(null); // 2: Pages (se completa mas abajo)
-        objetos.add(objetoFuente(3)); // 3: fuente normal (Helvetica)
-        objetos.add(objetoFuenteNegrita(4)); // 4: fuente en negrita (Helvetica-Bold)
+        objetos.add(null);
+        objetos.add(null);
+        objetos.add(objetoFuente(3));
+        objetos.add(objetoFuenteNegrita(4));
 
         List<Integer> numerosObjetoPagina = new ArrayList<>();
         List<Integer> numerosObjetoContenido = new ArrayList<>();
@@ -397,7 +395,7 @@ public final class EscritorPdfBasico {
         }
 
         int offsetXref = documento.size();
-        int totalObjetos = objetos.size() + 1; // +1 por el objeto 0 reservado del formato PDF.
+        int totalObjetos = objetos.size() + 1;
         StringBuilder xref = new StringBuilder();
         xref.append("xref\n0 ").append(totalObjetos).append('\n');
         xref.append("0000000000 65535 f \n");
