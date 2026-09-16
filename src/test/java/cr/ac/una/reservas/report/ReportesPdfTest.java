@@ -1,6 +1,8 @@
 package cr.ac.una.reservas.report;
 
 import cr.ac.una.reservas.model.Categoria;
+import cr.ac.una.reservas.model.EstadisticaCategoria;
+import cr.ac.una.reservas.model.EstadisticaSemana;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -111,6 +114,44 @@ public class ReportesPdfTest {
         );
 
         verificarPdf(archivo);
+    }
+
+    @Test
+    public void generaReporteDeEstadisticasConGraficoDeBarras() throws IOException {
+
+        Path archivo = carpeta.resolve("estadisticas_con_datos.pdf");
+
+        Categoria categoriaSalas = new Categoria("CAT-SALA", "Sala de reuniones");
+        Categoria categoriaProyectores = new Categoria("CAT-PROYECTOR", "Proyector");
+
+        List<EstadisticaCategoria> recursosPorCategoria = List.of(
+                new EstadisticaCategoria(categoriaSalas, 3L),
+                new EstadisticaCategoria(categoriaProyectores, 5L)
+        );
+
+        List<EstadisticaSemana> actividadesPorSemana = List.of(
+                new EstadisticaSemana(LocalDate.of(2026, 8, 3), 2L),
+                new EstadisticaSemana(LocalDate.of(2026, 8, 10), 4L)
+        );
+
+        DatosReporteEstadisticas datos = new DatosReporteEstadisticas(
+                recursosPorCategoria,
+                "01/08/2026 al 15/08/2026",
+                actividadesPorSemana,
+                "01/08/2026 al 15/08/2026"
+        );
+
+        new ReporteEstadisticas().generar(
+                archivo.toString(),
+                List.of(datos),
+                Map.of("subtitulo", "Prueba con datos y gráfico")
+        );
+
+        verificarPdf(archivo);
+
+        String contenido = new String(Files.readAllBytes(archivo), StandardCharsets.ISO_8859_1);
+        assertTrue(contenido.contains(" re\nf"), "El PDF no contiene el operador de rectángulo relleno del gráfico");
+        assertTrue(contenido.contains("0.3 0.45 0.85 rg"), "El PDF no contiene el color de barra esperado");
     }
 
     private void verificarPdf(Path archivo) throws IOException {

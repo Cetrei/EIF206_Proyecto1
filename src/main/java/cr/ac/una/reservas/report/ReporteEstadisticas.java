@@ -34,12 +34,20 @@ public class ReporteEstadisticas implements GeneradorReporte<DatosReporteEstadis
 
         List<String> encabezados = List.of("Categoría", "Cantidad");
         List<List<String>> filas = new ArrayList<>();
+        List<String> etiquetasGrafico = new ArrayList<>();
+        List<Double> valoresGrafico = new ArrayList<>();
         for (EstadisticaCategoria fila : datosReporte.getRecursosPorCategoria()) {
             String descripcionCategoria = fila.getCategoria() != null ? fila.getCategoria().getDescripcion() : "";
             filas.add(List.of(valorSeguro(descripcionCategoria), String.valueOf(fila.getCantidad())));
+            etiquetasGrafico.add(valorSeguro(descripcionCategoria));
+            valoresGrafico.add((double) fila.getCantidad());
         }
 
-        return new EscritorPdfBasico.Seccion(subtituloSeccion, new EscritorPdfBasico.Tabla(encabezados, filas));
+        return new EscritorPdfBasico.Seccion(
+                subtituloSeccion,
+                new EscritorPdfBasico.Tabla(encabezados, filas),
+                new EscritorPdfBasico.Grafico(etiquetasGrafico, valoresGrafico)
+        );
     }
 
     private EscritorPdfBasico.Seccion seccionActividades(DatosReporteEstadisticas datosReporte) {
@@ -48,12 +56,20 @@ public class ReporteEstadisticas implements GeneradorReporte<DatosReporteEstadis
 
         List<String> encabezados = List.of("Semana", "Cantidad");
         List<List<String>> filas = new ArrayList<>();
+        List<String> etiquetasGrafico = new ArrayList<>();
+        List<Double> valoresGrafico = new ArrayList<>();
         for (EstadisticaSemana fila : datosReporte.getActividadesPorSemana()) {
             String inicioSemana = fila.getInicioSemana() == null ? "" : fila.getInicioSemana().toString();
             filas.add(List.of(valorSeguro(inicioSemana), String.valueOf(fila.getCantidad())));
+            etiquetasGrafico.add(inicioSemana);
+            valoresGrafico.add((double) fila.getCantidad());
         }
 
-        return new EscritorPdfBasico.Seccion(subtituloSeccion, new EscritorPdfBasico.Tabla(encabezados, filas));
+        return new EscritorPdfBasico.Seccion(
+                subtituloSeccion,
+                new EscritorPdfBasico.Tabla(encabezados, filas),
+                new EscritorPdfBasico.Grafico(etiquetasGrafico, valoresGrafico)
+        );
     }
 
     private static boolean esVacio(String texto) {

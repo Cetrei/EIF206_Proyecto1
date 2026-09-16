@@ -30,6 +30,16 @@ public final class EscritorPdfBasico {
     private static final float ALTO_LINEA_FILA = 16f;
     private static final float ESPACIO_ANTES_TABLA = 18f;
 
+    private static final float ALTO_GRAFICO = 150f;
+    private static final float MARGEN_INFERIOR_GRAFICO = 26f;
+    private static final float MARGEN_SUPERIOR_GRAFICO = 14f;
+    private static final float TAMANO_ETIQUETA_GRAFICO = 8.5f;
+    private static final float TAMANO_VALOR_GRAFICO = 8.5f;
+    private static final float FACTOR_RELLENO_BARRA = 0.6f;
+    private static final float COLOR_BARRA_R = 0.30f;
+    private static final float COLOR_BARRA_G = 0.45f;
+    private static final float COLOR_BARRA_B = 0.85f;
+
     private EscritorPdfBasico() {
     }
 
@@ -43,23 +53,39 @@ public final class EscritorPdfBasico {
         }
     }
 
+    public static final class Grafico {
+        private final List<String> etiquetas;
+        private final List<Double> valores;
+
+        public Grafico(List<String> etiquetas, List<Double> valores) {
+            this.etiquetas = etiquetas;
+            this.valores = valores;
+        }
+    }
+
     public static void generar(String rutaDestino, String titulo, String subtitulo, Tabla tabla) {
-        generar(rutaDestino, titulo, subtitulo, List.of(new Seccion(null, tabla)));
+        generar(rutaDestino, titulo, subtitulo, List.of(new Seccion(null, tabla, null)));
     }
 
     public static final class Seccion {
         private final String subtituloSeccion;
         private final Tabla tabla;
+        private final Grafico grafico;
 
         public Seccion(String subtituloSeccion, Tabla tabla) {
+            this(subtituloSeccion, tabla, null);
+        }
+
+        public Seccion(String subtituloSeccion, Tabla tabla, Grafico grafico) {
             this.subtituloSeccion = subtituloSeccion;
             this.tabla = tabla;
+            this.grafico = grafico;
         }
     }
 
     public static void generar(String rutaDestino, String titulo, String subtitulo, List<Seccion> secciones) {
-        List<String[]> lineas = calcularLineasDeTexto(titulo, subtitulo, secciones);
-        List<List<String[]>> paginas = paginar(lineas);
+        List<ElementoPagina> elementos = calcularElementos(titulo, subtitulo, secciones);
+        List<List<ElementoPagina>> paginas = paginar(elementos);
 
         byte[] contenidoPdf = construirDocumento(paginas);
 
@@ -72,52 +98,102 @@ public final class EscritorPdfBasico {
         }
     }
 
-    private static List<String[]> calcularLineasDeTexto(String titulo, String subtitulo, List<Seccion> secciones) {
-        List<String[]> lineas = new ArrayList<>();
-        lineas.add(new String[]{titulo, String.valueOf(TAMANO_TITULO), String.valueOf(ALTO_LINEA_TITULO), "true"});
+    private static List<ElementoPagina> calcularElementos(String titulo, String subtitulo, List<Seccion> secciones) {
+        List<ElementoPagina> elementos = new ArrayList<>();
+        elementos.add(ElementoLinea.texto(titulo, TAMANO_TITULO, ALTO_LINEA_TITULO, true));
         if (subtitulo != null && !subtitulo.isBlank()) {
-            lineas.add(new String[]{
-                    subtitulo, String.valueOf(TAMANO_SUBTITULO), String.valueOf(ALTO_LINEA_SUBTITULO), "false"
-            });
+            elementos.add(ElementoLinea.texto(subtitulo, TAMANO_SUBTITULO, ALTO_LINEA_SUBTITULO, false));
         }
 
         for (Seccion seccion : secciones) {
-            agregarSeccion(lineas, seccion);
+            agregarSeccion(elementos, seccion);
         }
 
-        return lineas;
+        return elementos;
     }
 
-    private static void agregarSeccion(List<String[]> lineas, Seccion seccion) {
+    private static void agregarSeccion(List<ElementoPagina> elementos, Seccion seccion) {
         Tabla tabla = seccion.tabla;
         float[] anchosColumna = calcularAnchosColumna(tabla.encabezados.size());
 
-        lineas.add(new String[]{
-                "\u0000ESPACIO", String.valueOf(ESPACIO_ANTES_TABLA), String.valueOf(ESPACIO_ANTES_TABLA), "false"
-        });
+        elementos.add(ElementoLinea.espacio(ESPACIO_ANTES_TABLA));
         if (seccion.subtituloSeccion != null && !seccion.subtituloSeccion.isBlank()) {
-            lineas.add(new String[]{
-                    seccion.subtituloSeccion, String.valueOf(TAMANO_SUBTITULO_SECCION),
-                    String.valueOf(ALTO_LINEA_SUBTITULO_SECCION), "true"
-            });
+            elementos.add(ElementoLinea.texto(
+                    seccion.subtituloSeccion, TAMANO_SUBTITULO_SECCION, ALTO_LINEA_SUBTITULO_SECCION, true
+            ));
         }
-        lineas.add(new String[]{
-                "\u0000FILA:" + codificarFila(tabla.encabezados, anchosColumna),
-                String.valueOf(TAMANO_ENCABEZADO_TABLA), String.valueOf(ALTO_LINEA_FILA), "true"
-        });
+        elementos.add(ElementoLinea.fila(
+                codificarFila(tabla.encabezados, anchosColumna), TAMANO_ENCABEZADO_TABLA, ALTO_LINEA_FILA, true
+        ));
 
         for (List<String> fila : tabla.filas) {
-            lineas.add(new String[]{
-                    "\u0000FILA:" + codificarFila(fila, anchosColumna),
-                    String.valueOf(TAMANO_CELDA), String.valueOf(ALTO_LINEA_FILA), "false"
-            });
+            elementos.add(ElementoLinea.fila(
+                    codificarFila(fila, anchosColumna), TAMANO_CELDA, ALTO_LINEA_FILA, false
+            ));
         }
 
         if (tabla.filas.isEmpty()) {
-            lineas.add(new String[]{
-                    "(Sin registros para mostrar)",
-                    String.valueOf(TAMANO_CELDA), String.valueOf(ALTO_LINEA_FILA), "false"
-            });
+            elementos.add(ElementoLinea.texto(
+                    "(Sin registros para mostrar)", TAMANO_CELDA, ALTO_LINEA_FILA, false
+            ));
+        }
+
+        if (seccion.grafico != null && !seccion.grafico.etiquetas.isEmpty()) {
+            elementos.add(ElementoLinea.espacio(ESPACIO_ANTES_TABLA));
+            elementos.add(new ElementoGrafico(seccion.grafico));
+        }
+    }
+
+    private interface ElementoPagina {
+        float altura();
+    }
+
+    private static final class ElementoLinea implements ElementoPagina {
+        private final String contenido;
+        private final float tamanoFuente;
+        private final float altoLinea;
+        private final boolean negrita;
+        private final boolean esEspacio;
+        private final boolean esFila;
+
+        private ElementoLinea(String contenido, float tamanoFuente, float altoLinea, boolean negrita,
+                               boolean esEspacio, boolean esFila) {
+            this.contenido = contenido;
+            this.tamanoFuente = tamanoFuente;
+            this.altoLinea = altoLinea;
+            this.negrita = negrita;
+            this.esEspacio = esEspacio;
+            this.esFila = esFila;
+        }
+
+        private static ElementoLinea texto(String contenido, float tamanoFuente, float altoLinea, boolean negrita) {
+            return new ElementoLinea(contenido, tamanoFuente, altoLinea, negrita, false, false);
+        }
+
+        private static ElementoLinea fila(String filaCodificada, float tamanoFuente, float altoLinea, boolean negrita) {
+            return new ElementoLinea(filaCodificada, tamanoFuente, altoLinea, negrita, false, true);
+        }
+
+        private static ElementoLinea espacio(float altoLinea) {
+            return new ElementoLinea(null, altoLinea, altoLinea, false, true, false);
+        }
+
+        @Override
+        public float altura() {
+            return altoLinea;
+        }
+    }
+
+    private static final class ElementoGrafico implements ElementoPagina {
+        private final Grafico grafico;
+
+        private ElementoGrafico(Grafico grafico) {
+            this.grafico = grafico;
+        }
+
+        @Override
+        public float altura() {
+            return ALTO_GRAFICO;
         }
     }
 
@@ -146,34 +222,36 @@ public final class EscritorPdfBasico {
         return valor == null ? "" : valor;
     }
 
-    private static List<List<String[]>> paginar(List<String[]> lineas) {
-        List<List<String[]>> paginas = new ArrayList<>();
-        List<String[]> paginaActual = new ArrayList<>();
+    private static List<List<ElementoPagina>> paginar(List<ElementoPagina> elementos) {
+        List<List<ElementoPagina>> paginas = new ArrayList<>();
+        List<ElementoPagina> paginaActual = new ArrayList<>();
         float altoUsado = 0f;
         float altoDisponible = ALTO_PAGINA - MARGEN_SUPERIOR - MARGEN_INFERIOR;
 
-        String[] lineaEncabezadoTabla = null;
+        ElementoLinea lineaEncabezadoTabla = null;
 
-        for (String[] linea : lineas) {
-            float altoLinea = Float.parseFloat(linea[2]);
-            boolean esFilaEncabezado = linea[0].startsWith("\u0000FILA:") && "true".equals(linea[3])
+        for (ElementoPagina elemento : elementos) {
+            float altura = elemento.altura();
+            boolean esFilaEncabezado = elemento instanceof ElementoLinea
+                    && ((ElementoLinea) elemento).esFila
+                    && ((ElementoLinea) elemento).negrita
                     && lineaEncabezadoTabla == null;
 
-            if (altoUsado + altoLinea > altoDisponible && !paginaActual.isEmpty()) {
+            if (altoUsado + altura > altoDisponible && !paginaActual.isEmpty()) {
                 paginas.add(paginaActual);
                 paginaActual = new ArrayList<>();
                 altoUsado = 0f;
                 if (lineaEncabezadoTabla != null) {
                     paginaActual.add(lineaEncabezadoTabla);
-                    altoUsado += Float.parseFloat(lineaEncabezadoTabla[2]);
+                    altoUsado += lineaEncabezadoTabla.altura();
                 }
             }
 
-            paginaActual.add(linea);
-            altoUsado += altoLinea;
+            paginaActual.add(elemento);
+            altoUsado += altura;
 
             if (esFilaEncabezado) {
-                lineaEncabezadoTabla = linea;
+                lineaEncabezadoTabla = (ElementoLinea) elemento;
             }
         }
 
@@ -186,7 +264,7 @@ public final class EscritorPdfBasico {
         return paginas;
     }
 
-    private static byte[] construirDocumento(List<List<String[]>> paginas) {
+    private static byte[] construirDocumento(List<List<ElementoPagina>> paginas) {
         List<byte[]> objetos = new ArrayList<>();
         objetos.add(null);
         objetos.add(null);
@@ -196,7 +274,7 @@ public final class EscritorPdfBasico {
         List<Integer> numerosObjetoPagina = new ArrayList<>();
         List<Integer> numerosObjetoContenido = new ArrayList<>();
         int siguienteNumeroObjeto = 5;
-        for (List<String[]> pagina : paginas) {
+        for (List<ElementoPagina> pagina : paginas) {
             numerosObjetoPagina.add(siguienteNumeroObjeto);
             siguienteNumeroObjeto++;
             numerosObjetoContenido.add(siguienteNumeroObjeto);
@@ -273,27 +351,89 @@ public final class EscritorPdfBasico {
         return (numero + " 0 obj\n" + cuerpo + "\nendobj\n").getBytes(StandardCharsets.ISO_8859_1);
     }
 
-    private static String construirStreamPagina(List<String[]> lineasPagina) {
+    private static String construirStreamPagina(List<ElementoPagina> paginaElementos) {
         StringBuilder stream = new StringBuilder();
         float y = ALTO_PAGINA - MARGEN_SUPERIOR;
 
-        for (String[] linea : lineasPagina) {
-            float tamanoFuente = Float.parseFloat(linea[1]);
-            float altoLinea = Float.parseFloat(linea[2]);
-            boolean negrita = "true".equals(linea[3]);
-            y -= altoLinea;
+        for (ElementoPagina elemento : paginaElementos) {
+            y -= elemento.altura();
 
-            if (linea[0].equals("\u0000ESPACIO")) {
+            if (elemento instanceof ElementoGrafico) {
+                escribirGrafico(stream, ((ElementoGrafico) elemento).grafico, y);
                 continue;
             }
-            if (linea[0].startsWith("\u0000FILA:")) {
-                escribirFila(stream, linea[0].substring("\u0000FILA:".length()), y, tamanoFuente, negrita);
+
+            ElementoLinea linea = (ElementoLinea) elemento;
+            if (linea.esEspacio) {
                 continue;
             }
-            escribirTexto(stream, linea[0], MARGEN_IZQUIERDO, y, tamanoFuente, negrita);
+            if (linea.esFila) {
+                escribirFila(stream, linea.contenido, y, linea.tamanoFuente, linea.negrita);
+                continue;
+            }
+            escribirTexto(stream, linea.contenido, MARGEN_IZQUIERDO, y, linea.tamanoFuente, linea.negrita);
         }
 
         return stream.toString();
+    }
+
+    private static void escribirGrafico(StringBuilder stream, Grafico grafico, float yBaseBloque) {
+        int cantidadBarras = grafico.etiquetas.size();
+        float anchoDisponible = ANCHO_PAGINA - MARGEN_IZQUIERDO - MARGEN_DERECHO;
+        float anchoBarra = anchoDisponible / cantidadBarras;
+        float alturaDisponible = ALTO_GRAFICO - MARGEN_SUPERIOR_GRAFICO - MARGEN_INFERIOR_GRAFICO;
+        float yLineaBase = yBaseBloque + MARGEN_INFERIOR_GRAFICO;
+
+        double valorMaximo = 0;
+        for (Double valor : grafico.valores) {
+            valorMaximo = Math.max(valorMaximo, valor);
+        }
+        if (valorMaximo <= 0) {
+            valorMaximo = 1;
+        }
+
+        escribirLineaBase(stream, MARGEN_IZQUIERDO, yLineaBase, ANCHO_PAGINA - MARGEN_DERECHO);
+
+        for (int indice = 0; indice < cantidadBarras; indice++) {
+            double valor = grafico.valores.get(indice);
+            float alturaBarra = (float) ((valor / valorMaximo) * alturaDisponible);
+            float anchoDibujado = anchoBarra * FACTOR_RELLENO_BARRA;
+            float x = MARGEN_IZQUIERDO + indice * anchoBarra + (anchoBarra - anchoDibujado) / 2f;
+
+            escribirRectangulo(stream, x, yLineaBase, anchoDibujado, alturaBarra);
+
+            String etiqueta = recortarSiNecesario(grafico.etiquetas.get(indice), anchoBarra, TAMANO_ETIQUETA_GRAFICO);
+            escribirTexto(
+                    stream, etiqueta, MARGEN_IZQUIERDO + indice * anchoBarra + 2f,
+                    yLineaBase - 12f, TAMANO_ETIQUETA_GRAFICO, false
+            );
+
+            String valorTexto = formatearValorGrafico(valor);
+            escribirTexto(
+                    stream, valorTexto, x, yLineaBase + alturaBarra + 4f, TAMANO_VALOR_GRAFICO, true
+            );
+        }
+    }
+
+    private static String formatearValorGrafico(double valor) {
+        if (valor == Math.floor(valor)) {
+            return String.valueOf((long) valor);
+        }
+        return String.format(java.util.Locale.ROOT, "%.1f", valor);
+    }
+
+    private static void escribirLineaBase(StringBuilder stream, float x, float y, float xFinal) {
+        stream.append("0.7 0.7 0.7 rg\n")
+                .append(x).append(' ').append(y).append(' ')
+                .append(xFinal - x).append(" 1 re\nf\n");
+    }
+
+    private static void escribirRectangulo(StringBuilder stream, float x, float y, float ancho, float alto) {
+        stream.append(COLOR_BARRA_R).append(' ').append(COLOR_BARRA_G).append(' ').append(COLOR_BARRA_B)
+                .append(" rg\n")
+                .append(x).append(' ').append(y).append(' ').append(ancho).append(' ').append(alto)
+                .append(" re\nf\n")
+                .append("0 0 0 rg\n");
     }
 
     private static void escribirFila(StringBuilder stream, String filaCodificada, float y, float tamanoFuente, boolean negrita) {
