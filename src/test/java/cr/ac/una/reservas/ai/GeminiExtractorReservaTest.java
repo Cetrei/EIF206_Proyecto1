@@ -13,15 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Estas pruebas NUNCA llaman a la API real de Gemini: no hay red de por medio en ningun
- * @Test de esta clase. Los casos que si dispararian una llamada HTTP (frase valida + apiKey
- * configurada) estan fuera de alcance a proposito, para no consumir la cuota gratuita del
- * modelo en cada corrida de "mvn test"/"mvn verify". Lo que se prueba aqui es:
- *   - Los dos casos que la clase resuelve SIN llegar a hacer la solicitud HTTP.
- *   - Toda la logica de parseo de la respuesta JSON de Gemini, invocada por reflexion porque
- *     esos metodos son privados y no forma parte del contrato publico de ExtractorReserva.
- */
 class GeminiExtractorReservaTest {
 
     private final GeminiExtractorReserva extractor = new GeminiExtractorReserva("clave-de-prueba", "modelo-de-prueba");
