@@ -1,6 +1,7 @@
 package cr.ac.una.reservas;
 
 import cr.ac.una.reservas.presentation.controller.LoginControl;
+import cr.ac.una.reservas.presentation.controller.ManejadorExcepcionesGlobal;
 import cr.ac.una.reservas.presentation.mvc.LoginPanel;
 import cr.ac.una.reservas.presentation.model.LoginModel;
 import cr.ac.una.reservas.presentation.mvc.tema.GestorTema;
@@ -13,6 +14,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
+        ManejadorExcepcionesGlobal.instalar();
         SwingUtilities.invokeLater(Main::iniciar);
     }
 
