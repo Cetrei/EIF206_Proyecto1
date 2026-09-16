@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<reservas>
+    <reserva>
+        <id>RES-000001</id>
+        <idFuncionario>111</idFuncionario>
+        <actividad>Reunion clientes</actividad>
+        <fecha>2026-07-31</fecha>
+        <horaInicio>08:00</horaInicio>
+        <horaFin>10:00</horaFin>
+        <idsCategoriasRequeridas>
+            <idCategoria>CAT-000002</idCategoria>
+            <idCategoria>CAT-000001</idCategoria>
+        </idsCategoriasRequeridas>
+        <idsRecursosAsignados>
+            <idRecurso>238715</idRecurso>
+            <idRecurso>34343</idRecurso>
+        </idsRecursosAsignados>
+        <estado>ACTIVA</estado>
+    </reserva>
+    <reserva>
+        <id>RES-000002</id>
+        <idFuncionario>222</idFuncionario>
+        <actividad>Charla tecnica</actividad>
+        <fecha>2026-08-05</fecha>
+        <horaInicio>08:00</horaInicio>
+        <horaFin>10:00</horaFin>
+        <idsCategoriasRequeridas>
+            <idCategoria>CAT-000002</idCategoria>
+        </idsCategoriasRequeridas>
+        <idsRecursosAsignados>
+            <idRecurso>45238</idRecurso>
+        </idsRecursosAsignados>
+        <estado>ACTIVA</estado>
+    </reserva>
+    <reserva>
+        <id>RES-000003</id>
+        <idFuncionario>111</idFuncionario>
+        <actividad>Sesion de Junta Directiva</actividad>
+        <fecha>2026-08-05</fecha>
+        <horaInicio>09:00</horaInicio>
+        <horaFin>11:00</horaFin>
+        <idsCategoriasRequeridas>
+            <idCategoria>CAT-000002</idCategoria>
+            <idCategoria>CAT-000003</idCategoria>
+        </idsCategoriasRequeridas>
+        <idsRecursosAsignados>
+            <idRecurso>238715</idRecurso>
+            <idRecurso>452784</idRecurso>
+        </idsRecursosAsignados>
+        <estado>ACTIVA</estado>
+    </reserva>
+    <reserva>
+        <id>RES-000004</id>
+        <idFuncionario>111</idFuncionario>
+        <actividad>Entrevista candidato</actividad>
+        <fecha>2026-08-06</fecha>
+        <horaInicio>10:00</horaInicio>
+        <horaFin>11:00</horaFin>
+        <idsCategoriasRequeridas>
+            <idCategoria>CAT-000001</idCategoria>
+        </idsCategoriasRequeridas>
+        <idsRecursosAsignados>
+            <idRecurso>34343</idRecurso>
+        </idsRecursosAsignados>
+        <estado>ACTIVA</estado>
+    </reserva>
+    <reserva>
+        <id>RES-000005</id>
+        <idFuncionario>111</idFuncionario>
+        <actividad>Reunion de Control</actividad>
+        <fecha>2026-08-12</fecha>
+        <horaInicio>08:00</horaInicio>
+        <horaFin>09:00</horaFin>
+        <idsCategoriasRequeridas>
+            <idCategoria>CAT-000003</idCategoria>
+        </idsCategoriasRequeridas>
+        <idsRecursosAsignados>
+            <idRecurso>452784</idRecurso>
+        </idsRecursosAsignados>
+        <estado>ACTIVA</estado>
+    </reserva>
+</reservas>

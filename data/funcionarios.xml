@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<funcionarios>
+    <funcionario>
+        <id>111</id>
+        <clave>111</clave>
+        <rol>FUNCIONARIO</rol>
+        <nombre>Juan Perez</nombre>
+        <telefono>3323</telefono>
+    </funcionario>
+    <funcionario>
+        <id>222</id>
+        <clave>222</clave>
+        <rol>FUNCIONARIO</rol>
+        <nombre>Maria Perez</nombre>
+        <telefono>222222</telefono>
+    </funcionario>
+    <funcionario>
+        <id>123</id>
+        <clave>123</clave>
+        <rol>FUNCIONARIO</rol>
+        <nombre>Joanfer Hidalgo</nombre>
+        <telefono>0000-0000</telefono>
+    </funcionario>
+</funcionarios>
