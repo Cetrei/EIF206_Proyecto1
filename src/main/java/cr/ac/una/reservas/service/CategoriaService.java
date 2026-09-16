@@ -5,6 +5,7 @@ import cr.ac.una.reservas.persistence.CategoriaDao;
 import cr.ac.una.reservas.persistence.RecursoDao;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ public class CategoriaService {
 
     private final CategoriaDao categoriaDao;
     private final RecursoDao recursoDao;
+    private final List<CategoriaObserver> observadores = new ArrayList<>();
 
     public CategoriaService() {
         this(DaoFactory.obtenerCategoriaDao(), DaoFactory.obtenerRecursoDao());
@@ -40,6 +42,7 @@ public class CategoriaService {
         String id = generarSiguienteId();
         Categoria categoria = new Categoria(id, descripcion);
         categoriaDao.guardar(categoria);
+        notificarCategoriasCambiaron();
         return categoria;
     }
 
@@ -48,6 +51,7 @@ public class CategoriaService {
             throw new ReglaDeNegocioException("No existe una categoría con ese ID.");
         }
         categoriaDao.guardar(categoria);
+        notificarCategoriasCambiaron();
     }
 
     public void eliminar(String id) {
@@ -57,6 +61,21 @@ public class CategoriaService {
             );
         }
         categoriaDao.eliminar(id);
+        notificarCategoriasCambiaron();
+    }
+
+    public void agregarObservador(CategoriaObserver observador) {
+        observadores.add(observador);
+    }
+
+    public void quitarObservador(CategoriaObserver observador) {
+        observadores.remove(observador);
+    }
+
+    private void notificarCategoriasCambiaron() {
+        for (CategoriaObserver observador : observadores) {
+            observador.onCategoriasCambiaron();
+        }
     }
 
     private String generarSiguienteId() {

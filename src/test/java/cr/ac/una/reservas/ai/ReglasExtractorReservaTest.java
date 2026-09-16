@@ -107,4 +107,33 @@ public class ReglasExtractorReservaTest {
                         .isEmpty()
         );
     }
+
+    @Test
+    public void extraeFechaEnTextoConNombreDeMesEnEspanol() {
+
+        ReglasExtractorReserva extractor = new ReglasExtractorReserva();
+
+        String frase = "Sesion de junta directiva para el 16 de septiembre del 2026";
+
+        DatosReservaExtraidos resultado = extractor.extraer(frase, List.of());
+
+        assertEquals(LocalDate.of(2026, 9, 16), resultado.getFecha());
+    }
+
+    @Test
+    public void extraeHorasSueltasConectadasPorInicioYTermina() {
+
+        ReglasExtractorReserva extractor = new ReglasExtractorReserva();
+
+        String frase =
+                "Sesion de junta directiva sin ningun tipo de categoria requerida "
+                        + "para el 16 de septiembre del 2026 "
+                        + "con hora de inicio a las 8 am y termina a la 1 pm";
+
+        DatosReservaExtraidos resultado = extractor.extraer(frase, List.of());
+
+        assertEquals(LocalDate.of(2026, 9, 16), resultado.getFecha());
+        assertEquals(LocalTime.of(8, 0), resultado.getHoraInicio());
+        assertEquals(LocalTime.of(13, 0), resultado.getHoraFin());
+    }
 }

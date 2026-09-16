@@ -10,6 +10,9 @@ out/
 ### Maven ###
 target/
 
+### Variables de entorno / secretos ###
+.env
+
 ### Eclipse ###
 .apt_generated
 .classpath

@@ -87,7 +87,7 @@ public class CategoriaDaoXml implements CategoriaDao {
 
     @Override
     public List<Categoria> listarTodos() {
-        return categorias;
+        return new ArrayList<>(categorias);
     }
 
     @Override

@@ -86,7 +86,7 @@ public class ReservaDaoXml implements ReservaDao {
 
     @Override
     public List<Reserva> listarTodos() {
-        return reservas;
+        return new ArrayList<>(reservas);
     }
 
     @Override

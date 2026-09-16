@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,10 +21,26 @@ public class ReglasExtractorReserva implements ExtractorReserva {
     private static final Pattern FECHA_ISO =
             Pattern.compile("\\b(\\d{4})-(\\d{1,2})-(\\d{1,2})\\b");
 
+    private static final Pattern FECHA_TEXTO = Pattern.compile(
+            "(?i)\\b(\\d{1,2})\\s+de\\s+"
+                    + "(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)"
+                    + "(?:\\s+de[l]?)?\\s+(\\d{4})\\b"
+    );
+
     private static final Pattern RANGO_HORAS = Pattern.compile(
             "(?i)\\b(?:de\\s+)?(\\d{1,2})(?::(\\d{2}))?\\s*(a\\.?\\s*m\\.?|p\\.?\\s*m\\.?)?"
                     + "\\s*(?:a|hasta|-)\\s*"
                     + "(\\d{1,2})(?::(\\d{2}))?\\s*(a\\.?\\s*m\\.?|p\\.?\\s*m\\.?)?\\b"
+    );
+
+    private static final Pattern HORA_INICIO_SUELTA = Pattern.compile(
+            "(?i)\\b(?:hora\\s+de\\s+inicio|inicio|empieza|comienza|desde)\\D{0,15}?"
+                    + "(?:a\\s+las?\\s+)?(\\d{1,2})(?::(\\d{2}))?\\s*(a\\.?\\s*m\\.?|p\\.?\\s*m\\.?)?\\b"
+    );
+
+    private static final Pattern HORA_FIN_SUELTA = Pattern.compile(
+            "(?i)\\b(?:hora\\s+(?:de\\s+)?fin|termina|finaliza|hasta\\s+las?)\\D{0,15}?"
+                    + "(?:a\\s+las?\\s+)?(\\d{1,2})(?::(\\d{2}))?\\s*(a\\.?\\s*m\\.?|p\\.?\\s*m\\.?)?\\b"
     );
 
     private static final Pattern ACTIVIDAD_EXPLICITA = Pattern.compile(
@@ -95,6 +112,22 @@ public class ReglasExtractorReserva implements ExtractorReserva {
         return limpio.isEmpty() ? null : limpio;
     }
 
+    private static final Map<String, Integer> MESES = Map.ofEntries(
+            Map.entry("enero", 1),
+            Map.entry("febrero", 2),
+            Map.entry("marzo", 3),
+            Map.entry("abril", 4),
+            Map.entry("mayo", 5),
+            Map.entry("junio", 6),
+            Map.entry("julio", 7),
+            Map.entry("agosto", 8),
+            Map.entry("septiembre", 9),
+            Map.entry("setiembre", 9),
+            Map.entry("octubre", 10),
+            Map.entry("noviembre", 11),
+            Map.entry("diciembre", 12)
+    );
+
     private LocalDate extraerFecha(String frase) {
         String normalizada = normalizar(frase);
 
@@ -126,6 +159,20 @@ public class ReglasExtractorReserva implements ExtractorReserva {
             );
         }
 
+        Matcher texto = FECHA_TEXTO.matcher(frase);
+
+        if (texto.find()) {
+            Integer mes = MESES.get(normalizar(texto.group(2)));
+
+            if (mes != null) {
+                return crearFecha(
+                        numero(texto.group(3)),
+                        mes,
+                        numero(texto.group(1))
+                );
+            }
+        }
+
         return null;
     }
 
@@ -142,32 +189,52 @@ public class ReglasExtractorReserva implements ExtractorReserva {
 
         Matcher matcher = RANGO_HORAS.matcher(frase);
 
-        if (!matcher.find()) {
+        if (matcher.find()) {
+            String sufijoInicio = matcher.group(3);
+            String sufijoFin = matcher.group(6);
+
+            if (sufijoInicio == null && sufijoFin != null) {
+                sufijoInicio = sufijoFin;
+            }
+
+            if (sufijoFin == null && sufijoInicio != null) {
+                sufijoFin = sufijoInicio;
+            }
+
+            resultado[0] = crearHora(
+                    numero(matcher.group(1)),
+                    matcher.group(2) == null ? 0 : numero(matcher.group(2)),
+                    sufijoInicio
+            );
+
+            resultado[1] = crearHora(
+                    numero(matcher.group(4)),
+                    matcher.group(5) == null ? 0 : numero(matcher.group(5)),
+                    sufijoFin
+            );
+
             return resultado;
         }
 
-        String sufijoInicio = matcher.group(3);
-        String sufijoFin = matcher.group(6);
+        Matcher inicioSuelto = HORA_INICIO_SUELTA.matcher(frase);
 
-        if (sufijoInicio == null && sufijoFin != null) {
-            sufijoInicio = sufijoFin;
+        if (inicioSuelto.find()) {
+            resultado[0] = crearHora(
+                    numero(inicioSuelto.group(1)),
+                    inicioSuelto.group(2) == null ? 0 : numero(inicioSuelto.group(2)),
+                    inicioSuelto.group(3)
+            );
         }
 
-        if (sufijoFin == null && sufijoInicio != null) {
-            sufijoFin = sufijoInicio;
+        Matcher finSuelto = HORA_FIN_SUELTA.matcher(frase);
+
+        if (finSuelto.find()) {
+            resultado[1] = crearHora(
+                    numero(finSuelto.group(1)),
+                    finSuelto.group(2) == null ? 0 : numero(finSuelto.group(2)),
+                    finSuelto.group(3)
+            );
         }
-
-        resultado[0] = crearHora(
-                numero(matcher.group(1)),
-                matcher.group(2) == null ? 0 : numero(matcher.group(2)),
-                sufijoInicio
-        );
-
-        resultado[1] = crearHora(
-                numero(matcher.group(4)),
-                matcher.group(5) == null ? 0 : numero(matcher.group(5)),
-                sufijoFin
-        );
 
         return resultado;
     }

@@ -75,7 +75,7 @@ public class AdministradorDaoXml implements AdministradorDao {
 
     @Override
     public List<Administrador> listarTodos() {
-        return administradores;
+        return new ArrayList<>(administradores);
     }
 
     @Override

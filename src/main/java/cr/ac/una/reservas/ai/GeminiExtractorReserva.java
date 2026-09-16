@@ -23,12 +23,18 @@ public class GeminiExtractorReserva implements ExtractorReserva {
     private static final String URL_BASE =
             "https://generativelanguage.googleapis.com/v1beta/models/";
 
+    private static final ConfiguracionModeloGemini[] CADENA_MODELOS_GRATUITOS = {
+            new ConfiguracionModeloGemini("gemini-3-flash-preview", "\"thinkingConfig\":{\"thinkingLevel\":\"minimal\"}"),
+            new ConfiguracionModeloGemini("gemini-2.5-flash-lite", "\"thinkingConfig\":{\"thinkingBudget\":0}")
+    };
+
     private static final String MODELO_POR_DEFECTO =
-            "gemini-3.8-flash";
+            CADENA_MODELOS_GRATUITOS[0].modelo;
 
     private final HttpClient cliente;
     private final String apiKey;
     private final String modelo;
+    private final boolean modeloFijadoExplicitamente;
 
     public GeminiExtractorReserva() {
         this(
@@ -40,15 +46,33 @@ public class GeminiExtractorReserva implements ExtractorReserva {
     public GeminiExtractorReserva(String apiKey, String modelo) {
         this.apiKey = apiKey;
 
+        this.modeloFijadoExplicitamente =
+                modelo != null && !modelo.trim().isEmpty();
+
         this.modelo =
-                modelo == null || modelo.trim().isEmpty()
-                        ? MODELO_POR_DEFECTO
-                        : modelo.trim();
+                modeloFijadoExplicitamente
+                        ? modelo.trim()
+                        : MODELO_POR_DEFECTO;
 
         this.cliente =
                 HttpClient.newBuilder()
                         .connectTimeout(Duration.ofSeconds(10))
                         .build();
+    }
+
+    public boolean estaConfigurado() {
+        return apiKey != null && !apiKey.trim().isEmpty();
+    }
+
+    private static final class ConfiguracionModeloGemini {
+
+        private final String modelo;
+        private final String fragmentoGenerationConfig;
+
+        private ConfiguracionModeloGemini(String modelo, String fragmentoGenerationConfig) {
+            this.modelo = modelo;
+            this.fragmentoGenerationConfig = fragmentoGenerationConfig;
+        }
     }
 
     @Override
@@ -69,15 +93,53 @@ public class GeminiExtractorReserva implements ExtractorReserva {
         String prompt =
                 construirPrompt(frase, categoriasDisponibles);
 
+        ConfiguracionModeloGemini[] candidatos =
+                obtenerCandidatosDeModelo();
+
+        IllegalStateException ultimoFallo = null;
+
+        for (ConfiguracionModeloGemini candidato : candidatos) {
+
+            try {
+                return intentarExtraccionConModelo(
+                        candidato,
+                        prompt,
+                        categoriasDisponibles
+                );
+
+            } catch (IllegalStateException excepcion) {
+                ultimoFallo = excepcion;
+            }
+        }
+
+        throw ultimoFallo;
+    }
+
+    private ConfiguracionModeloGemini[] obtenerCandidatosDeModelo() {
+
+        if (modeloFijadoExplicitamente) {
+            return new ConfiguracionModeloGemini[]{
+                    new ConfiguracionModeloGemini(modelo, "\"thinkingConfig\":{\"thinkingBudget\":0}")
+            };
+        }
+
+        return CADENA_MODELOS_GRATUITOS;
+    }
+
+    private DatosReservaExtraidos intentarExtraccionConModelo(
+            ConfiguracionModeloGemini candidato,
+            String prompt,
+            List<Categoria> categoriasDisponibles) {
+
         String cuerpo =
-                construirCuerpo(prompt);
+                construirCuerpo(prompt, candidato.fragmentoGenerationConfig);
 
         HttpRequest solicitud =
                 HttpRequest.newBuilder()
                         .uri(
                                 URI.create(
                                         URL_BASE
-                                                + modelo
+                                                + candidato.modelo
                                                 + ":generateContent"))
                         .timeout(Duration.ofSeconds(25))
                         .header(
@@ -105,9 +167,12 @@ public class GeminiExtractorReserva implements ExtractorReserva {
                     || respuesta.statusCode() >= 300) {
 
                 throw new IllegalStateException(
-                        "Gemini respondio con codigo HTTP "
+                        "Gemini ("
+                                + candidato.modelo
+                                + ") respondio con codigo HTTP "
                                 + respuesta.statusCode()
-                                + "."
+                                + ": "
+                                + resumirCuerpoError(respuesta.body())
                 );
             }
 
@@ -124,7 +189,9 @@ public class GeminiExtractorReserva implements ExtractorReserva {
             Thread.currentThread().interrupt();
 
             throw new IllegalStateException(
-                    "La solicitud a Gemini fue interrumpida.",
+                    "La solicitud a Gemini ("
+                            + candidato.modelo
+                            + ") fue interrumpida.",
                     excepcion
             );
 
@@ -135,10 +202,38 @@ public class GeminiExtractorReserva implements ExtractorReserva {
             }
 
             throw new IllegalStateException(
-                    "No se pudo obtener una respuesta valida de Gemini.",
+                    "No se pudo conectar con Gemini ("
+                            + candidato.modelo
+                            + ": "
+                            + excepcion.getClass().getSimpleName()
+                            + (excepcion.getMessage() != null ? ": " + excepcion.getMessage() : "")
+                            + ").",
                     excepcion
             );
         }
+    }
+
+    private String resumirCuerpoError(String cuerpo) {
+
+        if (cuerpo == null || cuerpo.isBlank()) {
+            return "sin detalle en el cuerpo de la respuesta.";
+        }
+
+        Pattern patronMensaje = Pattern.compile(
+                "\"message\"\\s*:\\s*\"((?:\\\\.|[^\\\"\\\\])*)\""
+        );
+
+        Matcher matcher = patronMensaje.matcher(cuerpo);
+
+        if (matcher.find()) {
+            return desescaparJson(matcher.group(1)).trim();
+        }
+
+        String recortado = cuerpo.trim();
+
+        return recortado.length() > 200
+                ? recortado.substring(0, 200) + "..."
+                : recortado;
     }
 
     private String construirPrompt(
@@ -183,33 +278,80 @@ public class GeminiExtractorReserva implements ExtractorReserva {
                 + frase;
     }
 
-    private String construirCuerpo(String prompt) {
+    private String construirCuerpo(String prompt, String fragmentoGenerationConfig) {
         return "{"
                 + "\"contents\":[{\"parts\":[{\"text\":\""
                 + escaparJson(prompt)
                 + "\"}]}],"
-                + "\"generationConfig\":{\"temperature\":0.1}"
+                + "\"generationConfig\":{"
+                + fragmentoGenerationConfig
+                + "}"
                 + "}";
     }
 
     private String extraerTextoRespuesta(String respuestaJson) {
 
-        Pattern patron = Pattern.compile(
-                "\\\"text\\\"\\s*:\\s*\\\"((?:\\\\.|[^\\\"\\\\])*)\\\""
-        );
+        List<String> textosDeRespuesta =
+                extraerTextosDePartsNoPensamiento(respuestaJson);
 
-        Matcher matcher =
-                patron.matcher(respuestaJson);
-
-        if (!matcher.find()) {
+        if (textosDeRespuesta.isEmpty()) {
             throw new IllegalStateException(
                     "Gemini no devolvio contenido de texto."
             );
         }
 
-        return desescaparJson(
-                matcher.group(1)
-        ).trim();
+        for (String texto : textosDeRespuesta) {
+            if (pareceObjetoJsonDeReserva(texto)) {
+                return texto;
+            }
+        }
+
+        return textosDeRespuesta.get(textosDeRespuesta.size() - 1);
+    }
+
+    private List<String> extraerTextosDePartsNoPensamiento(String respuestaJson) {
+
+        List<String> textos = new ArrayList<>();
+
+        Pattern patronCampo = Pattern.compile(
+                "\\\"(text|thought)\\\"\\s*:\\s*"
+                        + "(true|false|\\\"((?:\\\\.|[^\\\"\\\\])*)\\\")"
+        );
+
+        Matcher matcher = patronCampo.matcher(respuestaJson);
+
+        String textoPendiente = null;
+        boolean pensamientoPendiente = false;
+
+        while (matcher.find()) {
+
+            String nombreCampo = matcher.group(1);
+
+            if ("text".equals(nombreCampo)) {
+
+                if (textoPendiente != null && !pensamientoPendiente) {
+                    textos.add(textoPendiente);
+                }
+
+                textoPendiente = desescaparJson(matcher.group(3)).trim();
+                pensamientoPendiente = false;
+
+            } else {
+                pensamientoPendiente = "true".equals(matcher.group(2));
+            }
+        }
+
+        if (textoPendiente != null && !pensamientoPendiente && !textoPendiente.isEmpty()) {
+            textos.add(textoPendiente);
+        }
+
+        return textos;
+    }
+
+    private boolean pareceObjetoJsonDeReserva(String texto) {
+        return texto.contains("\"actividad\"")
+                || texto.contains("\"categorias\"")
+                || texto.contains("\"idsCategoriasIdentificadas\"");
     }
 
     private DatosReservaExtraidos convertirRespuesta(
@@ -408,14 +550,7 @@ public class GeminiExtractorReserva implements ExtractorReserva {
     }
 
     private static String obtenerModeloConfigurado() {
-
-        String configurado =
-                System.getenv("GEMINI_MODEL");
-
-        return configurado == null
-                || configurado.trim().isEmpty()
-                ? MODELO_POR_DEFECTO
-                : configurado.trim();
+        return System.getenv("GEMINI_MODEL");
     }
 
     private String escaparJson(String texto) {

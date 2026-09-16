@@ -1,8 +1,9 @@
 package cr.ac.una.reservas;
 
-import cr.ac.una.reservas.control.LoginControl;
-import cr.ac.una.reservas.presentation.LoginPanel;
-import cr.ac.una.reservas.presentation.tema.GestorTema;
+import cr.ac.una.reservas.presentation.controller.LoginControl;
+import cr.ac.una.reservas.presentation.mvc.LoginPanel;
+import cr.ac.una.reservas.presentation.model.LoginModel;
+import cr.ac.una.reservas.presentation.mvc.tema.GestorTema;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -20,11 +21,13 @@ public final class Main {
         GestorTema.aplicarUIManager(GestorTema.obtenerInstancia().temaActivo());
 
         JFrame ventana = new JFrame("Sistema de Reservas - EIF206 Proyecto 1");
+        ventana.setUndecorated(true);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.getContentPane().setBackground(GestorTema.obtenerInstancia().temaActivo().colorFondoVentana());
 
-        LoginPanel loginPanel = new LoginPanel();
-        new LoginControl(loginPanel, ventana);
+        LoginModel loginModelo = new LoginModel();
+        LoginPanel loginPanel = new LoginPanel(loginModelo);
+        new LoginControl(loginModelo, loginPanel, ventana);
 
         ventana.setContentPane(loginPanel.obtenerPanel());
         ventana.pack();

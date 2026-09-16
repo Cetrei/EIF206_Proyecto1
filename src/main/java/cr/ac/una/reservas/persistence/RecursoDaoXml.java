@@ -86,7 +86,7 @@ public class RecursoDaoXml implements RecursoDao {
 
     @Override
     public List<Recurso> listarTodos() {
-        return recursos;
+        return new ArrayList<>(recursos);
     }
 
     @Override

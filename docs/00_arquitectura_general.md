@@ -9,8 +9,7 @@ Sistema de escritorio en Java para gestionar reservas de recursos (salas, comput
 El proyecto sigue una arquitectura por capas. Cada capa solo conoce a la capa inmediatamente inferior, nunca al reves.
 
 ```
-presentation   Ventanas y paneles Swing. Solo dibuja y captura eventos de usuario.
-control        Traduce eventos de la interfaz en llamadas a la capa de servicio. No contiene logica de negocio.
+presentation   Ventanas y paneles Swing (mvc), controladores (controller) y Modelo Observable (model). Solo dibuja y captura eventos de usuario.
 service        Logica de negocio: reglas de reservas, disponibilidad, estadisticas, extraccion de datos por IA.
 model          Entidades del dominio (Funcionario, Recurso, Categoria, Reserva, Actividad, Usuario).
 persistence    Acceso a los archivos XML mediante DAO. No sabe nada de logica de negocio ni de interfaz.
@@ -18,7 +17,13 @@ report         Generacion de reportes en PDF.
 util           Validaciones comunes, excepciones propias, utilidades de fecha y formato.
 ```
 
-Regla de dependencia: presentation depende de control, control depende de service, service depende de model y persistence. Ninguna capa inferior importa clases de una capa superior. Por ejemplo, una clase en persistence jamas debe importar algo de presentation o control.
+Regla de dependencia: presentation.controller depende de service y de presentation.model,
+presentation.mvc (las Vistas) depende de presentation.model, service depende de model y
+persistence. Ninguna capa inferior importa clases de una capa superior. Por ejemplo, una clase en
+persistence jamas debe importar algo de presentation. presentation.model es la unica excepcion a
+"presentation solo dibuja y captura eventos": son clases de estado puro (sin Swing, sin service)
+que presentation.controller actualiza y que presentation.mvc escucha, ver la fila "Modelo
+Observable" mas abajo y docs/06_control_presentation.md.
 
 ## Paquetes Java
 
@@ -26,12 +31,21 @@ Regla de dependencia: presentation depende de control, control depende de servic
 cr.ac.una.reservas.model
 cr.ac.una.reservas.persistence
 cr.ac.una.reservas.service
-cr.ac.una.reservas.control
-cr.ac.una.reservas.presentation
+cr.ac.una.reservas.presentation.controller
+cr.ac.una.reservas.presentation.model
+cr.ac.una.reservas.presentation.mvc
+cr.ac.una.reservas.presentation.mvc.componentes
+cr.ac.una.reservas.presentation.mvc.tema
+cr.ac.una.reservas.presentation.mvc.iconos
 cr.ac.una.reservas.report
 cr.ac.una.reservas.ai
 cr.ac.una.reservas.util
 ```
+
+Esta subdivision de `presentation` en `controller`/`model`/`mvc` calca la estructura de
+`presentacion` usada en `PracticaExamen1` (proyecto de examen del curso), ver
+docs/06_control_presentation.md para el detalle de la migracion a Modelo Observable que motivo
+este orden.
 
 ## Gestor de proyecto y estructura de carpetas
 
@@ -66,8 +80,9 @@ Cada capa asignada a un companero se comunica con el resto del sistema unicament
 | DAO | persistence | Separar el acceso a datos XML del resto del sistema |
 | Factory Method | service, en la creacion de DAOs y de generadores de reporte | Evitar que el service dependa de clases concretas de persistence o report |
 | Observer | service, en ReservaService, y presentation, en las vistas que deben refrescarse | Que las vistas de calendarizacion, actividades y estadisticas se actualicen automaticamente cuando cambia una reserva, sin que el service conozca a las vistas |
+| Modelo Observable (java.beans.PropertyChangeSupport) | presentation.model | Que la Vista se actualice reaccionando a cambios de estado en vez de que Control la mande a pintar directamente; patron ensenado en clase, ver PracticaExamen1 |
 | Strategy | ai, en la extraccion de datos, y presentation, en el llenado de las vistas tipo matriz | Permitir varias formas de resolver un mismo problema sin condicionales gigantes y sin tocar el codigo que las usa |
-| Singleton | control, en el gestor de sesion | Un unico punto de verdad sobre quien esta logueado y su rol, accesible desde cualquier controlador |
+| Singleton | presentation.controller, en el gestor de sesion | Un unico punto de verdad sobre quien esta logueado y su rol, accesible desde cualquier controlador |
 
 Principio de sustitucion de Liskov: todas las interfaces de esta arquitectura, Dao, GeneradorReporte, ExtractorReserva y MatrizFillStrategy, estan disenadas para que cualquier implementacion sea intercambiable sin que el codigo que la usa necesite saberlo ni cambiar. Si una implementacion nueva rompe el comportamiento esperado por la interfaz, el problema es de esa implementacion, no de quien la consume.
 

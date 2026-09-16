@@ -59,7 +59,7 @@ public final class DaoFactory {
 
     private static void sembrarUsuariosDePrueba() {
         if (FUNCIONARIO_DAO.listarTodos().isEmpty()) {
-            FUNCIONARIO_DAO.guardar(new Funcionario("funcionario", "123", "Funcionario de Prueba", "0000-0000"));
+            FUNCIONARIO_DAO.guardar(new Funcionario("111", "111", "Juan Perez", "3323"));
         }
         if (ADMINISTRADOR_DAO.listarTodos().isEmpty()) {
             ADMINISTRADOR_DAO.guardar(new Administrador("admin", "123"));

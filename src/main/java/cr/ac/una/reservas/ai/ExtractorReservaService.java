@@ -10,6 +10,7 @@ public class ExtractorReservaService {
     private final ExtractorReserva extractorRespaldo;
 
     private boolean ultimaExtraccionConRespaldo;
+    private String motivoUltimoFalloPrincipal;
 
     public ExtractorReservaService() {
         this(
@@ -31,6 +32,7 @@ public class ExtractorReservaService {
             List<Categoria> categoriasDisponibles) {
 
         ultimaExtraccionConRespaldo = false;
+        motivoUltimoFalloPrincipal = null;
 
         try {
             return extractorPrincipal.extraer(
@@ -41,6 +43,7 @@ public class ExtractorReservaService {
         } catch (RuntimeException excepcion) {
 
             ultimaExtraccionConRespaldo = true;
+            motivoUltimoFalloPrincipal = excepcion.getMessage();
 
             return extractorRespaldo.extraer(
                     frase,
@@ -51,5 +54,16 @@ public class ExtractorReservaService {
 
     public boolean fueUsadoModoBasico() {
         return ultimaExtraccionConRespaldo;
+    }
+
+    public String motivoUltimoFalloPrincipal() {
+        return motivoUltimoFalloPrincipal;
+    }
+
+    public boolean estaConfiguradoParaGemini() {
+        if (extractorPrincipal instanceof GeminiExtractorReserva) {
+            return ((GeminiExtractorReserva) extractorPrincipal).estaConfigurado();
+        }
+        return false;
     }
 }

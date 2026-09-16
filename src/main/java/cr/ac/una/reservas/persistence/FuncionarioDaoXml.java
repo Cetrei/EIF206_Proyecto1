@@ -87,7 +87,7 @@ public class FuncionarioDaoXml implements FuncionarioDao {
 
     @Override
     public List<Funcionario> listarTodos() {
-        return funcionarios;
+        return new ArrayList<>(funcionarios);
     }
 
     @Override
