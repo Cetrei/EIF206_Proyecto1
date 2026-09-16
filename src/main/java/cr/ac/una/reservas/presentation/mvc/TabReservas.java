@@ -414,7 +414,7 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
         spinnerHoraFinReal.setValue(new Date());
         listaCategoriasReal.clearSelection();
         tablaReal.obtenerTabla().clearSelection();
-        mostrarModoEdicion(null);
+        salirDeModoEdicion();
     }
 
     public void mostrarReserva(Reserva reserva) {
@@ -426,16 +426,23 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
         mostrarHoraInicio(reserva.getHoraInicio());
         mostrarHoraFin(reserva.getHoraFin());
         mostrarCategoriasSeleccionadas(reserva.getIdsCategoriasRequeridas());
-        mostrarModoEdicion(reserva);
+        entrarEnModoEdicion(reserva);
     }
 
-    private void mostrarModoEdicion(Reserva reserva) {
-        boolean editando = reserva != null && reserva.getEstado() == EstadoReserva.ACTIVA;
-        reservaEnEdicion = editando ? reserva : null;
-        botonSolicitarReal.setTexto(editando ? TEXTO_BOTON_MODIFICAR : TEXTO_BOTON_CREAR);
-        tarjetaFormularioReal.setTitulo(
-                editando ? "Editando reserva " + reserva.getId() : TITULO_FORMULARIO_CREAR
-        );
+    private void entrarEnModoEdicion(Reserva reserva) {
+        reservaEnEdicion = reserva;
+        botonSolicitarReal.setTexto(TEXTO_BOTON_MODIFICAR);
+        tarjetaFormularioReal.setTitulo("Editando reserva " + reserva.getId());
+    }
+
+    public void salirDeModoEdicion() {
+        reservaEnEdicion = null;
+        botonSolicitarReal.setTexto(TEXTO_BOTON_CREAR);
+        tarjetaFormularioReal.setTitulo(TITULO_FORMULARIO_CREAR);
+    }
+
+    public boolean estaEnModoEdicion() {
+        return reservaEnEdicion != null;
     }
 
     public Reserva obtenerReservaEnEdicion() {
@@ -508,9 +515,7 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
             mostrarReservas(nuevaLista);
         } else if (ReservaModel.PROP_RESERVA_SELECCIONADA.equals(evento.getPropertyName())) {
             Reserva seleccionada = (Reserva) evento.getNewValue();
-            if (seleccionada == null) {
-                mostrarModoEdicion(null);
-            } else {
+            if (seleccionada != null) {
                 mostrarReserva(seleccionada);
             }
         } else if (ReservaModel.PROP_RESULTADO_INTENTO.equals(evento.getPropertyName())) {

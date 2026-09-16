@@ -4,7 +4,6 @@ import cr.ac.una.reservas.ai.DatosReservaExtraidos;
 import cr.ac.una.reservas.ai.ExtractorReservaService;
 import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.model.DatosNuevaReserva;
-import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Funcionario;
 import cr.ac.una.reservas.model.Reserva;
 import cr.ac.una.reservas.model.ResultadoReserva;
@@ -102,7 +101,8 @@ public class ReservaControl implements CategoriaObserver {
         Usuario usuarioActual = SesionControl.obtenerInstancia().usuarioActual();
         if (usuarioActual == null) return;
 
-        Reserva reservaEnEdicion = reservaEditable(vista.obtenerReservaEnEdicion());
+        boolean modificando = vista.estaEnModoEdicion();
+        Reserva reservaEnEdicion = vista.obtenerReservaEnEdicion();
         String actividad = vista.obtenerActividad();
         LocalDate fecha = vista.obtenerFecha();
         List<Categoria> categoriasSeleccionadas = vista.obtenerCategoriasSeleccionadas();
@@ -123,7 +123,7 @@ public class ReservaControl implements CategoriaObserver {
         }
 
         DatosNuevaReserva datos = new DatosNuevaReserva(
-                reservaEnEdicion == null ? null : reservaEnEdicion.getId(),
+                modificando ? reservaEnEdicion.getId() : null,
                 usuarioActual.getId(),
                 actividad,
                 fecha,
@@ -131,8 +131,6 @@ public class ReservaControl implements CategoriaObserver {
                 vista.obtenerHoraFin(),
                 categoriasSeleccionadas.stream().map(Categoria::getId).collect(Collectors.toList())
         );
-
-        boolean modificando = reservaEnEdicion != null;
 
         try {
             ResultadoReserva resultado = modificando
@@ -171,17 +169,6 @@ public class ReservaControl implements CategoriaObserver {
     private void limpiar() {
         modelo.setReservaSeleccionada(null);
         vista.limpiarFormulario();
-    }
-
-    private Reserva reservaEditable(Reserva reserva) {
-        if (reserva == null || reserva.getEstado() != EstadoReserva.ACTIVA) {
-            return null;
-        }
-        Usuario usuarioActual = SesionControl.obtenerInstancia().usuarioActual();
-        if (usuarioActual == null || !usuarioActual.getId().equals(reserva.getIdFuncionario())) {
-            return null;
-        }
-        return reserva;
     }
 
     private void seleccionarFila(int indiceFila) {
