@@ -67,7 +67,7 @@ public class LoginControl {
         }
 
         try {
-            Usuario usuario = autenticacionService.autenticar(id, clave);
+            Usuario usuario = autenticacionService.autenticar(id.trim(), clave);
             SesionControl.obtenerInstancia().iniciarSesion(usuario);
             navegarAVentanaPrincipal();
         } catch (ReservaAppException excepcion) {
@@ -154,7 +154,7 @@ public class LoginControl {
             return;
         }
         try {
-            autenticacionService.cambiarClave(id, campoClaveActual.obtenerTexto(), campoClaveNueva.obtenerTexto());
+            autenticacionService.cambiarClave(id.trim(), campoClaveActual.obtenerTexto(), campoClaveNueva.obtenerTexto());
             dialogo.dispose();
             Popup.mostrarAviso(
                     ventanaPropietaria, Popup.Tipo.CONFIRMACION, "Cambiar contraseña",

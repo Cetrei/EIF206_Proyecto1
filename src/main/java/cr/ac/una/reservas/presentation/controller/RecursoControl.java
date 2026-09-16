@@ -88,6 +88,9 @@ public class RecursoControl implements CategoriaObserver {
             return;
         }
 
+        id = id.trim();
+        descripcion = descripcion.trim();
+
         try {
             Recurso recursoSeleccionado = modelo.getRecursoSeleccionado();
             if (recursoSeleccionado == null) {

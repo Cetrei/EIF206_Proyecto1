@@ -48,7 +48,8 @@ public class ConfiguracionIaControl {
 
     private void guardar() {
         try {
-            configuracionIaService.guardar(vista.obtenerApiKey(), vista.obtenerModelo());
+            String apiKey = vista.obtenerApiKey();
+            configuracionIaService.guardar(apiKey == null ? null : apiKey.trim(), vista.obtenerModelo());
             Popup.mostrarAviso(
                     ventanaPropietaria,
                     Popup.Tipo.CONFIRMACION,

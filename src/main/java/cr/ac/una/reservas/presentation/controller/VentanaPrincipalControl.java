@@ -200,9 +200,27 @@ public class VentanaPrincipalControl {
             );
             return;
         }
+        String telefono = panelCuenta.obtenerTelefono();
+        if (telefono == null || telefono.isBlank()) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo guardar", "Debe ingresar el telefono."
+            );
+            return;
+        }
+        telefono = telefono.trim();
+        if (!telefono.matches("[0-9()+\\-\\s]{4,}")) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo guardar",
+                    "El telefono solo puede contener numeros, espacios y los simbolos + ( ) -."
+            );
+            return;
+        }
+
         try {
             Funcionario funcionario = (Funcionario) usuario;
-            funcionario.setTelefono(panelCuenta.obtenerTelefono());
+            funcionario.setTelefono(telefono);
             funcionarioService.modificar(funcionario);
             Popup.mostrarAviso(
                     ventanaPropietaria,

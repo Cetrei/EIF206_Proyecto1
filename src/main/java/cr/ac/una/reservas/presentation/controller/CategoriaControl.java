@@ -55,6 +55,8 @@ public class CategoriaControl {
             return;
         }
 
+        descripcion = descripcion.trim();
+
         try {
             Categoria categoriaSeleccionada = modelo.getCategoriaSeleccionada();
             if (categoriaSeleccionada == null) {
