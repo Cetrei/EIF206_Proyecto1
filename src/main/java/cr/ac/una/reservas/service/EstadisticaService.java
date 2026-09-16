@@ -2,6 +2,7 @@ package cr.ac.una.reservas.service;
 
 import cr.ac.una.reservas.model.EstadisticaCategoria;
 import cr.ac.una.reservas.model.EstadisticaSemana;
+import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Recurso;
 import cr.ac.una.reservas.model.Reserva;
 import cr.ac.una.reservas.persistence.CategoriaDao;
@@ -42,6 +43,9 @@ public class EstadisticaService {
 
         Map<String, Long> cantidadPorCategoria = new LinkedHashMap<>();
         for (Reserva reserva : reservaDao.listarTodos()) {
+            if (reserva.getEstado() != EstadoReserva.ACTIVA) {
+                continue;
+            }
             if (reserva.getFecha() == null
                     || reserva.getFecha().isBefore(desde)
                     || reserva.getFecha().isAfter(hasta)) {
@@ -69,6 +73,9 @@ public class EstadisticaService {
 
         Map<LocalDate, Long> cantidadPorSemana = new LinkedHashMap<>();
         for (Reserva reserva : reservaDao.listarTodos()) {
+            if (reserva.getEstado() != EstadoReserva.ACTIVA) {
+                continue;
+            }
             if (reserva.getFecha() == null
                     || reserva.getFecha().isBefore(desde)
                     || reserva.getFecha().isAfter(hasta)) {
