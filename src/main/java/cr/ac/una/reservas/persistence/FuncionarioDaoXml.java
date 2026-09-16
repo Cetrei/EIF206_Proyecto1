@@ -2,6 +2,7 @@ package cr.ac.una.reservas.persistence;
 
 import cr.ac.una.reservas.model.Funcionario;
 import cr.ac.una.reservas.util.PersistenciaException;
+import cr.ac.una.reservas.util.TextoBusqueda;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -65,14 +66,14 @@ public class FuncionarioDaoXml implements FuncionarioDao {
 
     @Override
     public List<Funcionario> buscarPorNombre(String nombre) {
-        List<Funcionario> fun = new ArrayList<>();
+        String textoNormalizado = TextoBusqueda.normalizar(nombre);
+        List<Funcionario> coincidencias = new ArrayList<>();
         for (Funcionario funcionario : funcionarios) {
-            if (funcionario.getNombre().equals(nombre)) {
-                fun.add(funcionario);
-                return fun;
+            if (TextoBusqueda.normalizar(funcionario.getNombre()).contains(textoNormalizado)) {
+                coincidencias.add(funcionario);
             }
         }
-        return fun;
+        return coincidencias;
     }
 
     @Override

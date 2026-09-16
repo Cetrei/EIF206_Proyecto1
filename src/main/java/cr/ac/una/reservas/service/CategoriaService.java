@@ -21,7 +21,6 @@ public class CategoriaService {
         this(DaoFactory.obtenerCategoriaDao(), DaoFactory.obtenerRecursoDao());
     }
 
-    // Constructor para pruebas: permite inyectar Dao falsos.
     public CategoriaService(CategoriaDao categoriaDao, RecursoDao recursoDao) {
         this.categoriaDao = categoriaDao;
         this.recursoDao = recursoDao;
@@ -83,7 +82,6 @@ public class CategoriaService {
         String consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);
         String idPropuesto = PREFIJO_ID + consecutivoFormateado;
 
-        // Por si el consecutivo por cantidad ya esta en uso
         while (categoriaDao.buscarPorId(idPropuesto).isPresent()) {
             siguienteConsecutivo++;
             consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);

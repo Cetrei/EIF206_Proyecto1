@@ -156,6 +156,83 @@ class ReservaServiceTest {
     }
 
     @Test
+    void modificaReservaExistenteConservandoSuId() {
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        ResultadoReserva creada = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+
+        DatosNuevaReserva cambios = datosDeEjemplo("111", fecha, LocalTime.of(13, 0), LocalTime.of(15, 0));
+        cambios.setId(creada.getReserva().getId());
+        cambios.setActividad("Sesion de Junta Directiva");
+
+        ResultadoReserva modificada = reservaService.intentarModificar(cambios);
+
+        assertTrue(modificada.isExitoso());
+        assertEquals(creada.getReserva().getId(), modificada.getReserva().getId());
+        assertEquals("Sesion de Junta Directiva", modificada.getReserva().getActividad());
+        assertEquals(LocalTime.of(13, 0), modificada.getReserva().getHoraInicio());
+        assertEquals(1, reservaDao.listarTodos().size());
+    }
+
+    @Test
+    void permiteModificarSinPerderElRecursoQueLaPropiaReservaOcupa() {
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        ResultadoReserva creada = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+
+        DatosNuevaReserva cambios = datosDeEjemplo("111", fecha, LocalTime.of(9, 0), LocalTime.of(11, 0));
+        cambios.setId(creada.getReserva().getId());
+
+        ResultadoReserva modificada = reservaService.intentarModificar(cambios);
+
+        assertTrue(modificada.isExitoso());
+        assertTrue(modificada.getReserva().getIdsRecursosAsignados().contains("34343"));
+    }
+
+    @Test
+    void fallaAlModificarCuandoOtraReservaOcupaElHorario() {
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        ResultadoReserva primera = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+        reservaService.intentarReservar(datosDeEjemplo("222", fecha, LocalTime.of(14, 0), LocalTime.of(16, 0)));
+
+        DatosNuevaReserva cambios = datosDeEjemplo("111", fecha, LocalTime.of(15, 0), LocalTime.of(17, 0));
+        cambios.setId(primera.getReserva().getId());
+
+        ResultadoReserva modificada = reservaService.intentarModificar(cambios);
+
+        assertFalse(modificada.isExitoso());
+        assertEquals(categoriaSala.getId(), modificada.getCategoriasNoDisponibles().get(0).getId());
+    }
+
+    @Test
+    void rechazaModificarReservaCancelada() {
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        ResultadoReserva creada = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+        reservaService.cancelarReserva(creada.getReserva().getId());
+
+        DatosNuevaReserva cambios = datosDeEjemplo("111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0));
+        cambios.setId(creada.getReserva().getId());
+
+        assertThrows(ReglaDeNegocioException.class, () -> reservaService.intentarModificar(cambios));
+    }
+
+    @Test
+    void rechazaModificarReservaInexistente() {
+        DatosNuevaReserva cambios = datosDeEjemplo(
+                "111", LocalDate.now().plusDays(1), LocalTime.of(8, 0), LocalTime.of(10, 0)
+        );
+        cambios.setId("RES-999999");
+
+        assertThrows(ReglaDeNegocioException.class, () -> reservaService.intentarModificar(cambios));
+    }
+
+    @Test
     void listaReservasActivasEnUnaFechaEspecifica() {
         LocalDate fecha = LocalDate.now().plusDays(1);
         reservaService.intentarReservar(datosDeEjemplo("111", fecha, LocalTime.of(8, 0), LocalTime.of(9, 0)));

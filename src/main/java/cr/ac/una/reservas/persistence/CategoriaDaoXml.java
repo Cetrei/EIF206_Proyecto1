@@ -2,6 +2,7 @@ package cr.ac.una.reservas.persistence;
 
 import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.util.PersistenciaException;
+import cr.ac.una.reservas.util.TextoBusqueda;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -65,14 +66,14 @@ public class CategoriaDaoXml implements CategoriaDao {
 
     @Override
     public List<Categoria> buscarPorDescripcion(String texto) {
-        List<Categoria> cat = new ArrayList<>();
+        String textoNormalizado = TextoBusqueda.normalizar(texto);
+        List<Categoria> coincidencias = new ArrayList<>();
         for (Categoria categoria : categorias) {
-            if (categoria.getDescripcion().equals(texto)) {
-                cat.add(categoria);
-                return cat;
+            if (TextoBusqueda.normalizar(categoria.getDescripcion()).contains(textoNormalizado)) {
+                coincidencias.add(categoria);
             }
         }
-        return cat;
+        return coincidencias;
     }
 
     @Override

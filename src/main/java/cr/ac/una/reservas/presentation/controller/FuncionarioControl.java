@@ -9,11 +9,11 @@ import cr.ac.una.reservas.service.ReporteFactory;
 import cr.ac.una.reservas.service.ServiceFactory;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import cr.ac.una.reservas.util.ReservaAppException;
+import cr.ac.una.reservas.util.TextoBusqueda;
 
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class FuncionarioControl {
@@ -161,13 +161,10 @@ public class FuncionarioControl {
     }
 
     private List<Funcionario> filtrarPorIdONombre(String texto) {
-        String textoNormalizado = texto.toLowerCase(Locale.ROOT).trim();
         List<Funcionario> resultado = new ArrayList<>();
         for (Funcionario funcionario : funcionarioService.listarTodos()) {
-            boolean coincideId = funcionario.getId() != null
-                    && funcionario.getId().toLowerCase(Locale.ROOT).contains(textoNormalizado);
-            boolean coincideNombre = funcionario.getNombre() != null
-                    && funcionario.getNombre().toLowerCase(Locale.ROOT).contains(textoNormalizado);
+            boolean coincideId = TextoBusqueda.contiene(funcionario.getId(), texto);
+            boolean coincideNombre = TextoBusqueda.contiene(funcionario.getNombre(), texto);
             if (coincideId || coincideNombre) {
                 resultado.add(funcionario);
             }

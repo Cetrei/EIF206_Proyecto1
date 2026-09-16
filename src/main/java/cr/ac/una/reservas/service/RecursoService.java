@@ -4,6 +4,7 @@ import cr.ac.una.reservas.model.Recurso;
 import cr.ac.una.reservas.persistence.CategoriaDao;
 import cr.ac.una.reservas.persistence.RecursoDao;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
+import cr.ac.una.reservas.util.TextoBusqueda;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +27,8 @@ public class RecursoService {
     }
 
     public List<Recurso> buscarPorDescripcion(String texto) {
-        String textoNormalizado = texto == null ? "" : texto.toLowerCase();
         List<Recurso> recursos = recursoDao.listarTodos().stream()
-                .filter(recurso -> recurso.getDescripcion() != null
-                        && recurso.getDescripcion().toLowerCase().contains(textoNormalizado))
+                .filter(recurso -> TextoBusqueda.contiene(recurso.getDescripcion(), texto))
                 .collect(Collectors.toList());
         return resolverCategorias(recursos);
     }
@@ -39,12 +38,11 @@ public class RecursoService {
     }
 
     public List<Recurso> filtrar(String idCategoria, String textoDescripcion) {
-        String textoNormalizado = textoDescripcion == null ? "" : textoDescripcion.toLowerCase();
         boolean filtrarPorCategoria = idCategoria != null && !idCategoria.isBlank();
         List<Recurso> recursos = recursoDao.listarTodos().stream()
                 .filter(recurso -> !filtrarPorCategoria || idCategoria.equals(recurso.getIdCategoria()))
-                .filter(recurso -> recurso.getDescripcion() != null
-                        && recurso.getDescripcion().toLowerCase().contains(textoNormalizado))
+                .filter(recurso -> TextoBusqueda.contiene(recurso.getDescripcion(), textoDescripcion)
+                        || TextoBusqueda.contiene(recurso.getId(), textoDescripcion))
                 .collect(Collectors.toList());
         return resolverCategorias(recursos);
     }

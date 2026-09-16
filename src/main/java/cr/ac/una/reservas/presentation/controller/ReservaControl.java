@@ -4,6 +4,7 @@ import cr.ac.una.reservas.ai.DatosReservaExtraidos;
 import cr.ac.una.reservas.ai.ExtractorReservaService;
 import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.model.DatosNuevaReserva;
+import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Funcionario;
 import cr.ac.una.reservas.model.Reserva;
 import cr.ac.una.reservas.model.ResultadoReserva;
@@ -101,6 +102,7 @@ public class ReservaControl implements CategoriaObserver {
         Usuario usuarioActual = SesionControl.obtenerInstancia().usuarioActual();
         if (usuarioActual == null) return;
 
+        Reserva reservaEnEdicion = reservaEditable(modelo.getReservaSeleccionada());
         String actividad = vista.obtenerActividad();
         LocalDate fecha = vista.obtenerFecha();
         List<Categoria> categoriasSeleccionadas = vista.obtenerCategoriasSeleccionadas();
@@ -121,7 +123,7 @@ public class ReservaControl implements CategoriaObserver {
         }
 
         DatosNuevaReserva datos = new DatosNuevaReserva(
-                null,
+                reservaEnEdicion == null ? null : reservaEnEdicion.getId(),
                 usuarioActual.getId(),
                 actividad,
                 fecha,
@@ -130,8 +132,12 @@ public class ReservaControl implements CategoriaObserver {
                 categoriasSeleccionadas.stream().map(Categoria::getId).collect(Collectors.toList())
         );
 
+        boolean modificando = reservaEnEdicion != null;
+
         try {
-            ResultadoReserva resultado = reservaService.intentarReservar(datos);
+            ResultadoReserva resultado = modificando
+                    ? reservaService.intentarModificar(datos)
+                    : reservaService.intentarReservar(datos);
             modelo.setResultadoIntento(resultado);
 
             if (resultado.isExitoso()) {
@@ -140,8 +146,11 @@ public class ReservaControl implements CategoriaObserver {
                 Popup.mostrarAviso(
                         ventanaPropietaria,
                         Popup.Tipo.CONFIRMACION,
-                        "Solicitar reserva",
-                        "La reserva se registró correctamente con el ID " + resultado.getReserva().getId() + "."
+                        modificando ? "Modificar reserva" : "Solicitar reserva",
+                        modificando
+                                ? "La reserva " + resultado.getReserva().getId() + " se actualizó correctamente."
+                                : "La reserva se registró correctamente con el ID "
+                                        + resultado.getReserva().getId() + "."
                 );
             } else {
                 String categoriasFallidas = resultado.getCategoriasNoDisponibles().stream()
@@ -155,13 +164,20 @@ public class ReservaControl implements CategoriaObserver {
                 );
             }
         } catch (ReglaDeNegocioException excepcion) {
-            mostrarError("No se pudo reservar", excepcion.getMessage());
+            mostrarError(modificando ? "No se pudo modificar" : "No se pudo reservar", excepcion.getMessage());
         }
     }
 
     private void limpiar() {
         modelo.setReservaSeleccionada(null);
         vista.limpiarFormulario();
+    }
+
+    private Reserva reservaEditable(Reserva reserva) {
+        if (reserva == null || reserva.getEstado() != EstadoReserva.ACTIVA) {
+            return null;
+        }
+        return reserva;
     }
 
     private void seleccionarFila(int indiceFila) {

@@ -65,7 +65,7 @@ public class ReservaService {
 
         for (String idCategoria : datos.getIdsCategoriasRequeridas()) {
             Optional<Recurso> recursoDisponible = buscarPrimerRecursoDisponible(
-                    idCategoria, datos.getFecha(), datos.getHoraInicio(), datos.getHoraFin()
+                    idCategoria, datos.getFecha(), datos.getHoraInicio(), datos.getHoraFin(), null
             );
             if (recursoDisponible.isPresent()) {
                 recursosAAsignar.add(recursoDisponible.get());
@@ -86,6 +86,51 @@ public class ReservaService {
 
         notificarReservaCreada(reserva);
         return ResultadoReserva.exito(reserva);
+    }
+
+    public ResultadoReserva intentarModificar(DatosNuevaReserva datos) {
+        if (datos.getId() == null || datos.getId().isBlank()) {
+            throw new ReglaDeNegocioException("Debe indicar la reserva que se desea modificar.");
+        }
+        validarDatosBasicos(datos);
+
+        Reserva reservaExistente = reservaDao.buscarPorId(datos.getId())
+                .orElseThrow(() -> new ReglaDeNegocioException("No existe una reserva con ese ID."));
+
+        if (reservaExistente.getEstado() == EstadoReserva.CANCELADA) {
+            throw new ReglaDeNegocioException("No se puede modificar una reserva cancelada.");
+        }
+
+        List<Categoria> categoriasNoDisponibles = new ArrayList<>();
+        List<Recurso> recursosAAsignar = new ArrayList<>();
+
+        for (String idCategoria : datos.getIdsCategoriasRequeridas()) {
+            Optional<Recurso> recursoDisponible = buscarPrimerRecursoDisponible(
+                    idCategoria, datos.getFecha(), datos.getHoraInicio(), datos.getHoraFin(), reservaExistente.getId()
+            );
+            if (recursoDisponible.isPresent()) {
+                recursosAAsignar.add(recursoDisponible.get());
+            } else {
+                categoriaDao.buscarPorId(idCategoria).ifPresent(categoriasNoDisponibles::add);
+            }
+        }
+
+        if (!categoriasNoDisponibles.isEmpty()) {
+            return ResultadoReserva.fracaso(categoriasNoDisponibles);
+        }
+
+        reservaExistente.setActividad(datos.getActividad());
+        reservaExistente.setFecha(datos.getFecha());
+        reservaExistente.setHoraInicio(datos.getHoraInicio());
+        reservaExistente.setHoraFin(datos.getHoraFin());
+        reservaExistente.setIdsCategoriasRequeridas(new ArrayList<>(datos.getIdsCategoriasRequeridas()));
+        reservaExistente.setIdsRecursosAsignados(
+                recursosAAsignar.stream().map(Recurso::getId).collect(Collectors.toList())
+        );
+        reservaDao.guardar(reservaExistente);
+
+        notificarReservaModificada(reservaExistente);
+        return ResultadoReserva.exito(reservaExistente);
     }
 
     public void cancelarReserva(String idReserva) {
@@ -125,6 +170,12 @@ public class ReservaService {
         }
     }
 
+    private void notificarReservaModificada(Reserva reserva) {
+        for (ReservaObserver observador : observadores) {
+            observador.onReservaModificada(reserva);
+        }
+    }
+
     private void validarDatosBasicos(DatosNuevaReserva datos) {
         if (datos.getActividad() == null || datos.getActividad().isBlank()) {
             throw new ReglaDeNegocioException("Debe indicar la actividad de la reserva.");
@@ -147,11 +198,12 @@ public class ReservaService {
     }
 
     private Optional<Recurso> buscarPrimerRecursoDisponible(
-            String idCategoria, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin
+            String idCategoria, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, String idReservaExcluida
     ) {
         List<Recurso> recursosDeLaCategoria = recursoDao.listarPorCategoria(idCategoria);
         List<Reserva> reservasActivasEseDia = reservaDao.listarTodos().stream()
                 .filter(reserva -> reserva.getEstado() == EstadoReserva.ACTIVA)
+                .filter(reserva -> idReservaExcluida == null || !idReservaExcluida.equals(reserva.getId()))
                 .filter(reserva -> fecha.equals(reserva.getFecha()))
                 .filter(reserva -> seSolapan(horaInicio, horaFin, reserva.getHoraInicio(), reserva.getHoraFin()))
                 .collect(Collectors.toList());
