@@ -11,6 +11,7 @@ import cr.ac.una.reservas.presentation.mvc.componentes.BotonIcono;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonPrimario;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonSecundario;
 import cr.ac.una.reservas.presentation.mvc.componentes.CampoTexto;
+import cr.ac.una.reservas.presentation.mvc.componentes.EditorFechaFlexible;
 import cr.ac.una.reservas.presentation.mvc.componentes.SpinnerTematizado;
 import cr.ac.una.reservas.presentation.mvc.componentes.Tarjeta;
 import cr.ac.una.reservas.presentation.mvc.componentes.TablaDatos;
@@ -255,7 +256,7 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     private JSpinner crearSpinnerFecha() {
         SpinnerDateModel modelo = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         JSpinner spinner = new JSpinner(modelo);
-        spinner.setEditor(new JSpinner.DateEditor(spinner, "dd/MM/yyyy"));
+        EditorFechaFlexible.aplicar(spinner);
         return spinner;
     }
 
@@ -343,6 +344,7 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     }
 
     public LocalDate obtenerFecha() {
+        EditorFechaFlexible.confirmarEdicion(spinnerFechaReal);
         Object valor = spinnerFechaReal.getValue();
         return valor instanceof Date ? convertirFecha((Date) valor) : null;
     }

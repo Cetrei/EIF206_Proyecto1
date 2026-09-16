@@ -18,11 +18,13 @@ import cr.ac.una.reservas.service.ReservaService;
 import cr.ac.una.reservas.service.ServiceFactory;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
 
+import javax.swing.SwingWorker;
 import java.awt.Frame;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class ReservaControl implements CategoriaObserver {
@@ -223,89 +225,116 @@ public class ReservaControl implements CategoriaObserver {
             return;
         }
 
-        try {
-            List<Categoria> categorias = categoriaService.listarTodas();
-            DatosReservaExtraidos datos = extractorReservaService.extraer(frase, categorias);
+        Popup popupCargando = Popup.mostrarCargando(
+                ventanaPropietaria,
+                "Extraer datos con IA",
+                "Analizando la frase e identificando los datos de la reserva..."
+        );
 
-            boolean datoEncontrado = false;
-
-            if (datos.getActividad() != null && !datos.getActividad().isBlank()) {
-                vista.mostrarActividad(datos.getActividad());
-                datoEncontrado = true;
+        SwingWorker<DatosReservaExtraidos, Void> worker = new SwingWorker<DatosReservaExtraidos, Void>() {
+            @Override
+            protected DatosReservaExtraidos doInBackground() {
+                List<Categoria> categorias = categoriaService.listarTodas();
+                return extractorReservaService.extraer(frase, categorias);
             }
 
-            if (datos.getFecha() != null) {
-                vista.mostrarFecha(datos.getFecha());
-                datoEncontrado = true;
+            @Override
+            protected void done() {
+                popupCargando.cerrar();
+                try {
+                    procesarResultadoExtraccion(get());
+                } catch (ExecutionException excepcion) {
+                    procesarFalloExtraccion();
+                } catch (InterruptedException excepcion) {
+                    Thread.currentThread().interrupt();
+                    procesarFalloExtraccion();
+                }
             }
+        };
+        worker.execute();
+    }
 
-            if (datos.getHoraInicio() != null) {
-                vista.mostrarHoraInicio(datos.getHoraInicio());
-                datoEncontrado = true;
-            }
+    private void procesarResultadoExtraccion(DatosReservaExtraidos datos) {
+        boolean datoEncontrado = false;
 
-            if (datos.getHoraFin() != null) {
-                vista.mostrarHoraFin(datos.getHoraFin());
-                datoEncontrado = true;
-            }
+        if (datos.getActividad() != null && !datos.getActividad().isBlank()) {
+            vista.mostrarActividad(datos.getActividad());
+            datoEncontrado = true;
+        }
 
-            if (datos.getIdsCategoriasIdentificadas() != null && !datos.getIdsCategoriasIdentificadas().isEmpty()) {
-                vista.mostrarCategoriasSeleccionadas(datos.getIdsCategoriasIdentificadas());
-                datoEncontrado = true;
-            }
+        if (datos.getFecha() != null) {
+            vista.mostrarFecha(datos.getFecha());
+            datoEncontrado = true;
+        }
 
-            if (!datoEncontrado) {
-                vista.mostrarEstadoIa(!extractorReservaService.fueUsadoModoBasico());
+        if (datos.getHoraInicio() != null) {
+            vista.mostrarHoraInicio(datos.getHoraInicio());
+            datoEncontrado = true;
+        }
 
-                String motivoFallo = extractorReservaService.motivoUltimoFalloPrincipal();
+        if (datos.getHoraFin() != null) {
+            vista.mostrarHoraFin(datos.getHoraFin());
+            datoEncontrado = true;
+        }
 
-                String mensajeSinDatos = motivoFallo != null
-                        ? "Gemini no pudo procesar la solicitud (" + motivoFallo + "). "
-                                + "Se intentó con el modo básico de respaldo, pero tampoco identificó datos suficientes. "
-                                + "Puede completar el formulario manualmente."
-                        : extractorReservaService.fueUsadoModoBasico()
-                                ? "El modo básico de respaldo no identificó datos suficientes en la frase. "
-                                        + "Puede completar el formulario manualmente."
-                                : "Gemini respondió correctamente pero no identificó datos suficientes en la frase. "
-                                        + "Puede completar el formulario manualmente.";
+        if (datos.getIdsCategoriasIdentificadas() != null && !datos.getIdsCategoriasIdentificadas().isEmpty()) {
+            vista.mostrarCategoriasSeleccionadas(datos.getIdsCategoriasIdentificadas());
+            datoEncontrado = true;
+        }
 
-                Popup.mostrarAviso(
-                        ventanaPropietaria,
-                        Popup.Tipo.INFORMACION,
-                        "Extraer datos con IA",
-                        mensajeSinDatos
-                );
-                return;
-            }
-
-            String mensaje;
-
-            if (extractorReservaService.fueUsadoModoBasico()) {
-                String motivoFallo = extractorReservaService.motivoUltimoFalloPrincipal();
-                String detalleFallo = motivoFallo != null ? " Motivo: " + motivoFallo + "." : "";
-
-                mensaje = "Gemini no estuvo disponible." + detalleFallo + " "
-                        + "Los datos identificados fueron cargados usando el modo básico de respaldo. "
-                        + "Revise la información antes de solicitar la reserva.";
-            } else {
-                mensaje = "Los datos identificados por Gemini fueron cargados en el formulario. "
-                        + "Revise la información antes de solicitar la reserva.";
-            }
-
-            vista.mostrarEstadoIa(!extractorReservaService.fueUsadoModoBasico());
-            Popup.mostrarAviso(ventanaPropietaria, Popup.Tipo.CONFIRMACION, "Datos extraídos", mensaje);
-        } catch (RuntimeException excepcion) {
+        if (!datoEncontrado) {
             vista.mostrarEstadoIa(!extractorReservaService.fueUsadoModoBasico());
 
             String motivoFallo = extractorReservaService.motivoUltimoFalloPrincipal();
-            String detalle = motivoFallo != null ? " (" + motivoFallo + ")" : "";
 
-            mostrarError(
-                    "Extraer datos con IA",
-                    "No se pudieron extraer los datos de la reserva" + detalle + ". "
+            String mensajeSinDatos = motivoFallo != null
+                    ? "Gemini no pudo procesar la solicitud (" + motivoFallo + "). "
+                            + "Se intentó con el modo básico de respaldo, pero tampoco identificó datos suficientes. "
                             + "Puede completar el formulario manualmente."
+                    : extractorReservaService.fueUsadoModoBasico()
+                            ? "El modo básico de respaldo no identificó datos suficientes en la frase. "
+                                    + "Puede completar el formulario manualmente."
+                            : "Gemini respondió correctamente pero no identificó datos suficientes en la frase. "
+                                    + "Puede completar el formulario manualmente.";
+
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.INFORMACION,
+                    "Extraer datos con IA",
+                    mensajeSinDatos
             );
+            return;
         }
+
+        String mensaje;
+
+        if (extractorReservaService.fueUsadoModoBasico()) {
+            String motivoFallo = extractorReservaService.motivoUltimoFalloPrincipal();
+            String detalleFallo = motivoFallo != null ? " Motivo: " + motivoFallo + "." : "";
+
+            mensaje = "Gemini no estuvo disponible." + detalleFallo + " "
+                    + "Los datos identificados fueron cargados usando el modo básico de respaldo. "
+                    + "Revise la información antes de solicitar la reserva.";
+        } else {
+            mensaje = "Los datos identificados por Gemini fueron cargados en el formulario. "
+                    + "Revise la información antes de solicitar la reserva.";
+        }
+
+        vista.mostrarEstadoIa(!extractorReservaService.fueUsadoModoBasico());
+        Popup.mostrarAviso(ventanaPropietaria, Popup.Tipo.CONFIRMACION, "Datos extraídos", mensaje);
+    }
+
+    private void procesarFalloExtraccion() {
+        vista.mostrarEstadoIa(!extractorReservaService.fueUsadoModoBasico());
+
+        String motivoFallo = extractorReservaService.motivoUltimoFalloPrincipal();
+        String detalle = motivoFallo != null ? " (" + motivoFallo + ")" : "";
+
+        mostrarError(
+                "Extraer datos con IA",
+                "No se pudieron extraer los datos de la reserva" + detalle + ". "
+                        + "Puede completar el formulario manualmente."
+        );
     }
 
     private void generarReporte() {

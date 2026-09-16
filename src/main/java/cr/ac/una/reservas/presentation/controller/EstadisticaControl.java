@@ -46,20 +46,52 @@ public class EstadisticaControl {
     }
 
     private void cargarRecursos(LocalDate desde, LocalDate hasta) {
+        if (desde == null || hasta == null) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "Debe seleccionar fechas validas para consultar los recursos."
+            );
+            return;
+        }
         try {
             modelo.setRecursos(estadisticaService.recursosReservadosEnPeriodo(desde, hasta));
             modelo.setSubtituloRecursos(descripcionPeriodo(desde, hasta));
         } catch (ReservaAppException excepcion) {
             Popup.mostrarAviso(ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo cargar", excepcion.getMessage());
+        } catch (RuntimeException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "No fue posible consultar los recursos en ese periodo."
+            );
         }
     }
 
     private void cargarActividades(LocalDate desde, LocalDate hasta) {
+        if (desde == null || hasta == null) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "Debe seleccionar fechas validas para consultar las actividades."
+            );
+            return;
+        }
         try {
             modelo.setActividades(estadisticaService.actividadesPorSemanaEnPeriodo(desde, hasta));
             modelo.setSubtituloActividades(descripcionPeriodo(desde, hasta));
         } catch (ReservaAppException excepcion) {
             Popup.mostrarAviso(ventanaPropietaria, Popup.Tipo.ERROR, "No se pudo cargar", excepcion.getMessage());
+        } catch (RuntimeException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "No fue posible consultar las actividades en ese periodo."
+            );
         }
     }
 

@@ -153,7 +153,7 @@ public class PanelEstadistica<T> implements CambioTemaListener {
     private JSpinner crearSpinnerFecha() {
         SpinnerDateModel modelo = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         JSpinner spinner = new JSpinner(modelo);
-        spinner.setEditor(new JSpinner.DateEditor(spinner, "dd/MM/yyyy"));
+        EditorFechaFlexible.aplicar(spinner);
         return spinner;
     }
 
@@ -174,9 +174,11 @@ public class PanelEstadistica<T> implements CambioTemaListener {
     }
 
     public LocalDate obtenerFechaDesde() {
+        EditorFechaFlexible.confirmarEdicion(spinnerDesdeReal);
         return convertir((Date) spinnerDesdeReal.getValue());
     }
     public LocalDate obtenerFechaHasta() {
+        EditorFechaFlexible.confirmarEdicion(spinnerHastaReal);
         return convertir((Date) spinnerHastaReal.getValue());
     }
 

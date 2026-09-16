@@ -48,7 +48,8 @@ public class Popup implements CambioTemaListener {
     public enum Tipo {
         INFORMACION,
         ERROR,
-        CONFIRMACION
+        CONFIRMACION,
+        CARGANDO
     }
 
     public static class AccionPopup {
@@ -75,14 +76,18 @@ public class Popup implements CambioTemaListener {
     private Tipo tipo = Tipo.INFORMACION;
 
     public Popup(Frame propietario) {
+        this(propietario, true);
+    }
+
+    public Popup(Frame propietario, boolean modal) {
         $$$setupUI$$$();
-        construirDialogo(propietario);
+        construirDialogo(propietario, modal);
         GestorTema.obtenerInstancia().agregarListener(this);
         aplicarTema(GestorTema.obtenerInstancia().temaActivo());
     }
 
-    private void construirDialogo(Frame propietario) {
-        dialogoRaiz = new JDialog(propietario, true) {
+    private void construirDialogo(Frame propietario, boolean modal) {
+        dialogoRaiz = new JDialog(propietario, modal) {
             @Override
             public void paint(Graphics graficos) {
                 Graphics2D graficos2D = (Graphics2D) graficos.create();
@@ -95,6 +100,7 @@ public class Popup implements CambioTemaListener {
         };
         dialogoRaiz.setUndecorated(true);
         dialogoRaiz.setResizable(false);
+        dialogoRaiz.setDefaultCloseOperation(modal ? JDialog.DISPOSE_ON_CLOSE : JDialog.DO_NOTHING_ON_CLOSE);
         dialogoRaiz.setContentPane(pnlContenidoPopup);
     }
 
@@ -155,6 +161,16 @@ public class Popup implements CambioTemaListener {
         popup.mostrar();
     }
 
+    public static Popup mostrarCargando(Frame propietario, String titulo, String mensaje) {
+        Popup popup = new Popup(propietario, false);
+        popup.setTipo(Tipo.CARGANDO);
+        popup.setTitulo(titulo);
+        popup.setMensaje(mensaje);
+        popup.setAcciones(new ArrayList<>());
+        popup.mostrar();
+        return popup;
+    }
+
     public void mostrar() {
         dialogoRaiz.pack();
         dialogoRaiz.setLocationRelativeTo(dialogoRaiz.getOwner());
@@ -196,6 +212,8 @@ public class Popup implements CambioTemaListener {
                 return Icono.ALERTA;
             case CONFIRMACION:
                 return Icono.CHECK;
+            case CARGANDO:
+                return Icono.NUBE;
             case INFORMACION:
             default:
                 return Icono.INFO;

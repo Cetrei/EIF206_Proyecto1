@@ -7,6 +7,7 @@ import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonPrimario;
 import cr.ac.una.reservas.presentation.mvc.componentes.BotonSecundario;
 import cr.ac.una.reservas.presentation.mvc.componentes.ComboBoxTematizado;
+import cr.ac.una.reservas.presentation.mvc.componentes.EditorFechaFlexible;
 import cr.ac.una.reservas.presentation.mvc.componentes.MatrizPanel;
 import cr.ac.una.reservas.presentation.mvc.componentes.MatrizFillStrategy;
 import cr.ac.una.reservas.presentation.mvc.componentes.SpinnerTematizado;
@@ -134,7 +135,7 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
     private JSpinner crearSpinnerFecha() {
         SpinnerDateModel modelo = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         JSpinner spinner = new JSpinner(modelo);
-        spinner.setEditor(new JSpinner.DateEditor(spinner, "dd/MM/yyyy"));
+        EditorFechaFlexible.aplicar(spinner);
         return spinner;
     }
 
@@ -172,6 +173,7 @@ public class TabCalendarizacion implements CambioTemaListener, PropertyChangeLis
     }
 
     public LocalDate obtenerFecha() {
+        EditorFechaFlexible.confirmarEdicion(spinnerFechaReal);
         Date valor = (Date) spinnerFechaReal.getValue();
         return valor.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }

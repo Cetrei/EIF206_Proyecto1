@@ -50,10 +50,29 @@ public class ActividadControl implements ReservaObserver {
 
     private void cargarSemana() {
         LocalDate fechaReferencia = vista.obtenerFechaReferencia();
-        ProgramacionActividadStrategy estrategia = new ProgramacionActividadStrategy(
-                reservaService, fechaReferencia, this::alHacerClickActividad
-        );
-        modelo.setMatriz(estrategia);
+        if (fechaReferencia == null) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "Debe seleccionar una fecha valida para consultar la semana."
+            );
+            return;
+        }
+
+        try {
+            ProgramacionActividadStrategy estrategia = new ProgramacionActividadStrategy(
+                    reservaService, fechaReferencia, this::alHacerClickActividad
+            );
+            modelo.setMatriz(estrategia);
+        } catch (RuntimeException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "No fue posible consultar la programacion de esa semana."
+            );
+        }
     }
 
     private void alHacerClickActividad(Reserva reserva) {
@@ -68,28 +87,47 @@ public class ActividadControl implements ReservaObserver {
 
     private void generarReporte() {
         LocalDate fechaReferencia = vista.obtenerFechaReferencia();
-        LocalDate lunes = fechaReferencia.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate domingo = lunes.plusDays(6);
-
-        List<Reserva> reservasDeLaSemana = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            reservasDeLaSemana.addAll(reservaService.listarReservasActivasEnFecha(lunes.plusDays(i)));
+        if (fechaReferencia == null) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo generar el reporte",
+                    "Debe seleccionar una fecha valida antes de generar el reporte."
+            );
+            return;
         }
-        reservasDeLaSemana.sort((a, b) -> {
-            int comparacionFecha = a.getFecha().compareTo(b.getFecha());
-            if (comparacionFecha != 0) return comparacionFecha;
-            return a.getHoraInicio().compareTo(b.getHoraInicio());
-        });
 
-        String subtitulo = "Semana del " + lunes.format(FORMATO_FECHA) + " al " + domingo.format(FORMATO_FECHA);
+        try {
+            LocalDate lunes = fechaReferencia.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate domingo = lunes.plusDays(6);
 
-        GeneracionReporteControl.generarYGuardar(
-                ventanaPropietaria,
-                ReporteFactory.TipoReporte.ACTIVIDADES,
-                "programacion_actividades",
-                reservasDeLaSemana,
-                Map.of("subtitulo", subtitulo)
-        );
+            List<Reserva> reservasDeLaSemana = new ArrayList<>();
+            for (int i = 0; i < 7; i++) {
+                reservasDeLaSemana.addAll(reservaService.listarReservasActivasEnFecha(lunes.plusDays(i)));
+            }
+            reservasDeLaSemana.sort((a, b) -> {
+                int comparacionFecha = a.getFecha().compareTo(b.getFecha());
+                if (comparacionFecha != 0) return comparacionFecha;
+                return a.getHoraInicio().compareTo(b.getHoraInicio());
+            });
+
+            String subtitulo = "Semana del " + lunes.format(FORMATO_FECHA) + " al " + domingo.format(FORMATO_FECHA);
+
+            GeneracionReporteControl.generarYGuardar(
+                    ventanaPropietaria,
+                    ReporteFactory.TipoReporte.ACTIVIDADES,
+                    "programacion_actividades",
+                    reservasDeLaSemana,
+                    Map.of("subtitulo", subtitulo)
+            );
+        } catch (RuntimeException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo generar el reporte",
+                    "No fue posible generar el reporte para esa semana."
+            );
+        }
     }
 
     @Override

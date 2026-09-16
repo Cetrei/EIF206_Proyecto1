@@ -72,13 +72,31 @@ public class CalendarizacionControl implements ReservaObserver, CategoriaObserve
     }
 
     private void cargarMatriz() {
-        LocalDate fecha = vista.obtenerFecha();
-        Categoria categoria = vista.obtenerCategoriaSeleccionada();
+        try {
+            LocalDate fecha = vista.obtenerFecha();
+            if (fecha == null) {
+                Popup.mostrarAviso(
+                        ventanaPropietaria,
+                        Popup.Tipo.ERROR,
+                        "No se pudo cargar",
+                        "Debe seleccionar una fecha valida para consultar la disponibilidad."
+                );
+                return;
+            }
+            Categoria categoria = vista.obtenerCategoriaSeleccionada();
 
-        CalendarizacionRecursoStrategy estrategia = new CalendarizacionRecursoStrategy(
-                recursoService, reservaService, categoria, fecha, this::alHacerClickCeldaOcupada
-        );
-        modelo.setMatriz(estrategia);
+            CalendarizacionRecursoStrategy estrategia = new CalendarizacionRecursoStrategy(
+                    recursoService, reservaService, categoria, fecha, this::alHacerClickCeldaOcupada
+            );
+            modelo.setMatriz(estrategia);
+        } catch (RuntimeException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo cargar",
+                    "No fue posible consultar la disponibilidad con los filtros seleccionados."
+            );
+        }
     }
 
     private void alHacerClickCeldaOcupada(Recurso recurso, Reserva reserva) {
@@ -93,19 +111,38 @@ public class CalendarizacionControl implements ReservaObserver, CategoriaObserve
 
     private void generarReporte() {
         LocalDate fecha = vista.obtenerFecha();
-        Categoria categoria = vista.obtenerCategoriaSeleccionada();
-        String subtitulo = "Fecha: " + fecha
-                + (categoria == null ? "" : " · Categoría: " + categoria.getDescripcion());
+        if (fecha == null) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo generar el reporte",
+                    "Debe seleccionar una fecha valida antes de generar el reporte."
+            );
+            return;
+        }
 
-        List<FilaCalendarizacion> filas = armarFilasReporte(categoria, fecha);
+        try {
+            Categoria categoria = vista.obtenerCategoriaSeleccionada();
+            String subtitulo = "Fecha: " + fecha
+                    + (categoria == null ? "" : " · Categoría: " + categoria.getDescripcion());
 
-        GeneracionReporteControl.generarYGuardar(
-                ventanaPropietaria,
-                ReporteFactory.TipoReporte.CALENDARIZACION,
-                "calendarizacion",
-                filas,
-                Map.of("subtitulo", subtitulo)
-        );
+            List<FilaCalendarizacion> filas = armarFilasReporte(categoria, fecha);
+
+            GeneracionReporteControl.generarYGuardar(
+                    ventanaPropietaria,
+                    ReporteFactory.TipoReporte.CALENDARIZACION,
+                    "calendarizacion",
+                    filas,
+                    Map.of("subtitulo", subtitulo)
+            );
+        } catch (RuntimeException excepcion) {
+            Popup.mostrarAviso(
+                    ventanaPropietaria,
+                    Popup.Tipo.ERROR,
+                    "No se pudo generar el reporte",
+                    "No fue posible generar el reporte con los filtros seleccionados."
+            );
+        }
     }
 
     private List<FilaCalendarizacion> armarFilasReporte(Categoria categoria, LocalDate fecha) {
