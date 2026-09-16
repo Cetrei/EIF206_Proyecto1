@@ -73,4 +73,40 @@ class AutenticacionServiceTest {
         assertThrows(ReglaDeNegocioException.class,
                 () -> autenticacionService.cambiarClave(ID_ADMIN_PRUEBA, "clave-incorrecta", "otra-clave"));
     }
+
+    @Test
+    void rechazaCambioDeClaveConNuevaClaveVacia() {
+        assertThrows(ReglaDeNegocioException.class,
+                () -> autenticacionService.cambiarClave(ID_FUNCIONARIO_PRUEBA, CLAVE_PRUEBA, " "));
+        assertThrows(ReglaDeNegocioException.class,
+                () -> autenticacionService.cambiarClave(ID_FUNCIONARIO_PRUEBA, CLAVE_PRUEBA, null));
+    }
+
+    @Test
+    void rechazaCambioDeClaveDeUnUsuarioInexistente() {
+        assertThrows(ReglaDeNegocioException.class,
+                () -> autenticacionService.cambiarClave("no-existe", CLAVE_PRUEBA, "otra-clave"));
+    }
+
+    @Test
+    void persisteLaNuevaClaveDelAdministradorEnSuDao() {
+        autenticacionService.cambiarClave(ID_ADMIN_PRUEBA, CLAVE_PRUEBA, "nueva-clave");
+
+        assertEquals("nueva-clave", administradorDao.buscarPorId(ID_ADMIN_PRUEBA).get().getClave());
+    }
+
+    @Test
+    void persisteLaNuevaClaveDelFuncionarioEnSuDao() {
+        autenticacionService.cambiarClave(ID_FUNCIONARIO_PRUEBA, CLAVE_PRUEBA, "nueva-clave");
+
+        assertEquals("nueva-clave", funcionarioDao.buscarPorId(ID_FUNCIONARIO_PRUEBA).get().getClave());
+    }
+
+    @Test
+    void laClaveAnteriorDejaDeServirDespuesDelCambio() {
+        autenticacionService.cambiarClave(ID_FUNCIONARIO_PRUEBA, CLAVE_PRUEBA, "nueva-clave");
+
+        assertThrows(ReglaDeNegocioException.class,
+                () -> autenticacionService.autenticar(ID_FUNCIONARIO_PRUEBA, CLAVE_PRUEBA));
+    }
 }

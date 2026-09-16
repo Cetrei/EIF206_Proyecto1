@@ -4,6 +4,7 @@ import cr.ac.una.reservas.model.Categoria;
 import cr.ac.una.reservas.model.DatosNuevaReserva;
 import cr.ac.una.reservas.model.EstadisticaCategoria;
 import cr.ac.una.reservas.model.EstadisticaSemana;
+import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Recurso;
 import cr.ac.una.reservas.model.Reserva;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
@@ -112,7 +113,44 @@ class EstadisticaServiceTest {
                 () -> estadisticaService.actividadesPorSemanaEnPeriodo(null, null));
     }
 
-    private void guardarReservaActiva(String id, LocalDate fecha, List<String> idsRecursos) {
+    @Test
+    void ignoraLasReservasCanceladasEnAmbasEstadisticas() {
+        LocalDate fecha = LocalDate.of(2026, 8, 5);
+        Reserva cancelada = guardarReservaActiva("RES-000001", fecha, List.of("34343"));
+        cancelada.setEstado(EstadoReserva.CANCELADA);
+        reservaDao.guardar(cancelada);
+
+        assertTrue(estadisticaService.recursosReservadosEnPeriodo(
+                LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 13)
+        ).isEmpty());
+        assertTrue(estadisticaService.actividadesPorSemanaEnPeriodo(
+                LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 13)
+        ).isEmpty());
+    }
+
+    @Test
+    void incluyeLasReservasJustoEnLosLimitesDelPeriodo() {
+        guardarReservaActiva("RES-000001", LocalDate.of(2026, 8, 1), List.of("34343"));
+        guardarReservaActiva("RES-000002", LocalDate.of(2026, 8, 13), List.of("34343"));
+
+        List<EstadisticaCategoria> resultado = estadisticaService.recursosReservadosEnPeriodo(
+                LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 13)
+        );
+
+        assertEquals(1, resultado.size());
+        assertEquals(2L, resultado.get(0).getCantidad());
+    }
+
+    @Test
+    void ignoraRecursosAsignadosQueYaNoExisten() {
+        guardarReservaActiva("RES-000001", LocalDate.of(2026, 8, 5), List.of("recurso-borrado"));
+
+        assertTrue(estadisticaService.recursosReservadosEnPeriodo(
+                LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 13)
+        ).isEmpty());
+    }
+
+    private Reserva guardarReservaActiva(String id, LocalDate fecha, List<String> idsRecursos) {
         DatosNuevaReserva datos = new DatosNuevaReserva();
         datos.setId(id);
         datos.setIdFuncionario("111");
@@ -125,5 +163,6 @@ class EstadisticaServiceTest {
         Reserva reserva = new Reserva(datos);
         reserva.setIdsRecursosAsignados(idsRecursos);
         reservaDao.guardar(reserva);
+        return reserva;
     }
 }

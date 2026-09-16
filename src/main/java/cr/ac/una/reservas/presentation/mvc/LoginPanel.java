@@ -16,6 +16,7 @@ import cr.ac.una.reservas.presentation.mvc.tema.GestorTema;
 import cr.ac.una.reservas.presentation.mvc.tema.Tema;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -169,6 +170,7 @@ public class LoginPanel implements CambioTemaListener, PropertyChangeListener {
 
         lblIntegrantes.setForeground(tema.colorTextoSecundario());
         lblIntegrantes.setFont(tema.fuenteTexto().deriveFont(Font.PLAIN, 11f));
+        lblIntegrantes.setBorder(new EmptyBorder(0, 16, 12, 16));
 
         VentanaPrincipal.repaint();
     }
@@ -213,11 +215,11 @@ public class LoginPanel implements CambioTemaListener, PropertyChangeListener {
         VentanaPrincipal.add(spacer2, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         lblIntegrantes = new JLabel();
         lblIntegrantes.setText("Joanfer Hidalgo Chaves, Santiago Hernandez Chaves, Justin Angulo Artavia");
-        VentanaPrincipal.add(lblIntegrantes, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        VentanaPrincipal.add(lblIntegrantes, new GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_SOUTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         VentanaPrincipal.add(spacer3, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final Spacer spacer4 = new Spacer();
-        VentanaPrincipal.add(spacer4, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        VentanaPrincipal.add(spacer4, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     }
 
     /**
