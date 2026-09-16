@@ -21,7 +21,7 @@ public class CalendarizacionModel extends AbstractModel {
     public void setCategoriasDisponibles(List<Categoria> nuevaLista) {
         List<Categoria> anterior = this.categoriasDisponibles;
         this.categoriasDisponibles = nuevaLista;
-        notificarCambio(PROP_CATEGORIAS_DISPONIBLES, anterior, nuevaLista);
+        notificarCambioForzado(PROP_CATEGORIAS_DISPONIBLES, anterior, nuevaLista);
     }
 
     public MatrizFillStrategy getMatriz() {

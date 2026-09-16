@@ -23,7 +23,7 @@ public class RecursoModel extends AbstractModel {
     public void setRecursos(List<Recurso> nuevaLista) {
         List<Recurso> anterior = this.recursos;
         this.recursos = nuevaLista;
-        notificarCambio(PROP_RECURSOS, anterior, nuevaLista);
+        notificarCambioForzado(PROP_RECURSOS, anterior, nuevaLista);
     }
 
     public Recurso getRecursoSeleccionado() {
@@ -43,6 +43,6 @@ public class RecursoModel extends AbstractModel {
     public void setCategoriasDisponibles(List<Categoria> nuevaLista) {
         List<Categoria> anterior = this.categoriasDisponibles;
         this.categoriasDisponibles = nuevaLista;
-        notificarCambio(PROP_CATEGORIAS_DISPONIBLES, anterior, nuevaLista);
+        notificarCambioForzado(PROP_CATEGORIAS_DISPONIBLES, anterior, nuevaLista);
     }
 }

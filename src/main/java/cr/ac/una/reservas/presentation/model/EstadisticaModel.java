@@ -24,7 +24,7 @@ public class EstadisticaModel extends AbstractModel {
     public void setRecursos(List<EstadisticaCategoria> nuevaLista) {
         List<EstadisticaCategoria> anterior = this.recursos;
         this.recursos = nuevaLista;
-        notificarCambio(PROP_RECURSOS, anterior, nuevaLista);
+        notificarCambioForzado(PROP_RECURSOS, anterior, nuevaLista);
     }
 
     public String getSubtituloRecursos() {
@@ -44,7 +44,7 @@ public class EstadisticaModel extends AbstractModel {
     public void setActividades(List<EstadisticaSemana> nuevaLista) {
         List<EstadisticaSemana> anterior = this.actividades;
         this.actividades = nuevaLista;
-        notificarCambio(PROP_ACTIVIDADES, anterior, nuevaLista);
+        notificarCambioForzado(PROP_ACTIVIDADES, anterior, nuevaLista);
     }
 
     public String getSubtituloActividades() {

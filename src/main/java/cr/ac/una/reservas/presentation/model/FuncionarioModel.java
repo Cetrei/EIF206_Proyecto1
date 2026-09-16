@@ -20,7 +20,7 @@ public class FuncionarioModel extends AbstractModel {
     public void setFuncionarios(List<Funcionario> nuevaLista) {
         List<Funcionario> anterior = this.funcionarios;
         this.funcionarios = nuevaLista;
-        notificarCambio(PROP_FUNCIONARIOS, anterior, nuevaLista);
+        notificarCambioForzado(PROP_FUNCIONARIOS, anterior, nuevaLista);
     }
 
     public Funcionario getFuncionarioSeleccionado() {
