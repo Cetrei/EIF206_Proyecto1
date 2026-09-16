@@ -1,8 +1,10 @@
 package cr.ac.una.reservas.service;
 
+import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Recurso;
 import cr.ac.una.reservas.persistence.CategoriaDao;
 import cr.ac.una.reservas.persistence.RecursoDao;
+import cr.ac.una.reservas.persistence.ReservaDao;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import cr.ac.una.reservas.util.TextoBusqueda;
 
@@ -12,14 +14,16 @@ import java.util.stream.Collectors;
 public class RecursoService {
     private final RecursoDao recursoDao;
     private final CategoriaDao categoriaDao;
+    private final ReservaDao reservaDao;
 
     public RecursoService() {
-        this(DaoFactory.obtenerRecursoDao(), DaoFactory.obtenerCategoriaDao());
+        this(DaoFactory.obtenerRecursoDao(), DaoFactory.obtenerCategoriaDao(), DaoFactory.obtenerReservaDao());
     }
 
-    public RecursoService(RecursoDao recursoDao, CategoriaDao categoriaDao) {
+    public RecursoService(RecursoDao recursoDao, CategoriaDao categoriaDao, ReservaDao reservaDao) {
         this.recursoDao = recursoDao;
         this.categoriaDao = categoriaDao;
+        this.reservaDao = reservaDao;
     }
 
     public List<Recurso> listarPorCategoria(String idCategoria) {
@@ -67,6 +71,17 @@ public class RecursoService {
     }
 
     public void eliminar(String id) {
+        if (recursoDao.buscarPorId(id).isEmpty()) {
+            throw new ReglaDeNegocioException("No existe un recurso con ese ID.");
+        }
+        boolean asignadoAReservaActiva = reservaDao.listarTodos().stream()
+                .filter(reserva -> reserva.getEstado() == EstadoReserva.ACTIVA)
+                .anyMatch(reserva -> reserva.getIdsRecursosAsignados().contains(id));
+        if (asignadoAReservaActiva) {
+            throw new ReglaDeNegocioException(
+                    "No se puede eliminar el recurso porque está asignado a una reserva activa."
+            );
+        }
         recursoDao.eliminar(id);
     }
 

@@ -215,7 +215,7 @@ public class LoginPanel implements CambioTemaListener, PropertyChangeListener {
         VentanaPrincipal.add(spacer2, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         lblIntegrantes = new JLabel();
         lblIntegrantes.setText("Joanfer Hidalgo Chaves, Santiago Hernandez Chaves, Justin Angulo Artavia");
-        VentanaPrincipal.add(lblIntegrantes, new GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_SOUTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        VentanaPrincipal.add(lblIntegrantes, new GridConstraints(3, 0, 1, 3, 12, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         VentanaPrincipal.add(spacer3, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final Spacer spacer4 = new Spacer();

@@ -46,6 +46,9 @@ public class CategoriaService {
     }
 
     public void modificar(Categoria categoria) {
+        if (categoria.getDescripcion() == null || categoria.getDescripcion().isBlank()) {
+            throw new ReglaDeNegocioException("La descripción de la categoría no puede estar vacía.");
+        }
         if (categoriaDao.buscarPorId(categoria.getId()).isEmpty()) {
             throw new ReglaDeNegocioException("No existe una categoría con ese ID.");
         }
@@ -54,6 +57,9 @@ public class CategoriaService {
     }
 
     public void eliminar(String id) {
+        if (categoriaDao.buscarPorId(id).isEmpty()) {
+            throw new ReglaDeNegocioException("No existe una categoría con ese ID.");
+        }
         if (!recursoDao.listarPorCategoria(id).isEmpty()) {
             throw new ReglaDeNegocioException(
                     "No se puede eliminar la categoría porque tiene recursos asociados."
@@ -78,16 +84,37 @@ public class CategoriaService {
     }
 
     private String generarSiguienteId() {
-        int siguienteConsecutivo = categoriaDao.listarTodos().size() + 1;
-        String consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);
-        String idPropuesto = PREFIJO_ID + consecutivoFormateado;
+        int siguienteConsecutivo = ultimoConsecutivoUsado() + 1;
+        String idPropuesto = PREFIJO_ID + formatearConsecutivo(siguienteConsecutivo);
 
         while (categoriaDao.buscarPorId(idPropuesto).isPresent()) {
             siguienteConsecutivo++;
-            consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);
-            idPropuesto = PREFIJO_ID + consecutivoFormateado;
+            idPropuesto = PREFIJO_ID + formatearConsecutivo(siguienteConsecutivo);
         }
         return idPropuesto;
+    }
+
+    private int ultimoConsecutivoUsado() {
+        int mayor = 0;
+        for (Categoria categoria : categoriaDao.listarTodos()) {
+            mayor = Math.max(mayor, consecutivoDe(categoria.getId()));
+        }
+        return mayor;
+    }
+
+    private static int consecutivoDe(String id) {
+        if (id == null || !id.startsWith(PREFIJO_ID)) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(id.substring(PREFIJO_ID.length()));
+        } catch (NumberFormatException idConFormatoDesconocido) {
+            return 0;
+        }
+    }
+
+    private static String formatearConsecutivo(int consecutivo) {
+        return String.format("%0" + LONGITUD_CONSECUTIVO + "d", consecutivo);
     }
 
     Optional<Categoria> buscarPorId(String id) {

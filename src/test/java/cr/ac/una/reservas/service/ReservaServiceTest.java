@@ -233,6 +233,50 @@ class ReservaServiceTest {
     }
 
     @Test
+    void rechazaModificarLaReservaDeOtroFuncionario() {
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        ResultadoReserva creada = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+
+        DatosNuevaReserva cambios = datosDeEjemplo("222", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0));
+        cambios.setId(creada.getReserva().getId());
+
+        assertThrows(ReglaDeNegocioException.class, () -> reservaService.intentarModificar(cambios));
+    }
+
+    @Test
+    void notificaAObservadoresAlModificarUnaReserva() {
+        ContadorEventosReserva contador = new ContadorEventosReserva();
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        ResultadoReserva creada = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+        reservaService.agregarObservador(contador);
+
+        DatosNuevaReserva cambios = datosDeEjemplo("111", fecha, LocalTime.of(13, 0), LocalTime.of(15, 0));
+        cambios.setId(creada.getReserva().getId());
+        reservaService.intentarModificar(cambios);
+
+        assertEquals(1, contador.modificadas);
+    }
+
+    @Test
+    void elIdDeLaSiguienteReservaSigueAlMayorExistente() {
+        LocalDate fecha = LocalDate.now().plusDays(1);
+        reservaDao.guardar(new Reserva(new DatosNuevaReserva(
+                "RES-000007", "111", "Reunion previa", fecha,
+                LocalTime.of(6, 0), LocalTime.of(7, 0), List.of(categoriaSala.getId())
+        )));
+
+        ResultadoReserva nueva = reservaService.intentarReservar(datosDeEjemplo(
+                "111", fecha, LocalTime.of(8, 0), LocalTime.of(10, 0)
+        ));
+
+        assertEquals("RES-000008", nueva.getReserva().getId());
+    }
+
+    @Test
     void listaReservasActivasEnUnaFechaEspecifica() {
         LocalDate fecha = LocalDate.now().plusDays(1);
         reservaService.intentarReservar(datosDeEjemplo("111", fecha, LocalTime.of(8, 0), LocalTime.of(9, 0)));
@@ -256,6 +300,7 @@ class ReservaServiceTest {
     private static final class ContadorEventosReserva implements ReservaObserver {
         private int creadas;
         private int canceladas;
+        private int modificadas;
 
         @Override
         public void onReservaCreada(Reserva reserva) {
@@ -265,6 +310,11 @@ class ReservaServiceTest {
         @Override
         public void onReservaCancelada(Reserva reserva) {
             canceladas++;
+        }
+
+        @Override
+        public void onReservaModificada(Reserva reserva) {
+            modificadas++;
         }
     }
 }

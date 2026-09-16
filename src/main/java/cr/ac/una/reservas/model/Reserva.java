@@ -65,7 +65,9 @@ public class Reserva {
         this.fecha = datos.getFecha();
         this.horaInicio = datos.getHoraInicio();
         this.horaFin = datos.getHoraFin();
-        this.idsCategoriasRequeridas = datos.getIdsCategoriasRequeridas();
+        this.idsCategoriasRequeridas = datos.getIdsCategoriasRequeridas() == null
+                ? new ArrayList<>()
+                : new ArrayList<>(datos.getIdsCategoriasRequeridas());
         this.estado = EstadoReserva.ACTIVA;
     }
 
@@ -115,14 +117,18 @@ public class Reserva {
         return idsCategoriasRequeridas;
     }
     public void setIdsCategoriasRequeridas(List<String> idsCategoriasRequeridas) {
-        this.idsCategoriasRequeridas = idsCategoriasRequeridas;
+        this.idsCategoriasRequeridas = idsCategoriasRequeridas == null
+                ? new ArrayList<>()
+                : new ArrayList<>(idsCategoriasRequeridas);
     }
 
     public List<String> getIdsRecursosAsignados() {
         return idsRecursosAsignados;
     }
     public void setIdsRecursosAsignados(List<String> idsRecursosAsignados) {
-        this.idsRecursosAsignados = idsRecursosAsignados;
+        this.idsRecursosAsignados = idsRecursosAsignados == null
+                ? new ArrayList<>()
+                : new ArrayList<>(idsRecursosAsignados);
     }
 
     public EstadoReserva getEstado() {

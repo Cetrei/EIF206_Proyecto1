@@ -38,6 +38,9 @@ public class FuncionarioService {
         if (funcionario.getId() == null || funcionario.getId().isBlank()) {
             throw new ReglaDeNegocioException("El funcionario debe tener un ID.");
         }
+        if (funcionario.getNombre() == null || funcionario.getNombre().isBlank()) {
+            throw new ReglaDeNegocioException("El funcionario debe tener un nombre.");
+        }
         if (funcionarioDao.buscarPorId(funcionario.getId()).isPresent()) {
             throw new ReglaDeNegocioException("Ya existe un funcionario con ese ID.");
         }
@@ -46,6 +49,9 @@ public class FuncionarioService {
     }
 
     public void modificar(Funcionario funcionario) {
+        if (funcionario.getNombre() == null || funcionario.getNombre().isBlank()) {
+            throw new ReglaDeNegocioException("El funcionario debe tener un nombre.");
+        }
         if (funcionarioDao.buscarPorId(funcionario.getId()).isEmpty()) {
             throw new ReglaDeNegocioException("No existe un funcionario con ese ID.");
         }
@@ -53,6 +59,9 @@ public class FuncionarioService {
     }
 
     public void eliminar(String id) {
+        if (funcionarioDao.buscarPorId(id).isEmpty()) {
+            throw new ReglaDeNegocioException("No existe un funcionario con ese ID.");
+        }
         boolean tieneReservaActiva = reservaDao.listarPorFuncionario(id).stream()
                 .anyMatch(reserva -> reserva.getEstado() == EstadoReserva.ACTIVA);
         if (tieneReservaActiva) {

@@ -101,6 +101,11 @@ public class ReservaService {
             throw new ReglaDeNegocioException("No se puede modificar una reserva cancelada.");
         }
 
+        if (datos.getIdFuncionario() != null
+                && !datos.getIdFuncionario().equals(reservaExistente.getIdFuncionario())) {
+            throw new ReglaDeNegocioException("Solo el funcionario dueño de la reserva puede modificarla.");
+        }
+
         List<Categoria> categoriasNoDisponibles = new ArrayList<>();
         List<Recurso> recursosAAsignar = new ArrayList<>();
 
@@ -228,15 +233,36 @@ public class ReservaService {
     }
 
     private String generarSiguienteId() {
-        int siguienteConsecutivo = reservaDao.listarTodos().size() + 1;
-        String consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);
-        String idPropuesto = PREFIJO_ID + consecutivoFormateado;
+        int siguienteConsecutivo = ultimoConsecutivoUsado() + 1;
+        String idPropuesto = PREFIJO_ID + formatearConsecutivo(siguienteConsecutivo);
 
         while (reservaDao.buscarPorId(idPropuesto).isPresent()) {
             siguienteConsecutivo++;
-            consecutivoFormateado = String.format("%0" + LONGITUD_CONSECUTIVO + "d", siguienteConsecutivo);
-            idPropuesto = PREFIJO_ID + consecutivoFormateado;
+            idPropuesto = PREFIJO_ID + formatearConsecutivo(siguienteConsecutivo);
         }
         return idPropuesto;
+    }
+
+    private int ultimoConsecutivoUsado() {
+        int mayor = 0;
+        for (Reserva reserva : reservaDao.listarTodos()) {
+            mayor = Math.max(mayor, consecutivoDe(reserva.getId()));
+        }
+        return mayor;
+    }
+
+    private static int consecutivoDe(String id) {
+        if (id == null || !id.startsWith(PREFIJO_ID)) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(id.substring(PREFIJO_ID.length()));
+        } catch (NumberFormatException idConFormatoDesconocido) {
+            return 0;
+        }
+    }
+
+    private static String formatearConsecutivo(int consecutivo) {
+        return String.format("%0" + LONGITUD_CONSECUTIVO + "d", consecutivo);
     }
 }

@@ -102,7 +102,7 @@ public class ReservaControl implements CategoriaObserver {
         Usuario usuarioActual = SesionControl.obtenerInstancia().usuarioActual();
         if (usuarioActual == null) return;
 
-        Reserva reservaEnEdicion = reservaEditable(modelo.getReservaSeleccionada());
+        Reserva reservaEnEdicion = reservaEditable(vista.obtenerReservaEnEdicion());
         String actividad = vista.obtenerActividad();
         LocalDate fecha = vista.obtenerFecha();
         List<Categoria> categoriasSeleccionadas = vista.obtenerCategoriasSeleccionadas();
@@ -175,6 +175,10 @@ public class ReservaControl implements CategoriaObserver {
 
     private Reserva reservaEditable(Reserva reserva) {
         if (reserva == null || reserva.getEstado() != EstadoReserva.ACTIVA) {
+            return null;
+        }
+        Usuario usuarioActual = SesionControl.obtenerInstancia().usuarioActual();
+        if (usuarioActual == null || !usuarioActual.getId().equals(reserva.getIdFuncionario())) {
             return null;
         }
         return reserva;

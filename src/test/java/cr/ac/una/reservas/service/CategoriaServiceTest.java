@@ -87,6 +87,30 @@ class CategoriaServiceTest {
     }
 
     @Test
+    void rechazaEliminarCategoriaInexistente() {
+        assertThrows(ReglaDeNegocioException.class, () -> categoriaService.eliminar("CAT-999999"));
+    }
+
+    @Test
+    void rechazaModificarConDescripcionVacia() {
+        Categoria categoria = categoriaService.crear("Sala de Juntas");
+        categoria.setDescripcion(" ");
+
+        assertThrows(ReglaDeNegocioException.class, () -> categoriaService.modificar(categoria));
+    }
+
+    @Test
+    void noReutilizaElIdDeUnaCategoriaBorrada() {
+        Categoria primera = categoriaService.crear("Sala de Juntas");
+        categoriaService.crear("Laptop windows 11");
+        categoriaService.eliminar(primera.getId());
+
+        Categoria tercera = categoriaService.crear("Proyector HDMI");
+
+        assertEquals("CAT-000003", tercera.getId());
+    }
+
+    @Test
     void buscaCategoriasPorDescripcion() {
         categoriaDao.guardar(new Categoria("CAT-000001", "Sala de Juntas"));
         categoriaDao.guardar(new Categoria("CAT-000002", "Laptop windows 11"));

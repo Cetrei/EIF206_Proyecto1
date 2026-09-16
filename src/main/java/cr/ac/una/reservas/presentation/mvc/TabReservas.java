@@ -42,6 +42,7 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
     private static final String TITULO_FORMULARIO_CREAR = "Nueva reserva";
 
     private List<Reserva> reservasMostradas = new ArrayList<>();
+    private Reserva reservaEnEdicion;
 
     private JPanel TabReservas;
     private JPanel TarjetaTitulo;
@@ -430,10 +431,15 @@ public class TabReservas implements CambioTemaListener, PropertyChangeListener {
 
     private void mostrarModoEdicion(Reserva reserva) {
         boolean editando = reserva != null && reserva.getEstado() == EstadoReserva.ACTIVA;
+        reservaEnEdicion = editando ? reserva : null;
         botonSolicitarReal.setTexto(editando ? TEXTO_BOTON_MODIFICAR : TEXTO_BOTON_CREAR);
         tarjetaFormularioReal.setTitulo(
                 editando ? "Editando reserva " + reserva.getId() : TITULO_FORMULARIO_CREAR
         );
+    }
+
+    public Reserva obtenerReservaEnEdicion() {
+        return reservaEnEdicion;
     }
 
 

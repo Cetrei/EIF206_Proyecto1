@@ -94,6 +94,13 @@ public class RecursoControl implements CategoriaObserver {
                 Recurso nuevo = new Recurso(id, categoria.getId(), descripcion);
                 recursoService.crear(nuevo);
             } else {
+                if (!recursoSeleccionado.getId().equals(id)) {
+                    mostrarError(
+                            "No se pudo guardar",
+                            "El ID / Nº de activo no se puede cambiar. Use Limpiar para registrar un recurso nuevo."
+                    );
+                    return;
+                }
                 recursoSeleccionado.setCategoria(categoria);
                 recursoSeleccionado.setDescripcion(descripcion);
                 recursoService.modificar(recursoSeleccionado);

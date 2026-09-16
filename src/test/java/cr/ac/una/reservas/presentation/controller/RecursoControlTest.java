@@ -7,6 +7,7 @@ import cr.ac.una.reservas.service.CategoriaDaoFalso;
 import cr.ac.una.reservas.service.CategoriaService;
 import cr.ac.una.reservas.service.RecursoDaoFalso;
 import cr.ac.una.reservas.service.RecursoService;
+import cr.ac.una.reservas.service.ReservaDaoFalso;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class RecursoControlTest {
         SesionControl.obtenerInstancia().iniciarSesion(new Funcionario("111", "111", "Juan Perez", "3323"));
         RecursoDaoFalso recursoDao = new RecursoDaoFalso();
         CategoriaDaoFalso categoriaDao = new CategoriaDaoFalso();
-        RecursoService recursoService = new RecursoService(recursoDao, categoriaDao);
+        RecursoService recursoService = new RecursoService(recursoDao, categoriaDao, new ReservaDaoFalso());
         CategoriaService categoriaService = new CategoriaService(categoriaDao, recursoDao);
 
         assertThrows(
@@ -39,7 +40,7 @@ class RecursoControlTest {
         SesionControl.obtenerInstancia().iniciarSesion(new Administrador("admin", "admin"));
         RecursoDaoFalso recursoDao = new RecursoDaoFalso();
         CategoriaDaoFalso categoriaDao = new CategoriaDaoFalso();
-        RecursoService recursoService = new RecursoService(recursoDao, categoriaDao);
+        RecursoService recursoService = new RecursoService(recursoDao, categoriaDao, new ReservaDaoFalso());
         CategoriaService categoriaService = new CategoriaService(categoriaDao, recursoDao);
 
         try {

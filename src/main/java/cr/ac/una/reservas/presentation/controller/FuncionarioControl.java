@@ -61,6 +61,17 @@ public class FuncionarioControl {
             mostrarError("No se pudo guardar", "Debe ingresar el nombre completo del funcionario.");
             return;
         }
+        if (telefono == null || telefono.isBlank()) {
+            mostrarError("No se pudo guardar", "Debe ingresar el telefono del funcionario.");
+            return;
+        }
+        if (!telefono.matches("[0-9()+\\-\\s]{4,}")) {
+            mostrarError(
+                    "No se pudo guardar",
+                    "El telefono solo puede contener numeros, espacios y los simbolos + ( ) -."
+            );
+            return;
+        }
 
         try {
             Funcionario funcionarioSeleccionado = modelo.getFuncionarioSeleccionado();
@@ -68,6 +79,13 @@ public class FuncionarioControl {
                 Funcionario nuevo = new Funcionario(id, id, nombre, telefono);
                 funcionarioService.crear(nuevo);
             } else {
+                if (!funcionarioSeleccionado.getId().equals(id)) {
+                    mostrarError(
+                            "No se pudo guardar",
+                            "El ID del funcionario no se puede cambiar. Use Limpiar para registrar uno nuevo."
+                    );
+                    return;
+                }
                 funcionarioSeleccionado.setNombre(nombre);
                 funcionarioSeleccionado.setTelefono(telefono);
                 funcionarioService.modificar(funcionarioSeleccionado);

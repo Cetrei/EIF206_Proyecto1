@@ -1,6 +1,7 @@
 package cr.ac.una.reservas.service;
 
 import cr.ac.una.reservas.model.DatosNuevaReserva;
+import cr.ac.una.reservas.model.EstadoReserva;
 import cr.ac.una.reservas.model.Funcionario;
 import cr.ac.una.reservas.model.Reserva;
 import cr.ac.una.reservas.util.ReglaDeNegocioException;
@@ -84,6 +85,30 @@ class FuncionarioServiceTest {
         reservaDao.guardar(new Reserva(datosDeEjemplo("RES-000001", "111")));
 
         assertThrows(ReglaDeNegocioException.class, () -> funcionarioService.eliminar("111"));
+    }
+
+    @Test
+    void rechazaEliminarFuncionarioInexistente() {
+        assertThrows(ReglaDeNegocioException.class, () -> funcionarioService.eliminar("999"));
+    }
+
+    @Test
+    void rechazaCrearFuncionarioSinNombre() {
+        Funcionario funcionario = new Funcionario("111", "111", " ", "3323");
+
+        assertThrows(ReglaDeNegocioException.class, () -> funcionarioService.crear(funcionario));
+    }
+
+    @Test
+    void permiteEliminarFuncionarioCuyasReservasFueronCanceladas() {
+        funcionarioDao.guardar(new Funcionario("111", "111", "Juan Perez", "3323"));
+        Reserva reserva = new Reserva(datosDeEjemplo("RES-000001", "111"));
+        reserva.setEstado(EstadoReserva.CANCELADA);
+        reservaDao.guardar(reserva);
+
+        funcionarioService.eliminar("111");
+
+        assertTrue(funcionarioDao.buscarPorId("111").isEmpty());
     }
 
     @Test
